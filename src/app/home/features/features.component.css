@@ -4,16 +4,23 @@
 
 .mat-card {
   background-color: white;
+  margin: 8px;
 }
 
 .mat-icon {
   font-size: 1rem;
 }
 
+.mat-card-title {
+  font-size: 1.1rem;
+}
+
 .mat-card-content {
   color: black;
+  margin-top: -28px;
 }
 
 .mat-card-subtitle {
   color: gray;
+  font-size: 0.8rem;
 }

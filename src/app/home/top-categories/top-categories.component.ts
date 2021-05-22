@@ -1,21 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
-import {Course} from "../../models/course.model";
 
 @Component({
-  selector: 'app-features',
-  templateUrl: './features.component.html',
-  styleUrls: ['./features.component.css']
+  selector: 'app-top-categories',
+  templateUrl: './top-categories.component.html',
+  styleUrls: ['./top-categories.component.css']
 })
-export class FeaturesComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/courses/';
-
+export class TopCategoriesComponent implements OnInit {
   //slider setting variable
   responsiveOptions: any;
 
   //define validable to store dynamic products data
-  courses: any;
+  categories: any;
 
   constructor(private http: HttpClient, private dataService: DataService) {
     //slider responsive settings
@@ -43,17 +40,16 @@ export class FeaturesComponent implements OnInit {
     // }, error => console.error(error));
 
     // Get courses request
-    this.dataService.getCourses().subscribe(res => {
-      this.courses = (res as any).data;
-      console.log(this.courses);
+    this.dataService.getCategories().subscribe(res => {
+      this.categories = (res as any).data;
     })
+  }
+
+  ngOnInit(): void {
   }
 
   onClick(course: any){
     console.log(course._id);
-  }
-
-  ngOnInit(): void {
   }
 
 }

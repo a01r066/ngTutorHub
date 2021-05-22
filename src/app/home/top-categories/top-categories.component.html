@@ -1,0 +1,19 @@
+<!--Top categories-->
+<div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px; margin-left: 24px">Top Categories</div>
+<div style="margin-top: -32px">
+  <p-carousel [value]="categories" [numVisible]="5" [numScroll]="3" [circular]="true" [autoplayInterval]="5000"  [responsiveOptions]="responsiveOptions">
+    <ng-template let-category pTemplate="item">
+      <div class="card-container">
+        <mat-card class="example-card" (click)="onClick(category)">
+          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+          <mat-card-content>
+            <div fxFlex fxLayout="column">
+              <div><p class="mat-card-title">{{ category.name.substring(0, 28) }}</p></div>
+              <div><p class="mat-card-subtitle">Brad Traversy</p></div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>

@@ -14,6 +14,10 @@ import { FeaturesComponent } from './home/features/features.component';
 import {CarouselModule} from "primeng/carousel";
 import {HttpClientModule} from "@angular/common/http";
 import {ButtonModule} from "primeng/button";
+import { CoursesComponent } from './courses/courses.component';
+import { CourseListComponent } from './courses/course-list/course-list.component';
+import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
+import { TopCategoriesComponent } from './home/top-categories/top-categories.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import {ButtonModule} from "primeng/button";
     FooterComponent,
     SidebarComponent,
     HomeComponent,
-    FeaturesComponent
+    FeaturesComponent,
+    CoursesComponent,
+    CourseListComponent,
+    CourseDetailComponent,
+    TopCategoriesComponent
   ],
   imports: [
     BrowserModule,
