@@ -1,0 +1,60 @@
+<!--Bestseller courses-->
+<div class="mat-display-1" style="color: darkslategrey; font-weight: bold; margin-top: 32px; margin-left: 24px">Bestseller Courses</div>
+<p-carousel [value]="products" [numVisible]="5" [numScroll]="3" [circular]="true" [autoplayInterval]="5000"  [responsiveOptions]="responsiveOptions">
+  <ng-template let-product pTemplate="item">
+    <div class="card-container">
+      <mat-card class="example-card">
+<!--        <mat-card-header>-->
+<!--          <div mat-card-avatar class="example-header-image"></div>-->
+<!--          <mat-card-title>Shiba Inu</mat-card-title>-->
+<!--          <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+<!--        </mat-card-header>-->
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <div fxFlex fxLayout="column">
+            <div><p class="mat-card-title">Advanced CSS and Sass: Flexbox, Grid, Animations and More!</p></div>
+            <div><p class="mat-card-subtitle">Brad Traversy</p></div>
+            <div fxFlex fxLayout="row" fxLayoutGap="8px">
+              <div>4.8</div>
+              <div>
+                <mat-icon color="primary">start</mat-icon>
+                <mat-icon color="primary">start</mat-icon>
+                <mat-icon color="primary">start</mat-icon>
+                <mat-icon color="primary">start</mat-icon>
+                <mat-icon color="accent">start</mat-icon>
+              </div>
+            </div>
+            <p><span style="text-decoration: line-through; color: red">$99.99</span><span style="float: right; color: blue; font-weight: bold">$9.99</span></p>
+<!--            <button mat-raised-button color="accent">Bestseller</button>-->
+          </div>
+        </mat-card-content>
+<!--        <mat-card-actions>-->
+<!--          <button mat-button>LIKE</button>-->
+<!--          <button mat-button>SHARE</button>-->
+<!--        </mat-card-actions>-->
+      </mat-card>
+    </div>
+  </ng-template>
+<!--  <ng-template pTemplate="header">-->
+<!--  </ng-template>-->
+<!--  <ng-template let-product pTemplate="item">-->
+<!--    <div class="product-item">-->
+<!--      <div class="product-item-content">-->
+<!--        <div class="p-mb-3">-->
+<!--          <img  class="product-image" src={{product.product_image}} alt={{product.product_title}}></div>-->
+<!--        <div>-->
+<!--          <h4 class="p-mb-1">{{product.product_title}}</h4>-->
+<!--          <h6 class="p-mt-0 p-mb-3">{{product.product_price}}</h6>-->
+<!--          <div class="car-buttons p-mt-5">-->
+<!--            <p-button type="button" styleClass="p-button p-button-rounded p-mr-2" icon="pi pi-search"></p-button>-->
+<!--            <p-button type="button" styleClass="p-button-success p-button-rounded p-mr-2" icon="pi pi-star"></p-button>-->
+<!--            <p-button type="button" styleClass="p-button-help p-button-rounded" icon="pi pi-cog"></p-button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </ng-template>-->
+</p-carousel>
+
+<!--Top categories-->
+<div class="mat-display-1" style="color: darkslategrey; font-weight: bold; margin-top: 32px; margin-left: 24px">Top Categories</div>

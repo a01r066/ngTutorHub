@@ -1,0 +1,19 @@
+.card-container {
+  margin: 0 0 0 1rem;
+}
+
+.mat-card {
+  background-color: white;
+}
+
+.mat-icon {
+  font-size: 1rem;
+}
+
+.mat-card-content {
+  color: black;
+}
+
+.mat-card-subtitle {
+  color: gray;
+}

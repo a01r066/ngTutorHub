@@ -10,6 +10,10 @@ import { SidebarComponent } from './navigation/sidebar/sidebar.component';
 import { HomeComponent } from './home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FeaturesComponent } from './home/features/features.component';
+import {CarouselModule} from "primeng/carousel";
+import {HttpClientModule} from "@angular/common/http";
+import {ButtonModule} from "primeng/button";
 
 @NgModule({
   declarations: [
@@ -17,14 +21,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    HomeComponent
+    HomeComponent,
+    FeaturesComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
     AppRoutingModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    CarouselModule,
+    HttpClientModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
