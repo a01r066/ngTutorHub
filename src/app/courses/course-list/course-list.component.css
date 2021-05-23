@@ -1,50 +1,30 @@
-.mat-toolbar-row {
-  height: 40vh;
-  background-color: #1E1E1C;
+.card-container {
+  margin: 0 0 0 1rem;
 }
 
-div {
-  margin: 0 0 12px 0;
+.mat-card {
+  background-color: white;
+  margin: 8px;
 }
 
-div.course-summary {
-  height: 35vh;
-  background-color: transparent;
+.mat-icon {
+  font-size: 1rem;
 }
 
-.course-highlight {
-  margin: 16px 0 16px 0;
+.mat-card-title {
+  font-size: 1.1rem;
 }
 
-.course-action {
-  margin: 16px 0 0 0;
+.mat-card-content {
+  color: black;
+  margin-top: -28px;
 }
 
-* { margin: 0; padding: 0; }
-body { padding-top: 50px; }
-
-h1 { text-align: center; font-size: 16px; }
-.rwd-line { display: block; }
-
-@media screen and (min-width: 1496px){
-  .rwd-line { display: inline; }
+.mat-card-subtitle {
+  color: gray;
+  font-size: 0.8rem;
 }
 
-/* Back to article bar */
-.back { background-color: #111; color: #fefefe; text-align: center; padding: 0.5em 0; position: absolute; bottom: 0; left: 0; width: 100%; }
-.back a { color: #888; text-decoration: none; }
-.back a:hover, .back a:focus { color: #eee; }
-
-.mat-raised-button {
-  width: 96px;
-}
-
-.title {
-  font-size: 3rem;
-  font-weight: bold;
-}
-
-.subtitle {
-  font-size: 1.5rem;
-  color: lightgray;
+.mat-list-item {
+  color: black;
 }

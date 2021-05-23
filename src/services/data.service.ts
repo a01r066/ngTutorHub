@@ -1,7 +1,5 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import {Course} from "../app/models/course.model";
 import {Category} from "../app/models/category.model";
 
@@ -11,15 +9,26 @@ import {Category} from "../app/models/category.model";
 
 export class DataService {
   base_url = 'http://localhost:3000/api/v1';
-  constructor(private http: HttpClient) {
 
-  }
+  constructor(private http: HttpClient) {}
 
   getCourses(){
-    return this.http.get<Course>(this.base_url+'/courses?limit=9');
+    const url = `${this.base_url}/courses?limit=9`;
+    return this.http.get<Course>(url);
   }
 
   getCategories(){
-    return this.http.get<Category>(this.base_url+'/categories?limit=8');
+    const url = `${this.base_url}/categories?limit=8`;
+    return this.http.get<Category>(url);
+  }
+
+  getCoursesByCategoryId(category: any){
+    const url = `${this.base_url}/categories/${category._id}/courses`;
+    return this.http.get<Course>(url);
+  }
+
+  getCategoryBySlug(slug: any){
+    const url = `${this.base_url}/categories/${slug}`;
+    return this.http.get<Category>(url);
   }
 }

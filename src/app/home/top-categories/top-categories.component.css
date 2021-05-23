@@ -1,0 +1,8 @@
+.card-container {
+  margin-bottom: 16px;
+}
+
+.mat-card {
+  background-color: white;
+  color: darkslategrey;
+}

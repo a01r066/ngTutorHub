@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
+import {Router} from "@angular/router";
+import {UiService} from "../../../services/ui.service";
+import {Category} from "../../models/category.model";
 
 @Component({
   selector: 'app-top-categories',
@@ -8,13 +11,18 @@ import {DataService} from "../../../services/data.service";
   styleUrls: ['./top-categories.component.css']
 })
 export class TopCategoriesComponent implements OnInit {
+  base_url = 'http://localhost:3000/uploads/categories/';
+
   //slider setting variable
   responsiveOptions: any;
 
   //define validable to store dynamic products data
   categories: any;
 
-  constructor(private http: HttpClient, private dataService: DataService) {
+  constructor(private http: HttpClient,
+              private dataService: DataService,
+              private router: Router,
+              private uiService: UiService) {
     //slider responsive settings
     this.responsiveOptions = [
       {
@@ -48,8 +56,7 @@ export class TopCategoriesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClick(course: any){
-    console.log(course._id);
+  onClick(category: Category){
+    this.router.navigate(['courses', category.slug]);
   }
-
 }

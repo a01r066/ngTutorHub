@@ -45,8 +45,8 @@ export class FeaturesComponent implements OnInit {
     // Get courses request
     this.dataService.getCourses().subscribe(res => {
       this.courses = (res as any).data;
-      console.log(this.courses);
-    })
+      // console.log(this.courses);
+    }, error => console.log(error.message));
   }
 
   onClick(course: any){
