@@ -9,3 +9,8 @@ body {
 .mat-tab-label .mat-tab-label-content {
   color: black;
 }
+
+.mat-expansion-panel-body {
+  background-color: wheat;
+  color: black;
+}

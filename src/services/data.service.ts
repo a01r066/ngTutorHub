@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Course} from "../app/models/course.model";
 import {Category} from "../app/models/category.model";
+import {Lecture} from "../app/models/lecture.model";
+import {Chapter} from "../app/models/chapter.model";
 
 @Injectable({
   providedIn: "root"
@@ -22,13 +24,28 @@ export class DataService {
     return this.http.get<Category>(url);
   }
 
-  getCoursesByCategoryId(category: any){
-    const url = `${this.base_url}/categories/${category._id}/courses`;
+  getCoursesByCategoryId(categoryId: any){
+    const url = `${this.base_url}/categories/${categoryId}/courses`;
     return this.http.get<Course>(url);
   }
 
   getCategoryBySlug(slug: any){
     const url = `${this.base_url}/categories/${slug}`;
     return this.http.get<Category>(url);
+  }
+
+  getCourseBySlug(slug: any){
+    const url = `${this.base_url}/course/${slug}`;
+    return this.http.get<Course>(url);
+  }
+
+  getLecturesByCourseId(courseId: any){
+    const url = `${this.base_url}/lectures/${courseId}`;
+    return this.http.get<Lecture[]>(url);
+  }
+
+  getChaptersByLectureId(lectureId: any){
+    const url = `${this.base_url}/lectures/${lectureId}/chapters`;
+    return this.http.get<Chapter[]>(url);
   }
 }

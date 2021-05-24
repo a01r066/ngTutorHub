@@ -1,39 +1,63 @@
-<div fxFlex fxLayout="column">
-  <div fxFlex style="background-color: blue; height: 390px">
-    <mat-toolbar-row>
-      <div fxFlex fxLayout="row">
-        <div fxFlex="15"></div>
-        <div class="course-summary" fxFlex="50">
-          <div style="margin-top: 8px"><span class="rwd-line title">2021 Complete Python Bootcamp </span><span class="rwd-line title">From Zero to Hero in Python</span></div>
-          <div class="rwd-line subtitle">Learn Python like a Professional Start from the basics and <span class="rwd-line subtitle">go all the way to creating your own applications and games</span></div>
-          <div fxLayout="row" class="course-highlight" fxLayoutGap="16px">
-            <div><button mat-raised-button color="accent">Bestseller</button></div>
-            <div>4.8</div>
-            <div>
-              <span><mat-icon color="accent">start</mat-icon></span>
-              <span><mat-icon color="accent">start</mat-icon></span>
-              <span><mat-icon color="accent">start</mat-icon></span>
-              <span><mat-icon color="accent">start</mat-icon></span>
-              <span><mat-icon color="accent">start</mat-icon></span>
-            </div>
-            <div>(363,357 ratings) 1,290,367 students</div>
+<div fxLayout="column" style="overflow-x: hidden">
+  <mat-toolbar-row>
+    <div fxFlex fxLayout="row">
+      <div fxFlex="15"></div>
+      <div class="course-summary" fxFlex="70">
+        <div class="mat-display-1" style="margin-top: 48px; font-weight: 600">{{ course?.title }}</div>
+        <div class="mat-card-subtitle" style="font-size: 1.2rem">{{ course?.description }}</div>
+        <div fxLayout="row" class="course-highlight" fxLayoutGap="16px">
+          <div><button mat-raised-button color="accent">Bestseller</button></div>
+          <div>4.8</div>
+          <div>
+            <span><mat-icon color="accent">start</mat-icon></span>
+            <span><mat-icon color="accent">start</mat-icon></span>
+            <span><mat-icon color="accent">start</mat-icon></span>
+            <span><mat-icon color="accent">start</mat-icon></span>
+            <span><mat-icon color="accent">start</mat-icon></span>
           </div>
-          <div>Created by: Jose Portilia</div>
-          <div fxLayoutGap="16px" class="course-action">
-            <button mat-raised-button color="warn">Wishlist</button>
-            <button mat-raised-button color="accent">Share</button>
-            <button mat-raised-button color="primary">Enroll</button>
-          </div>
+          <div>(363,357 ratings) 1,290,367 students</div>
         </div>
-        <div fxFlex="20"></div>
-        <div fxFlex="15"></div>
+        <div>Created by: Jose Portilia</div>
+        <div fxLayoutGap="16px" class="course-action">
+          <button mat-raised-button color="warn">Wishlist</button>
+          <button mat-raised-button color="accent">Share</button>
+          <button mat-raised-button color="primary">Enroll</button>
+        </div>
       </div>
-    </mat-toolbar-row>
-  </div>
+      <div fxFlex="15"></div>
+    </div>
+  </mat-toolbar-row>
+
   <div fxLayout="row">
     <div fxFlex="15"></div>
     <div fxFlex="70">
-      <h1>Content</h1>
+      <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;">Course Content</div>
+      <div>
+        <mat-accordion>
+          <mat-expansion-panel disabled>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                7 sections • 29 lectures • 4h 37m total length
+              </mat-panel-title>
+              <mat-panel-description>
+                <p style="cursor: pointer;">Expansion all sections</p>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false" *ngFor="let lecture of lectures; let i = index">
+            <mat-expansion-panel-header>
+              <mat-panel-title (click)="onClickLecture(lecture)">
+                {{ lecture.title }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let chapter of chapters; let i = index">
+              <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter.title }}</p></div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
     </div>
     <div fxFlex="15"></div>
   </div>

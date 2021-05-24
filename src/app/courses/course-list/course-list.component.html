@@ -2,8 +2,8 @@
 <div fxLayout="row">
   <div fxFlex="15"></div>
   <div fxFlex="70">
-    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px; margin-left: 24px" *ngIf="selectedCategory">{{ selectedCategory.title }}</div>
-    <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin: -32px 0 32px 24px">Courses to get you started</div>
+    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;" *ngIf="selectedCategory">{{ selectedCategory.title }}</div>
+    <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin: -32px 0 32px 0">Courses to get you started</div>
     <div *ngIf="courses">
       <p-carousel [value]="courses" [numVisible]="5" [numScroll]="3" [circular]="true" [autoplayInterval]="5000"  [responsiveOptions]="responsiveOptions">
         <ng-template let-course pTemplate="item">
@@ -32,23 +32,32 @@
         </ng-template>
       </p-carousel>
     </div>
-    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px; margin-left: 24px">All Development Courses</div>
+    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500;">All Development Courses</div>
     <div>
-      <mat-list role="list">
-        <mat-list-item role="listitem">
-          <div fxFlex fxLayout="row">
-            <div fxFlex="25">Image</div>
-            <div fxFlex="70">
-              <div>Title</div>
-              <div>Description</div>
-              <div>Instructor</div>
-              <div>4.6 ***** (145,205)</div>
-              <div>34 total hours * 234 lectures</div>
+      <mat-grid-list cols="1" rowHeight="6:1">
+        <mat-grid-tile *ngFor="let course of courses; let i = index">
+          <div fxFlex fxLayout="row" style="border-bottom: 1px solid lightgray" (click)="onClick(course)">
+            <div fxFlex="20"><img mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
+            <div fxFlex="70" style="margin: -8px 0 0 32px">
+              <div class="mat-title">{{ course.title }}</div>
+              <div class="mat-card-subtitle">{{ course.description }}</div>
+              <div>Brad Traversy</div>
+              <div>
+                <span>4.6</span>
+                <span><mat-icon>start</mat-icon></span>
+                <span><mat-icon>start</mat-icon></span>
+                <span><mat-icon>start</mat-icon></span>
+                <span><mat-icon>start</mat-icon></span>
+                <span><mat-icon>start</mat-icon></span>
+                <span><mat-icon>start</mat-icon></span>
+                <span>({{ 235630 | number }})</span>
+              </div>
+              <div>22 total hours * 155 lectures</div>
             </div>
-            <div fxFlex="5">$9.99 <span>$99.99</span></div>
+            <div fxFlex="10">${{ course.tuition | number }}<br/><span style="text-decoration: line-through; color: red">${{ 99.99 }}</span></div>
           </div>
-        </mat-list-item>
-      </mat-list>
+        </mat-grid-tile>
+      </mat-grid-list>
     </div>
   </div>
   <div fxFlex="15"></div>

@@ -10,6 +10,9 @@ import {MatInputModule} from "@angular/material/input";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatCardModule} from "@angular/material/card";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {MatTableModule} from "@angular/material/table";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   imports: [
@@ -23,7 +26,10 @@ import {MatGridListModule} from "@angular/material/grid-list";
     MatTabsModule,
     MatIconModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTableModule,
+    MatDividerModule,
+    MatExpansionModule,
   ],
   exports: [
     MatToolbarModule,
@@ -36,7 +42,10 @@ import {MatGridListModule} from "@angular/material/grid-list";
     MatInputModule,
     MatTabsModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTableModule,
+    MatDividerModule,
+    MatExpansionModule
   ]
 })
 

@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {UiService} from "../../../services/ui.service";
 import {Category} from "../../models/category.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-course-list',
@@ -24,7 +24,8 @@ export class CourseListComponent implements OnInit {
     private http: HttpClient,
     private dataService: DataService,
     private uiService: UiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     //slider responsive settings
     this.responsiveOptions = [
@@ -57,13 +58,13 @@ export class CourseListComponent implements OnInit {
    this.dataService.getCategoryBySlug(slug).subscribe(res => {
      this.selectedCategory = (res as any).data;
 
-     this.dataService.getCoursesByCategoryId(this.selectedCategory).subscribe(res => {
+     this.dataService.getCoursesByCategoryId(this.selectedCategory._id).subscribe(res => {
        this.courses = (res as any).data;
      })
    })
   }
 
   onClick(course: any){
-    console.log(course._id);
+    this.router.navigate(['course', course.slug]);
   }
 }
