@@ -10,7 +10,13 @@ body {
   color: black;
 }
 
+
+.mat-expansion-panel {
+  background-color: #FBFBF8;
+}
+
 .mat-expansion-panel-body {
-  background-color: wheat;
+  background-color: white;
   color: black;
 }
+

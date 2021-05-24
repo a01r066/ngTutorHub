@@ -18,6 +18,7 @@ import { CoursesComponent } from './courses/courses.component';
 import { CourseListComponent } from './courses/course-list/course-list.component';
 import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 import { TopCategoriesComponent } from './home/top-categories/top-categories.component';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TopCategoriesComponent } from './home/top-categories/top-categories.com
     CoursesComponent,
     CourseListComponent,
     CourseDetailComponent,
-    TopCategoriesComponent
+    TopCategoriesComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
