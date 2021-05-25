@@ -1,0 +1,38 @@
+.mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.mat-form-field {
+  width: 330px;
+}
+
+::ng-deep.mat-error .mat-warn {
+  color: red;
+}
+
+::ng-deep.mat-form-field-label {
+  color: darkgray !important;
+}
+
+::ng-deep .mat-focused {
+  /*change color of label*/
+  color: darkgray !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: #1DB954 !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: #1DB954 !important;;
+}
+
+.mat-input-element {
+  color: darkslategray;
+}
+
+.mat-flat-button:disabled {
+  background-color: dimgray;
+}

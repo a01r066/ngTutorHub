@@ -1,0 +1,23 @@
+<div fxFlex fxLayout="row">
+  <div fxFlex="35"></div>
+  <div fxFlex="30">
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+      <div style="color: darkslategrey; font-weight: 500;margin-top: 48px; width: 330px">Log In to Your TutorHub Account!</div>
+      <mat-divider style="background-color: lightseagreen; width: 330px; margin-top: 8px"></mat-divider>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" style="width: 330px">
+        <mat-form-field appearance="standard">
+          <mat-label>Your email</mat-label>
+          <input matInput placeholder="Your email" formControlName="email" required>
+          <mat-error>Invalid or missing email.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Your password</mat-label>
+          <input matInput type="password" placeholder="Your password" autocomplete="on" formControlName="password" required>
+          <mat-error>Missing password.</mat-error>
+        </mat-form-field>
+        <button mat-flat-button color="warn" style="width: 330px; height: 44px" [disabled]="loginForm.invalid">Login</button>
+      </form>
+    </div>
+  </div>
+  <div fxFlex="35"></div>
+</div>
