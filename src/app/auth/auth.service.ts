@@ -11,22 +11,14 @@ export class AuthService {
   base_url = 'http://localhost:3000/api/v1';
 
   user!: User;
-  isLoggedIn = false;
   isAuthenticated = false;
   authChanged = new Subject<boolean>();
 
   constructor(private http: HttpClient) {
-    // this.isLoggedIn = !!sessionStorage.getItem('token');
-    // if (this.isLoggedIn){
-    //   this.user = this.getCurrentUser();
-    // }
   }
 
   initAuthListener(){
     this.user = this.getCurrentUser();
-    if(this.user){
-      console.log('LoggedUser: '+this.user.name);
-    }
   }
 
   // Authentication
@@ -56,7 +48,6 @@ export class AuthService {
   // Set current user in your session after a successful login
   setCurrentUser(token: string): void {
     sessionStorage.setItem('token', token);
-    this.isLoggedIn = true;
   }
 
   // Get currently logged in user from session
@@ -71,7 +62,10 @@ export class AuthService {
       }
     }).subscribe(res => {
       this.user = (res as any).data;
-      console.log('Result: '+this.user.name);
+      this.authChanged.next(true);
+      this.isAuthenticated = true;
+    }, error => {
+      // console.log(`User is un-authorized: ${error.message}`);
     })
 
     return this.user || undefined;
@@ -82,6 +76,9 @@ export class AuthService {
   }
 
   logout(){
-
+    sessionStorage.removeItem('token');
+    this.isAuthenticated = false;
+    this.user = null!;
+    this.authChanged.next(false);
   }
 }

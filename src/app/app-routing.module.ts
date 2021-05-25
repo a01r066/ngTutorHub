@@ -4,20 +4,20 @@ import {HomeComponent} from "./home/home.component";
 import {CoursesComponent} from "./courses/courses.component";
 import {CourseListComponent} from "./courses/course-list/course-list.component";
 import {CourseDetailComponent} from "./courses/course-detail/course-detail.component";
-import {PlayerComponent} from "./player/player.component";
+import {AuthGuard} from "./auth/auth.guard";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'courses', component: CoursesComponent, children: [
       { path: ':id', component: CourseListComponent },
     ]},
-  // { path: 'course/:id', component: CourseDetailComponent }
-  { path: 'course/:id', component: PlayerComponent}
+  { path: 'course/:id', component: CourseDetailComponent }
 ]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 
 export class AppRoutingModule {

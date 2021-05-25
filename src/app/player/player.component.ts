@@ -27,7 +27,6 @@ export class PlayerComponent implements OnInit {
 
       this.dataService.getLecturesByCourseId(this.course._id).subscribe(res => {
         this.lectures = (res as any).data;
-        console.log(this.lectures);
       })
     })
   }
@@ -35,7 +34,6 @@ export class PlayerComponent implements OnInit {
   onClickLecture(lecture: any){
     this.dataService.getChaptersByLectureId(lecture._id).subscribe(res => {
       this.chapters = (res as any).data;
-      console.log(this.chapters);
     })
   }
 

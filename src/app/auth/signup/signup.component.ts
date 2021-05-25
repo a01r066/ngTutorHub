@@ -34,8 +34,9 @@ export class SignupComponent implements OnInit {
   onRegister(){
     this.authService.registerUser(this.signupForm.value).subscribe(res => {
       const token = (res as any).token;
-      console.log(token);
       this.authService.setCurrentUser(token);
+      this.authService.authChanged.next(true);
+      this.authService.isAuthenticated = true;
       this.router.navigate(['']);
     }, error => {
       this.snackBar.open(`Register error: ${error.message}`, null!, {

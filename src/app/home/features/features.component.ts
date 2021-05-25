@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {Course} from "../../models/course.model";
+import {Router} from "@angular/router";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-features',
@@ -17,7 +19,10 @@ export class FeaturesComponent implements OnInit {
   //define validable to store dynamic products data
   courses: any;
 
-  constructor(private http: HttpClient, private dataService: DataService) {
+  constructor(private http: HttpClient,
+              private dataService: DataService,
+              private router: Router,
+              private authService: AuthService) {
     //slider responsive settings
     this.responsiveOptions = [
       {
@@ -50,7 +55,7 @@ export class FeaturesComponent implements OnInit {
   }
 
   onClick(course: any){
-    console.log(course._id);
+    this.router.navigate(['course', course.slug]);
   }
 
   ngOnInit(): void {
