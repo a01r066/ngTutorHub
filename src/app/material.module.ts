@@ -13,6 +13,9 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTableModule} from "@angular/material/table";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   imports: [
@@ -22,7 +25,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatButtonModule,
     MatMenuModule,
     MatFormFieldModule,
-    MatInputModule,
     MatTabsModule,
     MatIconModule,
     MatCardModule,
@@ -30,22 +32,29 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatTableModule,
     MatDividerModule,
     MatExpansionModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSnackBarModule
   ],
   exports: [
     MatToolbarModule,
-    MatIconModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
     MatMenuModule,
     MatFormFieldModule,
-    MatInputModule,
     MatTabsModule,
+    MatIconModule,
     MatCardModule,
     MatGridListModule,
     MatTableModule,
     MatDividerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSnackBarModule
   ]
 })
 

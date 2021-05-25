@@ -14,14 +14,10 @@ export class DataService {
 
   constructor(private http: HttpClient) {}
 
+  // Course
   getCourses(){
     const url = `${this.base_url}/courses?limit=9`;
     return this.http.get<Course>(url);
-  }
-
-  getCategories(){
-    const url = `${this.base_url}/categories?limit=8`;
-    return this.http.get<Category>(url);
   }
 
   getCoursesByCategoryId(categoryId: any){
@@ -29,21 +25,29 @@ export class DataService {
     return this.http.get<Course>(url);
   }
 
-  getCategoryBySlug(slug: any){
-    const url = `${this.base_url}/categories/${slug}`;
-    return this.http.get<Category>(url);
-  }
-
   getCourseBySlug(slug: any){
     const url = `${this.base_url}/course/${slug}`;
     return this.http.get<Course>(url);
   }
 
+  // Category
+  getCategories(){
+    const url = `${this.base_url}/categories?limit=8`;
+    return this.http.get<Category>(url);
+  }
+
+  getCategoryBySlug(slug: any){
+    const url = `${this.base_url}/categories/${slug}`;
+    return this.http.get<Category>(url);
+  }
+
+  // Lecture
   getLecturesByCourseId(courseId: any){
     const url = `${this.base_url}/lectures/${courseId}`;
     return this.http.get<Lecture[]>(url);
   }
 
+  // Chapter
   getChaptersByLectureId(lectureId: any){
     const url = `${this.base_url}/lectures/${lectureId}/chapters`;
     return this.http.get<Chapter[]>(url);
