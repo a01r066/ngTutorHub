@@ -56,3 +56,8 @@ h1 { text-align: center; font-size: 16px; }
 .mat-expansion-panel-header-title {
   color: black;
 }
+
+.mat-grid-tile .mat-figure {
+  justify-content: flex-start !important ;
+  align-items: flex-start !important;
+}

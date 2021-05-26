@@ -4,6 +4,7 @@ import {Course} from "../app/models/course.model";
 import {Category} from "../app/models/category.model";
 import {Lecture} from "../app/models/lecture.model";
 import {Chapter} from "../app/models/chapter.model";
+import {AuthService} from "../app/auth/auth.service";
 
 @Injectable({
   providedIn: "root"
@@ -12,12 +13,18 @@ import {Chapter} from "../app/models/chapter.model";
 export class DataService {
   base_url = 'http://localhost:3000/api/v1';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private authService: AuthService) {
+  }
 
   // Course
   getCourses(){
     const url = `${this.base_url}/courses?limit=9`;
     return this.http.get<Course>(url);
+  }
+
+  getCourseById(courseId: any){
+    const url = `${this.base_url}/courses/${courseId}`;
   }
 
   getCoursesByCategoryId(categoryId: any){
@@ -51,5 +58,17 @@ export class DataService {
   getChaptersByLectureId(lectureId: any){
     const url = `${this.base_url}/lectures/${lectureId}/chapters`;
     return this.http.get<Chapter[]>(url);
+  }
+
+  // Cart
+  addToCart(course: any){
+    const url = `${this.base_url}/auth/addToCart`;
+    const userId = this.authService.user._id;
+    console.log('CourseId: ' +course._id)
+    const data = {
+      "userId": userId,
+      "courseId": course._id
+    }
+    return this.http.put(url, data);
   }
 }

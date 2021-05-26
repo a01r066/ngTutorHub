@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from "../../../services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
-import {User} from "../../models/user.model";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-course-detail',
@@ -15,13 +16,19 @@ export class CourseDetailComponent implements OnInit {
   lectures: any;
   chapters: any;
   isAuthenticated!: boolean;
+  objectives: any;
+  videoUrl!: SafeResourceUrl;
+  base_url = 'http://localhost:3000/uploads/courses';
+  isPurchased = false;
 
   panelOpenState = false;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private sanitizer: DomSanitizer,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   this.isAuthenticated = this.authService.isAuthenticated;
@@ -29,6 +36,9 @@ export class CourseDetailComponent implements OnInit {
     const slug = this.route.snapshot.params['id'];
     this.dataService.getCourseBySlug(slug).subscribe(res => {
       this.course = (res as any).data;
+
+      // get objectives
+      this.objectives = this.course.objectives.substring(1).split('- ');
 
       this.dataService.getLecturesByCourseId(this.course._id).subscribe(res => {
         this.lectures = (res as any).data;
@@ -44,5 +54,18 @@ export class CourseDetailComponent implements OnInit {
 
   onClickChapter(chapter: any){
     this.router.navigate(['/login']);
+  }
+
+  addToCart(course: any){
+    if(this.isAuthenticated && !this.isPurchased){
+      this.dataService.addToCart(course).subscribe(res => {
+        console.log(res);
+      });
+      this.snackBar.open(`${course.title} added to cart!`, null!, {
+        duration: 3000
+      })
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }
