@@ -32,9 +32,9 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.loginForm.value).subscribe(res => {
       const token = (res as any).token;
       this.authService.setCurrentUser(token);
-      this.authService.authChanged.next(true);
-      this.authService.isAuthenticated = true;
-      this.router.navigate([''])
+      // this.authService.authChanged.next(true);
+      // this.authService.isAuthenticated = true;
+      this.router.navigate(['']);
     }, error => {
       this.snackBar.open(`Invalid credential. Please try again!`, null!, {
         duration: 3000

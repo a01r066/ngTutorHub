@@ -25,6 +25,7 @@ export class DataService {
 
   getCourseById(courseId: any){
     const url = `${this.base_url}/courses/${courseId}`;
+    return this.http.get<Course>(url);
   }
 
   getCoursesByCategoryId(categoryId: any){
@@ -61,10 +62,18 @@ export class DataService {
   }
 
   // Cart
-  addToCart(course: any){
+  addToCart(user: any, course: any){
     const url = `${this.base_url}/auth/addToCart`;
+    const data = {
+      "userId": user._id,
+      "courseId": course._id
+    }
+    return this.http.put(url, data);
+  }
+
+  removeCartItem(course: any){
+    const url = `${this.base_url}/auth/removeCartItem`;
     const userId = this.authService.user._id;
-    console.log('CourseId: ' +course._id)
     const data = {
       "userId": userId,
       "courseId": course._id

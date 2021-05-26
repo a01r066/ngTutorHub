@@ -48,4 +48,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.router.navigate(['']);
   }
+
+  onClickCart(){
+    if(this.isAuth){
+      this.router.navigate(['/cart']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 }

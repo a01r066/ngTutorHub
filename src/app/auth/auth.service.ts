@@ -41,13 +41,10 @@ export class AuthService {
     return this.http.post(url, data);
   }
 
-  getUser(){
-    return {...this.user};
-  }
-
   // Set current user in your session after a successful login
   setCurrentUser(token: string): void {
     sessionStorage.setItem('token', token);
+    this.getCurrentUser();
   }
 
   // Get currently logged in user from session

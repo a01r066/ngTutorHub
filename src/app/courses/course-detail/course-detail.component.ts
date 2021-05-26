@@ -58,8 +58,8 @@ export class CourseDetailComponent implements OnInit {
 
   addToCart(course: any){
     if(this.isAuthenticated && !this.isPurchased){
-      this.dataService.addToCart(course).subscribe(res => {
-        console.log(res);
+      this.dataService.addToCart(this.authService.user, course).subscribe(res => {
+        this.authService.getCurrentUser();
       });
       this.snackBar.open(`${course.title} added to cart!`, null!, {
         duration: 3000
