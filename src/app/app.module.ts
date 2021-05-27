@@ -20,6 +20,7 @@ import {MaterialModule} from "./material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CartComponent } from './cart/cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CartComponent } from './cart/cart.component';
     CourseDetailComponent,
     TopCategoriesComponent,
     PlayerComponent,
-    CartComponent
+    CartComponent,
+    CheckoutComponent
   ],
   imports: [
     SharedModule,

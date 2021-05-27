@@ -16,6 +16,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule
   ],
   exports: [
     MatToolbarModule,
@@ -54,7 +56,8 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule
   ]
 })
 

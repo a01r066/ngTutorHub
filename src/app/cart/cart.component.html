@@ -1,7 +1,7 @@
 <div class="container" fxLayout="column">
   <div style="background-color: #1E1E1C; height: 140px" fxLayout="row">
     <div fxFlex="20"></div>
-    <div style="font-size: 2.5rem; font-weight: 500" fxFlex="60" fxLayoutAlign="left center">Shopping Cart</div>
+    <div style="font-size: 2.5rem; font-weight: 500; color: white" fxFlex="60" fxLayoutAlign="left center">Shopping Cart</div>
     <div fxFlex="20"></div>
   </div>
   <div>
@@ -39,7 +39,7 @@
           <div class="mat-display-1" style="font-weight: 500; color: darkslategray; margin-bottom: 4px">$19.99</div>
           <div style="text-decoration: line-through; color: darkgray">$114.99</div>
           <div style="color: #2F302F; margin-bottom: 16px">83% off</div>
-          <div><button mat-raised-button color="warn" fxFlex style="height: 40px">Checkout</button></div>
+          <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="checkoutCart()">Checkout</button></div>
         </div>
       </div>
     </div>

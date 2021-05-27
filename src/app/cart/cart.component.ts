@@ -3,6 +3,7 @@ import {AuthService} from "../auth/auth.service";
 import {DataService} from "../../services/data.service";
 import {Course} from "../models/course.model";
 import {User} from "../models/user.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,8 @@ export class CartComponent implements OnInit {
   courses: Course[] = [];
 
   constructor(private authService: AuthService,
-              private dataService: DataService) { }
+              private dataService: DataService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.fetchCourses();
@@ -36,5 +38,9 @@ export class CartComponent implements OnInit {
       this.authService.getCurrentUser();
     });
     this.courses.splice(index, 1);
+  }
+
+  checkoutCart(){
+    this.router.navigate(['checkout']);
   }
 }
