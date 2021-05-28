@@ -18,7 +18,6 @@ import {AuthModule} from "./auth/auth.module";
 import {SharedModule} from "primeng/api";
 import {MaterialModule} from "./material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 

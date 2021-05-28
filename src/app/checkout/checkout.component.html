@@ -4,24 +4,10 @@
     <div fxLayout="row">
       <div fxFlex="60" fxLayout="column">
         <div>
-          <div style="font-size: 2rem; font-weight: 500; color: darkslategray">Checkout</div>
-          <div style="margin: 16px 0 8px 0">Billing address</div>
-          <div>
-            <mat-form-field appearance="fill">
-              <mat-label>Country</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let food of foods" [value]="food.value">
-                  {{food.viewValue}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div>
-            <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="1">Visa 7176</mat-radio-button>
-              <mat-radio-button value="2">New Payment Card</mat-radio-button>
-              <mat-radio-button value="2">Paypal</mat-radio-button>
-            </mat-radio-group>
+          <div style="font-size: 2.5rem; font-weight: 600; color: darkslategray; margin-bottom: 16px">Checkout</div>
+          <div class="mat-title" style="color: darkblue">Complete with your payment method</div>
+          <div style="width: 80%; justify-content: center;">
+            <div #paypal></div>
           </div>
         </div>
         <div style="margin-top: 48px">
@@ -51,7 +37,7 @@
             <mat-divider></mat-divider>
             <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ remainAmount | number }}</span></div>
           </div>
-          <div fxLayoutAlign="center" style="margin-top: 32px"><button mat-raised-button color="warn" style="width: 50%; height: 40px" (click)="checkout()">Complete Payment</button></div>
+<!--          <div fxLayoutAlign="center" style="margin-top: 32px"><button mat-raised-button color="warn" style="width: 50%; height: 40px" (click)="checkout()">Complete Payment</button></div>-->
         </div>
       </div>
     </div>

@@ -83,7 +83,7 @@ export class DataService {
   }
 
   checkout(paymentInfo: any){
-    const url = `${this.base_url}/auth/postPayment`;
+    const url = `${this.base_url}/payments/payment`;
     return this.http.post(url, paymentInfo);
   }
 }

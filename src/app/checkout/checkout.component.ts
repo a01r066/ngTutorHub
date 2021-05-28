@@ -1,19 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import {Course} from "../models/course.model";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {DataService} from "../../services/data.service";
 import {User} from "../models/user.model";
 
-interface Food {
-  value: string;
-  viewValue: string;
-}
+declare var paypal: any;
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
+
 export class CheckoutComponent implements OnInit {
   courses: any;
   base_url = 'http://localhost:3000/uploads/courses/';
@@ -25,11 +22,16 @@ export class CheckoutComponent implements OnInit {
   percentageOff = 0;
   user!: User;
 
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Vietnam'},
-    {value: 'pizza-1', viewValue: 'Malaysia'},
-    {value: 'tacos-2', viewValue: 'Singapore'}
-  ];
+  // Paypal
+  @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
+
+  product = {
+    price: 777.77,
+    description: 'used couch, decent condition',
+    img: 'assets/couch.jpg'
+  };
+
+  paidFor = false;
 
   constructor(private authService: AuthService,
               private dataService: DataService) {
@@ -37,6 +39,33 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCourses();
+
+    // Paypal
+    paypal
+      .Buttons({
+        createOrder: (data: any, actions: { order: { create: (arg0: { purchase_units: { description: string; amount: { currency_code: string; value: number; }; }[]; }) => any; }; }) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: this.product.description,
+                amount: {
+                  currency_code: 'USD',
+                  value: this.product.price
+                }
+              }
+            ]
+          });
+        },
+        onApprove: async (data: any, actions: { order: { capture: () => any; }; }) => {
+          const order = await actions.order.capture();
+          this.paidFor = true;
+          console.log(order);
+        },
+        onError: (err: any) => {
+          console.log(err);
+        }
+      })
+      .render(this.paypalElement.nativeElement);
   }
 
   private fetchCourses() {
@@ -75,7 +104,6 @@ export class CheckoutComponent implements OnInit {
     for(let course of this.courses){
       coursesId.push(course.courseId._id);
     }
-    console.log('CoursesId: '+ coursesId);
     const paymentInfo = {
       "userId": this.user._id,
       "courses": coursesId,
