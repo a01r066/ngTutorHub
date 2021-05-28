@@ -48,7 +48,7 @@
             <mat-expansion-panel disabled>
               <mat-expansion-panel-header style="background-color: #B0BEC5">
                 <mat-panel-title>
-                  <p style="color: #2F302F; font-weight: 500">7 sections • 29 lectures • 4h 37m total length</p>
+                  <p style="color: #2F302F; font-weight: 500">{{ lectures?.length }} sections • {{ chapters?.length }} lectures • 4h 37m total length</p>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <p>This is the primary content of the panel.</p>
@@ -74,7 +74,7 @@
 <!--          <div fxLayoutAlign="center"><span style="margin-top: -60px; color: white; font-weight: 500">Preview this course</span></div>-->
         </div>
         <div style="margin: 32px">
-          <div><span class="mat-display-1" style="font-weight: 600">$9.99</span><span style="text-decoration: line-through; margin-left: 12px">$99.99</span><span style="margin-left: 12px">89% off</span></div>
+          <div><span class="mat-display-1" style="font-weight: 600">${{ course.tuition | number }}</span><span style="text-decoration: line-through; margin-left: 12px">$99.99</span><span style="margin-left: 12px">89% off</span></div>
           <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)">Add to cart</button></div>
           <div><button mat-raised-button color="primary" fxFlex style="height: 40px;">Buy now</button></div>
           <div><p>This course includes: </p></div>

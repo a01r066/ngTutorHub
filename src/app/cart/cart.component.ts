@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {DataService} from "../../services/data.service";
 import {Course} from "../models/course.model";
-import {User} from "../models/user.model";
 import {Router} from "@angular/router";
+import {User} from "../models/user.model";
 
 @Component({
   selector: 'app-cart',
@@ -11,36 +11,70 @@ import {Router} from "@angular/router";
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  courses: Course[] = [];
+  courses: any;
+  base_url = 'http://localhost:3000/uploads/courses/';
+
+  originalPrice = 0;
+  discountedAmount = 0;
+  remainAmount = 0;
+  discount = 90;
+  percentageOff = 0;
+  user!: User;
 
   constructor(private authService: AuthService,
               private dataService: DataService,
               private router: Router) { }
 
   ngOnInit(): void {
+    this.authService.authChanged.subscribe(isAuth => {
+      this.user = this.authService.user;
+    })
     this.fetchCourses();
   }
 
   private fetchCourses() {
-    const user = this.authService.user;
-    if(user.cart.length > 0){
-      for(let item of user.cart){
-        this.dataService.getCourseById(item.courseId).subscribe(res => {
-          const course = (res as any).data;
-          this.courses.push(course);
-        })
-      }
+    this.user = this.authService.user;
+    if(this.user.cart.length > 0){
+      this.courses = this.user.cart;
+
+      // Get summary
+      this.getSummary();
     }
   }
 
   removeCourse(index: any){
-    this.dataService.removeCartItem(this.courses[index]).subscribe(res => {
-      this.authService.getCurrentUser();
+    this.dataService.removeCartItem(this.courses[index].courseId._id).subscribe(res => {
+      this.courses.splice(index, 1);
+      this.getSummary();
     });
-    this.courses.splice(index, 1);
   }
 
   checkoutCart(){
     this.router.navigate(['checkout']);
+  }
+
+  private getSummary() {
+    this.originalPrice = 0;
+    this.discountedAmount = 0;
+    this.remainAmount = 0;
+    this.percentageOff = 0;
+
+    for(let course of this.courses){
+      this.calculate(course);
+    }
+  }
+
+  private calculate(course: any){
+    this.originalPrice += course.courseId.tuition;
+    this.remainAmount = this.originalPrice * (1 - this.discount/100);
+    this.percentageOff = (1 - (this.remainAmount/this.originalPrice))*100;
+  }
+
+  getDiscountedPrice(course: any){
+    return (course.courseId.tuition * (1 - this.discount/100));
+  }
+
+  getPrice(course: any){
+    return course.courseId.tuition;
   }
 }

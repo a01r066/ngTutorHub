@@ -16,7 +16,7 @@
         </form>
       </div>
       <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="12px">
-        <button mat-icon-button (click)="onClickCart()"><mat-icon>shopping_cart</mat-icon></button>
+        <button mat-icon-button color="primary" matBadge="{{ user?.cart.length || 0 }}" matBadgeSize="medium" matBadgePosition="before" matBadgeColor="warn" (click)="onClickCart()"><mat-icon>shopping_cart</mat-icon></button>
         <button mat-button style="border: 1px solid #0F7C90; color: #0F7C90; font-weight: bold" [routerLink]="['/login']" *ngIf="!isAuth">Login</button>
         <button mat-raised-button color="primary" [routerLink]="['/signup']" *ngIf="!isAuth">Sign up</button>
         <button mat-button (click)="logout()" *ngIf="isAuth">Log out</button>

@@ -30,12 +30,12 @@
             <mat-grid-list cols="1" rowHeight="8:1" gutterSize="1px">
               <mat-grid-tile *ngFor="let course of courses; let i = index" style="border: 1px solid lightgray;">
                 <div fxFlex fxLayout="row" style="margin-top: 16px" fxLayoutAlign="center center">
-                  <div fxFlex="15"><img mat-card-image src="http://localhost:3000/uploads/courses/photo_5d725cfec4ded7bcb480eaa7.jpg" alt="" style="width: 5vw; margin-left: 2px"></div>
-                  <div fxFlex="75" style="margin: -8px 0 0 32px">
+                  <div fxFlex="15" style="margin: 16px 0 0 16px"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" style="width: 6vw;"></div>
+                  <div fxFlex="75" style="margin: -8px 0 0 16px">
                     <div class="mat-title">{{ course.title }}</div>
-                    <div class="mat-card-subtitle" style="color: darkslategray">{{ course.description }}</div>
+                    <div class="mat-card-subtitle" style="color: darkslategray">{{ course.courseId.description }}</div>
                   </div>
-                  <div fxFlex="10">${{ course.tuition | number }}<br/><span style="text-decoration: line-through; color: red">$99.99</span></div>
+                  <div fxFlex="10"><span style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number }}</span><br/><span style="text-decoration: line-through; color: gray; font-style: italic">${{ getPrice(course) }}</span></div>
                 </div>
               </mat-grid-tile>
             </mat-grid-list>
@@ -46,12 +46,12 @@
         <div style="margin: 16px; background-color: white; padding: 16px; border: 1px solid lightgray; border-radius: 4px">
           <div style="font-size: 1.5rem; font-weight: 500; color: black; margin: 16px 0 16px 0">Summary</div>
           <div fxLayout="column" fxLayoutGap="8px">
-            <div>Original price <span style="float: right">${{ 379.96 | number }}</span></div>
-            <div>Discount <span style="float: right">${{ -340.00 | number }}</span></div>
+            <div>Original price <span style="float: right">$ {{ originalPrice | number }}</span></div>
+            <div>Discount <span style="float: right">$ -{{ discountedAmount | number }}</span></div>
             <mat-divider></mat-divider>
-            <div style="font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">${{ 39.96 | number }}</span></div>
+            <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ remainAmount | number }}</span></div>
           </div>
-          <div fxLayoutAlign="center" style="margin-top: 32px"><button mat-raised-button color="warn" style="width: 50%; height: 40px">Complete Payment</button></div>
+          <div fxLayoutAlign="center" style="margin-top: 32px"><button mat-raised-button color="warn" style="width: 50%; height: 40px" (click)="checkout()">Complete Payment</button></div>
         </div>
       </div>
     </div>

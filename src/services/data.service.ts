@@ -71,13 +71,19 @@ export class DataService {
     return this.http.put(url, data);
   }
 
-  removeCartItem(course: any){
+  removeCartItem(courseId: any){
     const url = `${this.base_url}/auth/removeCartItem`;
     const userId = this.authService.user._id;
     const data = {
       "userId": userId,
-      "courseId": course._id
+      "courseId": courseId
     }
+    console.log('Remove: '+data);
     return this.http.put(url, data);
+  }
+
+  checkout(paymentInfo: any){
+    const url = `${this.base_url}/auth/postPayment`;
+    return this.http.post(url, paymentInfo);
   }
 }

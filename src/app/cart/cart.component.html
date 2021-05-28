@@ -8,18 +8,18 @@
     <div fxFlex="20"></div>
     <div fxFlex="60" style="margin-top: 32px">
       <div fxFlex="75" style="color: #1E1E1C">
-        <div class="mat-card-title">1 course in cart</div>
+        <div class="mat-card-title">{{ courses?.length }} course in cart</div>
         <div style="margin: 16px">
-          <ng-template [ngIf]="courses.length > 0" [ngIfElse]="cartEmpty">
+          <ng-template [ngIf]="courses?.length > 0" [ngIfElse]="cartEmpty">
             <mat-grid-list cols="1" rowHeight="6:1" gutterSize="1px">
               <mat-grid-tile *ngFor="let course of courses; let i = index" style="border: 1px solid lightgray;">
-                <div fxFlex fxLayout="row" style="margin-top: 16px" fxLayoutAlign="center center">
-                  <div fxFlex="15"><img mat-card-image src="http://localhost:3000/uploads/courses/photo_5d725cfec4ded7bcb480eaa7.jpg" alt="" style="width: 8vw; margin-left: 2px"></div>
-                  <div fxFlex="65" style="margin: -8px 0 0 32px">
-                    <div class="mat-title">{{ course.title }}</div>
-                    <div class="mat-card-subtitle" style="color: darkslategray">{{ course.description }}</div>
+                <div fxFlex fxLayout="row" style="margin-top: 16px" fxLayoutAlign="center center" fxLayoutGap="16px">
+                  <div fxFlex="15"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" style="width: 8vw;"></div>
+                  <div fxFlex="65" style="padding: 0 16px 0 16px">
+                    <div class="mat-title">{{ course.courseId.title }}</div>
+                    <div class="mat-card-subtitle" style="color: darkslategray">{{ course.courseId.description }}</div>
                   </div>
-                  <div fxFlex="10">${{ course.tuition | number }}<br/><span style="text-decoration: line-through; color: red">$99.99</span></div>
+                  <div fxFlex="10"><span style="font-weight: bold; color: red">$ {{ getDiscountedPrice(course) | number }}</span><br/><span style="text-decoration: line-through; color: gray; font-style: italic">$ {{ getPrice(course) }}</span></div>
                   <div fxFlex="10"><button mat-icon-button (click)="removeCourse(i)"><mat-icon>delete</mat-icon></button></div>
                 </div>
               </mat-grid-tile>
@@ -36,9 +36,9 @@
       <div fxFlex="25" style="color: black; border-radius: 6px">
         <div style="margin: 16px">
           <div class="mat-title">Total</div>
-          <div class="mat-display-1" style="font-weight: 500; color: darkslategray; margin-bottom: 4px">$19.99</div>
-          <div style="text-decoration: line-through; color: darkgray">$114.99</div>
-          <div style="color: #2F302F; margin-bottom: 16px">83% off</div>
+          <div class="mat-display-1" style="font-weight: 500; color: darkslategray; margin-bottom: 4px">$ {{ remainAmount | number }}</div>
+          <div style="text-decoration: line-through; color: darkgray">$ {{ originalPrice | number }}</div>
+          <div style="color: #2F302F; margin-bottom: 16px">{{ percentageOff }}% off</div>
           <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="checkoutCart()">Checkout</button></div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import {ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {AuthService} from "./auth/auth.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {User} from "./models/user.model";
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   authSubscription!: Subscription;
   isAuth = false;
+  user!: User;
 
   constructor(changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authSubscription = this.authService.authChanged.subscribe(isAuth => {
       this.isAuth = isAuth;
       this.authService.isAuthenticated = isAuth;
+      this.user = this.authService.user;
     })
   }
 
