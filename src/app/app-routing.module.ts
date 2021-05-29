@@ -7,6 +7,7 @@ import {CourseDetailComponent} from "./courses/course-detail/course-detail.compo
 import {AuthGuard} from "./auth/auth.guard";
 import {CartComponent} from "./cart/cart.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
+import {LearningComponent} from "./home/learning/learning.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,7 +16,10 @@ const routes: Routes = [
     ]},
   { path: 'course/:id', component: CourseDetailComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'checkout', component: CheckoutComponent}
+  { path: 'checkout', component: CheckoutComponent},
+  {
+    path: 'home/my-courses/learning', component: LearningComponent
+  }
 ]
 
 @NgModule({

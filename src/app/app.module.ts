@@ -20,6 +20,9 @@ import {MaterialModule} from "./material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { LearningComponent } from './home/learning/learning.component';
+import {DecimalPipe} from "@angular/common";
+import { OrdersComponent } from './home/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,9 @@ import { CheckoutComponent } from './checkout/checkout.component';
     TopCategoriesComponent,
     PlayerComponent,
     CartComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    LearningComponent,
+    OrdersComponent
   ],
   imports: [
     SharedModule,
@@ -47,7 +52,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

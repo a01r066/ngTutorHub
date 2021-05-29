@@ -82,8 +82,8 @@ export class DataService {
     return this.http.put(url, data);
   }
 
-  checkout(paymentInfo: any){
-    const url = `${this.base_url}/payments/payment`;
-    return this.http.post(url, paymentInfo);
+  checkout(payment: any){
+    const url = `${this.base_url}/payments`;
+    return this.http.post(url, payment);
   }
 }
