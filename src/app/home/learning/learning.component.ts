@@ -10,10 +10,9 @@ import {User} from "../../models/user.model";
   styleUrls: ['./learning.component.css']
 })
 export class LearningComponent implements OnInit {
-  courses: Course[] = [];
-  base_url = 'http://localhost:3000/uploads/categories/';
+  base_url = 'http://localhost:3000/uploads/courses/';
   user!: User;
-  purchasedCourses: any;
+  purchasedCourses: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -22,14 +21,16 @@ export class LearningComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.user;
-    this.getPurchasedCourses(this.user);
+    this.getPurchasedCourses();
   }
 
   onClick(course: Course){
     console.log('Clicked: '+course.title);
   }
 
-  private getPurchasedCourses(user: User) {
-
+  private getPurchasedCourses() {
+    this.user.purchased_courses.forEach(course => {
+      this.purchasedCourses.push(course);
+    })
   }
 }

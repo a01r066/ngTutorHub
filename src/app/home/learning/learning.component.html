@@ -1,20 +1,17 @@
 <div class="container">
-  <div fxFlex="20" style="background-color: #1DB954">Left</div>
-  <div fxFlex="80">
-    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="16px">
-      <mat-grid-tile *ngFor="let course of courses; let i = index">
-        <div class="card-container">
-          <mat-card class="example-card" (click)="onClick(course)">
-            <img mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-            <mat-card-content>
-              <div fxFlex fxLayout="column">
-                <div><p class="mat-card-title">{{ course.title.substring(0, 28) }}</p></div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
+  <div fxFlex="20"></div>
+  <div fxFlex="60" style="margin-top: 32px">
+    <div>
+      <ul class="flex-container">
+        <li class="flex-item" style="cursor: pointer" *ngFor="let course of purchasedCourses; let i = index">
+          <img style="width: 100%" src="{{ base_url+course.courseId.photo }}" alt="{{ course.courseId.title }}">
+          <div style="margin: -8px 8px 0 8px">
+            <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.courseId.title.substring(0, 28) }}</p></div>
+            <div><p class="mat-card-subtitle">{{ course.courseId.description.substring(0, 62) }}</p></div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-  <div fxFlex="20" style="background-color: #1DB954">Right</div>
+  <div fxFlex="20"></div>
 </div>

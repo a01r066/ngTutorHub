@@ -5,32 +5,32 @@
     <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;" *ngIf="selectedCategory">{{ selectedCategory.title }}</div>
     <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin: -32px 0 32px 0">Courses to get you started</div>
     <div *ngIf="courses">
-      <p-carousel [value]="courses" [numVisible]="5" [numScroll]="3" [circular]="true" [autoplayInterval]="5000"  [responsiveOptions]="responsiveOptions">
-        <ng-template let-course pTemplate="item">
-          <div class="card-container">
-            <mat-card class="example-card" (click)="onClick(course)">
-              <img mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-              <mat-card-content>
-                <div fxFlex fxLayout="column">
-                  <div><p class="mat-card-title">{{ course.title.substring(0, 28) }}</p></div>
-                  <div><p class="mat-card-subtitle">Brad Traversy</p></div>
-                  <div fxFlex fxLayout="row" fxLayoutGap="8px">
-                    <div>4.8</div>
-                    <div>
-                      <span><mat-icon color="primary">start</mat-icon></span>
-                      <span><mat-icon color="primary">start</mat-icon></span>
-                      <span><mat-icon color="primary">start</mat-icon></span>
-                      <span><mat-icon color="primary">start</mat-icon></span>
-                      <mat-icon color="accent">start</mat-icon>
-                    </div>
-                  </div>
-                  <p><span style="text-decoration: line-through; color: red">${{ 99.99 }}</span><span style="float: right; color: blue; font-weight: bold">${{ course.tuition | number }}</span></p>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </ng-template>
-      </p-carousel>
+<!--      <p-carousel [value]="courses" [numVisible]="5" [numScroll]="3" [circular]="true" [autoplayInterval]="5000"  [responsiveOptions]="responsiveOptions">-->
+<!--        <ng-template let-course pTemplate="item">-->
+<!--          <div class="card-container">-->
+<!--            <mat-card class="example-card" (click)="onClick(course)">-->
+<!--              <img mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}">-->
+<!--              <mat-card-content>-->
+<!--                <div fxFlex fxLayout="column">-->
+<!--                  <div><p class="mat-card-title">{{ course.title.substring(0, 28) }}</p></div>-->
+<!--                  <div><p class="mat-card-subtitle">Brad Traversy</p></div>-->
+<!--                  <div fxFlex fxLayout="row" fxLayoutGap="8px">-->
+<!--                    <div>4.8</div>-->
+<!--                    <div>-->
+<!--                      <span><mat-icon color="primary">start</mat-icon></span>-->
+<!--                      <span><mat-icon color="primary">start</mat-icon></span>-->
+<!--                      <span><mat-icon color="primary">start</mat-icon></span>-->
+<!--                      <span><mat-icon color="primary">start</mat-icon></span>-->
+<!--                      <mat-icon color="accent">start</mat-icon>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <p><span style="text-decoration: line-through; color: red">${{ 99.99 }}</span><span style="float: right; color: blue; font-weight: bold">${{ course.tuition | number }}</span></p>-->
+<!--                </div>-->
+<!--              </mat-card-content>-->
+<!--            </mat-card>-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-carousel>-->
     </div>
     <div class="mat-display-1" style="color: darkslategrey; font-weight: 500;">All Development Courses</div>
     <div>
