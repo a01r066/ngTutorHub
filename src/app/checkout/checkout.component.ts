@@ -196,6 +196,10 @@ export class CheckoutComponent implements OnInit {
     this.dataService.checkout(payment).subscribe(res => {
       // console.log((res as any).data);
       this.authService.getCurrentUser();
+
+      // Clear cart
+      this.courses = this.user.cart;
+      this.getSummary();
       // if((res as any).success === true){
       //   this.router.navigate(['home/my-courses/learning']);
       // } else {
@@ -233,7 +237,6 @@ export class CheckoutComponent implements OnInit {
             "courses": this.coursesId,
             "totalPrice": this.getValue(this.remainAmount)
           }
-          console.log('payment: '+payment);
           this.checkout(payment);
         },
         onError: (err: any) => {

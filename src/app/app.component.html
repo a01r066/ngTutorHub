@@ -15,11 +15,19 @@
           </button>
         </form>
       </div>
-      <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="12px">
+      <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="12px" style="margin-right: 8px">
         <button mat-icon-button color="primary" matBadge="{{ user?.cart.length || 0 }}" matBadgeSize="medium" matBadgePosition="before" matBadgeColor="warn" (click)="onClickCart()"><mat-icon>shopping_cart</mat-icon></button>
         <button mat-button style="border: 1px solid #0F7C90; color: #0F7C90; font-weight: bold" [routerLink]="['/login']" *ngIf="!isAuth">Login</button>
         <button mat-raised-button color="primary" [routerLink]="['/signup']" *ngIf="!isAuth">Sign up</button>
-        <button mat-button (click)="logout()" *ngIf="isAuth">Log out</button>
+<!--        <button mat-button (click)="logout()" *ngIf="isAuth">Log out</button>-->
+        <div *ngIf="isAuth">
+          <button mat-icon-button style="transform: scale(1.5);" [matMenuTriggerFor]="profileMenu"><mat-icon>account_circle</mat-icon></button>
+          <mat-menu #profileMenu="matMenu">
+            <button mat-menu-item [routerLink]="['/home/my-courses/learning']">My Learning</button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">Log out</button>
+          </mat-menu>
+        </div>
       </div>
     </div>
     <mat-menu #menu="matMenu">
