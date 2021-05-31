@@ -1,0 +1,33 @@
+<mat-toolbar color="accent">
+  <div fxFill fxLayout="row" fxLayoutAlign="center center" style="height: 55px">
+    <h1 class="example-app-name" routerLink="" style="cursor: pointer">TutorHub</h1>
+    <button mat-button [matMenuTriggerFor]="menu">Categories</button>
+    <div>
+      <form action="">
+        <input matInput placeholder="search for anything" class="search-input" #searchText>
+        <button mat-icon-button class="close" *ngIf="searchText.value !== ''">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button class="close" *ngIf="searchText.value === ''">
+          <mat-icon>search</mat-icon>
+        </button>
+      </form>
+    </div>
+    <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="12px" style="margin-right: 8px">
+      <button mat-icon-button color="primary" matBadge="{{ user?.cart.length || 0 }}" matBadgeSize="medium" matBadgePosition="before" matBadgeColor="warn" (click)="onClickCart()"><mat-icon>shopping_cart</mat-icon></button>
+      <button mat-button style="border: 1px solid #0F7C90; color: #0F7C90; font-weight: bold" [routerLink]="['/login']" *ngIf="!isAuth">Login</button>
+      <button mat-raised-button color="primary" [routerLink]="['/signup']" *ngIf="!isAuth">Sign up</button>
+      <div *ngIf="isAuth">
+        <button mat-icon-button style="transform: scale(1.5);" [matMenuTriggerFor]="profileMenu"><mat-icon>account_circle</mat-icon></button>
+        <mat-menu #profileMenu="matMenu">
+          <button mat-menu-item [routerLink]="['/home/my-courses/learning']">My Learning</button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()">Log out</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>
+<mat-menu #menu="matMenu">
+  <button *ngFor="let category of categories" mat-menu-item>{{ category.title }}</button>
+</mat-menu>

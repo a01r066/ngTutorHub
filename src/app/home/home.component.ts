@@ -1,4 +1,6 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Category} from "../models/category.model";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-home',
@@ -6,20 +8,24 @@ import {Component, OnInit, Output} from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  items = ["Development", "Business", "Finance & Accounting", "IT & Software", "Learning English", "Marketing"];
-  activeItem = this.items[0];
+  categories: Category[] = [];
+  activeItem = this.categories[0];
 
   selectedIndex = 0;
 
-  constructor() { }
+  constructor(
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
+    this.dataService.getTopCategories().subscribe(res => {
+      this.categories = (res as any).data;
+    })
   }
 
   onClick(i: number){
-    console.log("Clicked: "+i);
     this.selectedIndex = i;
-    this.activeItem = this.items[i];
-  }
+    this.activeItem = this.categories[i];
 
+  }
 }

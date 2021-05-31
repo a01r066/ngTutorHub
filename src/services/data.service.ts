@@ -44,8 +44,13 @@ export class DataService {
   }
 
   // Category
-  getCategories(){
+  getTopCategories(){
     const url = `${this.base_url}/categories?limit=8`;
+    return this.http.get<Category>(url);
+  }
+
+  getCategories(){
+    const url = `${this.base_url}/categories`;
     return this.http.get<Category>(url);
   }
 

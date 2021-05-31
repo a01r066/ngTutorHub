@@ -4,9 +4,9 @@
     <div fxFlex="15"></div>
     <div fxFlex="70" fxLayoutAlign="center">
       <nav mat-tab-nav-bar>
-        <a mat-tab-link *ngFor="let item of items; let i = index"
+        <a mat-tab-link *ngFor="let category of categories; let i = index"
            (click)="onClick(i)"
-           [active]="activeItem == item">{{ item }}
+           [active]="activeItem == category">{{ category.title }}
         </a>
       </nav>
       <div fxFlex="15"></div>
