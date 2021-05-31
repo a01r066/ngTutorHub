@@ -23,6 +23,11 @@ export class DataService {
     return this.http.get<Course>(url);
   }
 
+  getBestSellerCourses(page: number){
+    const url = `${this.base_url}/courses?bestseller=true&page=${page}&limit=5`;
+    return this.http.get<any>(url);
+  }
+
   getCourseById(courseId: any){
     const url = `${this.base_url}/courses/${courseId}`;
     return this.http.get<Course>(url);

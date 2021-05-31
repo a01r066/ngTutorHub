@@ -1,20 +1,18 @@
 <!--Top categories-->
-<div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px; margin-left: 24px">Top Categories</div>
 <div>
-  <div>
-    <mat-grid-list cols="4" rowHeight="3:4" gutterSize="16px">
-      <mat-grid-tile *ngFor="let category of categories; let i = index">
-        <div class="card-container">
-          <mat-card class="example-card" (click)="onClick(category)">
-            <img mat-card-image src="{{ base_url+category.photo }}" alt="{{ category.title }}">
-            <mat-card-content>
-              <div fxFlex fxLayout="column">
-                <div><p class="mat-card-title">{{ category.title.substring(0, 28) }}</p></div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
+  <div fxFlex="5"></div>
+  <div fxFlex="90">
+    <div style="font-size: 1.5rem; color: darkslategrey; font-weight: 500; margin: 32px 0 0 16px">Top Categories</div>
+    <div>
+      <ul class="flex-container">
+        <li class="flex-item" style="cursor: pointer" *ngFor="let category of categories; let i = index" (click)="onClick(category)">
+          <img style="width: 100%" src="{{ base_url+category.photo }}" alt="{{ category.title }}">
+          <div style="margin: -8px 8px 0 8px">
+            <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ category.title.substring(0, 28) }}</p></div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
+  <div fxFlex="5"></div>
 </div>

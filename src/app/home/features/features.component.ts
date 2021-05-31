@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
-import {Course} from "../../models/course.model";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
+import {Subject} from "rxjs";
+import {Course} from "../../models/course.model";
 
 @Component({
   selector: 'app-features',
@@ -12,53 +13,89 @@ import {AuthService} from "../../auth/auth.service";
 })
 export class FeaturesComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
+  courses: Course[] = [];
+  page = 1;
+  discount = 90;
 
-  //slider setting variable
-  responsiveOptions: any;
+  isNext: any;
+  isPrevious: any;
+  lastPageSub = new Subject<number>();
+  isLastPage = false;
 
-  //define validable to store dynamic products data
-  courses: any;
+  size: any;
+  counter: any;
 
   constructor(private http: HttpClient,
               private dataService: DataService,
               private router: Router,
               private authService: AuthService) {
-    //slider responsive settings
-    this.responsiveOptions = [
-      {
-        breakpoint: '1024px',
-        numVisible: 3,
-        numScroll: 3
-      },
-      {
-        breakpoint: '768px',
-        numVisible: 2,
-        numScroll: 2
-      },
-      {
-        breakpoint: '560px',
-        numVisible: 1,
-        numScroll: 1
-      }
-    ];
-    //get request
-    // this.http.get('https://www.testjsonapi.com/products/').subscribe(data => {
-    //   //data storing for use in html component
-    //   this.products = data;
-    // }, error => console.error(error));
 
     // Get courses request
-    this.dataService.getCourses().subscribe(res => {
-      this.courses = (res as any).data;
-      // console.log(this.courses);
+    this.getBestSellerCourse();
+  }
+
+  ngOnInit(): void {
+    this.size = window.innerWidth;
+    this.getCounter();
+
+    this.lastPageSub.subscribe(counter => {
+      if(counter < 5){
+        this.isLastPage = true;
+      } else {
+        this.isLastPage = false;
+      }
+    })
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.size = window.innerWidth;
+    this.getCounter();
+  }
+
+  getBestSellerCourse(){
+    this.dataService.getBestSellerCourses(this.page).subscribe(res => {
+      this.courses = (res as any).data as Course[];
+      this.isNext = (res as any).pagination.next;
+      this.isPrevious = (res as any).pagination.prev;
+      this.lastPageSub.next(res.count);
     }, error => console.log(error.message));
+  }
+
+  next() {
+    if(this.isNext && !this.isLastPage){
+      this.page += 1;
+      this.getBestSellerCourse();
+    }
+  }
+
+  back() {
+    if(this.isPrevious){
+      this.page -= 1;
+      this.getBestSellerCourse();
+    }
   }
 
   onClick(course: any){
     this.router.navigate(['course', course.slug]);
   }
 
-  ngOnInit(): void {
+  getCoursePrice(course: any){
+    return (course.tuition * (1 - this.discount/100));
   }
 
+  private getCounter() {
+    if(this.size > 1875){
+      this.counter = 5;
+    } else if(this.size > 1500){
+      this.counter = 4;
+    } else if(this.size > 1135){
+      this.counter = 3;
+    } else if(this.size > 768) {
+      this.counter = 2;
+    } else {
+      this.counter = 1;
+    }
+    console.log('counter: '+this.counter);
+  }
 }
