@@ -3,9 +3,9 @@
     <h1 class="example-app-name" routerLink="" style="cursor: pointer">TutorHub</h1>
     <button mat-button [matMenuTriggerFor]="menu">Categories</button>
     <div>
-      <form action="">
-        <input matInput placeholder="search for anything" class="search-input" #searchText>
-        <button mat-icon-button class="close" *ngIf="searchText.value !== ''">
+      <form action="#">
+        <input matInput placeholder="search for anything" class="search-input" #searchText (keydown.enter)="processSearch(searchText.value)">
+        <button mat-icon-button class="close" *ngIf="searchText.value !== ''" (click)="clearText()">
           <mat-icon>close</mat-icon>
         </button>
         <button mat-icon-button class="close" *ngIf="searchText.value === ''">

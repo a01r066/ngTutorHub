@@ -43,6 +43,11 @@ export class DataService {
     return this.http.get<Course>(url);
   }
 
+  getCoursesBySearchText(searchText: string, limit: number){
+    const url = `${this.base_url}/courses?q=${searchText}&limit=${limit}`;
+    return this.http.get<any>(url);
+  }
+
   // Category
   getTopCategories(){
     const url = `${this.base_url}/categories?limit=8`;

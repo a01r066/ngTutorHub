@@ -22,6 +22,7 @@ import {DecimalPipe} from "@angular/common";
 import { OrdersComponent } from './home/orders/orders.component';
 import {ShareModule} from "./share.module";
 import { SearchComponent } from './search/search.component';
+import {SlugifyPipe} from "./helpers/slugify.pipe";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SearchComponent } from './search/search.component';
     CheckoutComponent,
     LearningComponent,
     OrdersComponent,
-    SearchComponent
+    SearchComponent,
+    SlugifyPipe
   ],
   imports: [
     ShareModule,
@@ -48,7 +50,7 @@ import { SearchComponent } from './search/search.component';
     HttpClientModule,
     AuthModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [DecimalPipe],
   bootstrap: [AppComponent]

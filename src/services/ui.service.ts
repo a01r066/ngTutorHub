@@ -10,4 +10,5 @@ export class UiService {
   tabSelectedIndexSub = new Subject<number>();
   categorySub = new Subject<Category>();
   categoriesSub = new Subject<Category[]>();
+  searchTextSub = new Subject<string>();
 }

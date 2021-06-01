@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Course} from "../models/course.model";
 import {DataService} from "../../services/data.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {UiService} from "../../services/ui.service";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-search',
@@ -12,14 +14,25 @@ export class SearchComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
   courses: Course[] = [];
   discount = 90;
+  searchText!: string;
+  limit = 5;
 
   constructor(private dataService: DataService,
-              private router: Router) { }
+              private router: Router,
+              private uiService: UiService,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.dataService.getCourses().subscribe(res => {
-      this.courses = (res as any).data;
-    })
+    this.route.queryParams
+      .pipe()
+      .subscribe(params => {
+          // console.log(params.q); // popular
+          this.searchText = params.q;
+          this.dataService.getCoursesBySearchText(this.searchText, this.limit).subscribe(res => {
+            this.courses = (res as any).data;
+          })
+        }
+      );
   }
 
   onClick(course: any){

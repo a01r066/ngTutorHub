@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../models/user.model";
 import {DataService} from "../../../services/data.service";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../../services/ui.service";
+import {SlugifyPipe} from "../../helpers/slugify.pipe";
 
 @Component({
   selector: 'app-header',
@@ -16,12 +17,14 @@ export class HeaderComponent implements OnInit {
   @Input() isAuth = false;
   @Input() user!: User;
   // @Output() clickedMenuItem = new EventEmitter<Category>();
+  @ViewChild('searchText') searchTextRef!: ElementRef;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private dataService: DataService,
-    private uiService: UiService
+    private uiService: UiService,
+    private slugifyPipe: SlugifyPipe
   ) { }
 
   ngOnInit(): void {
@@ -46,5 +49,18 @@ export class HeaderComponent implements OnInit {
   onClickMenu(category: Category){
     this.uiService.categorySub.next(category);
     // this.clickedMenuItem.emit(category);
+  }
+
+  clearText() {
+    this.searchTextRef.nativeElement.value = '';
+    this.searchTextRef.nativeElement.focus();
+  }
+
+  processSearch(searchText: string) {
+    this.uiService.searchTextSub.next(searchText);
+    this.searchTextRef.nativeElement.blur();
+    let link = `search?${searchText}`.split('?')[0];
+    const slugifyText = this.slugifyPipe.transform(searchText);
+    this.router.navigate([link], { queryParams: { q: slugifyText }});
   }
 }
