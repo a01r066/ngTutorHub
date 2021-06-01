@@ -3,6 +3,9 @@ import {OnDestroy} from '@angular/core';
 import {AuthService} from "./auth/auth.service";
 import {Subscription} from "rxjs";
 import {User} from "./models/user.model";
+import {Category} from "./models/category.model";
+import {Router} from "@angular/router";
+import {UiService} from "../services/ui.service";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +17,9 @@ export class AppComponent implements OnInit, OnDestroy {
   isAuth = false;
   user!: User;
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService,
+              private router: Router,
+              private uiService: UiService){}
 
   ngOnInit(): void {
     this.authService.initAuthListener();
@@ -23,9 +28,17 @@ export class AppComponent implements OnInit, OnDestroy {
       this.authService.isAuthenticated = isAuth;
       this.user = this.authService.user;
     })
+
+    this.uiService.categorySub.subscribe(category => {
+      this.onClickMenu(category);
+    })
   }
 
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
+  }
+
+  onClickMenu(event: Category){
+    this.router.navigate(['courses', event.slug]);
   }
 }

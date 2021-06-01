@@ -18,6 +18,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatBadgeModule} from "@angular/material/badge";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import {MatBadgeModule} from "@angular/material/badge";
     MatSelectModule,
     MatSnackBarModule,
     MatRadioModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatPaginatorModule
   ],
   exports: [
     MatToolbarModule,
@@ -60,7 +62,8 @@ import {MatBadgeModule} from "@angular/material/badge";
     MatSelectModule,
     MatSnackBarModule,
     MatRadioModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatPaginatorModule
   ]
 })
 

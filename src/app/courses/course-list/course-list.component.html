@@ -4,6 +4,7 @@
   <div fxFlex="70">
     <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;" *ngIf="selectedCategory">{{ selectedCategory.title }}</div>
     <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin: -32px 0 32px 0">Courses to get you started</div>
+<!--    Top course section-->
     <div *ngIf="courses">
       <div>
         <ul class="flex-container">
@@ -22,32 +23,24 @@
         </ul>
       </div>
     </div>
-    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500;">All Development Courses</div>
-    <div>
-      <mat-grid-list cols="1" rowHeight="6:1">
-        <mat-grid-tile *ngFor="let course of courses; let i = index">
-          <div fxFlex fxLayout="row" style="border-bottom: 1px solid lightgray" (click)="onClick(course)">
-            <div fxFlex="20"><img mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
-            <div fxFlex="70" style="margin: -8px 0 0 32px">
-              <div class="mat-title">{{ course.title }}</div>
-              <div class="mat-card-subtitle">{{ course.description }}</div>
-              <div>Brad Traversy</div>
-              <div>
-                <span>4.6</span>
-                <span><mat-icon>start</mat-icon></span>
-                <span><mat-icon>start</mat-icon></span>
-                <span><mat-icon>start</mat-icon></span>
-                <span><mat-icon>start</mat-icon></span>
-                <span><mat-icon>start</mat-icon></span>
-                <span><mat-icon>start</mat-icon></span>
-                <span>({{ 235630 | number }})</span>
-              </div>
-              <div>22 total hours * 155 lectures</div>
-            </div>
-            <div fxFlex="10">${{ course.tuition | number }}<br/><span style="text-decoration: line-through; color: red">${{ 99.99 }}</span></div>
+<!--    Course list section-->
+    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px">All Development Courses</div>
+    <div style="margin-top: -32px">
+      <ul class="flex-container">
+        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of courses; let i = index" (click)="onClick(course)">
+          <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
+          <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
+            <div class="mat-title">{{ course.title }}</div>
+            <div style="font-size: 0.9rem; color: darkslategray">{{ course.description }}</div>
+            <div class="mat-card-subtitle">Brad Traversy</div>
+            <div style="font-style: italic; font-size: 0.9rem">22 Sections * 155 lectures</div>
           </div>
-        </mat-grid-tile>
-      </mat-grid-list>
+          <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
+            <div>${{ course.tuition | number }}</div>
+            <div style="text-decoration: line-through; color: red">${{ 99.99 }}</div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
   <div fxFlex="15"></div>

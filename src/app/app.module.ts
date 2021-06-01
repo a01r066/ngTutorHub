@@ -21,6 +21,7 @@ import { LearningComponent } from './home/learning/learning.component';
 import {DecimalPipe} from "@angular/common";
 import { OrdersComponent } from './home/orders/orders.component';
 import {ShareModule} from "./share.module";
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {ShareModule} from "./share.module";
     CartComponent,
     CheckoutComponent,
     LearningComponent,
-    OrdersComponent
+    OrdersComponent,
+    SearchComponent
   ],
   imports: [
     ShareModule,

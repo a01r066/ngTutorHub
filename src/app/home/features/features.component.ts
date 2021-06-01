@@ -1,17 +1,19 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {Course} from "../../models/course.model";
+import {Category} from "../../models/category.model";
+import {UiService} from "../../../services/ui.service";
 
 @Component({
   selector: 'app-features',
   templateUrl: './features.component.html',
   styleUrls: ['./features.component.css']
 })
-export class FeaturesComponent implements OnInit {
+export class FeaturesComponent implements OnInit, OnDestroy {
   base_url = 'http://localhost:3000/uploads/courses/';
   courses: Course[] = [];
   page = 1;
@@ -25,16 +27,34 @@ export class FeaturesComponent implements OnInit {
   size: any;
   counter: any;
 
+  categoriesSubscription!: Subscription;
+  indexSubscription!: Subscription;
+
+  @Input() categories: Category[] = [];
+  @Input() selectedIndex: number = 0;
+
   constructor(private http: HttpClient,
               private dataService: DataService,
               private router: Router,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private uiService: UiService) {
 
     // Get courses request
-    this.getBestSellerCourse();
+    if(this.categories.length > 0){
+      this.getBestSellerCourse(this.categories[this.selectedIndex]);
+    }
   }
 
   ngOnInit(): void {
+    this.categoriesSubscription = this.uiService.categoriesSub.subscribe(categories => {
+      this.categories = categories;
+      this.getBestSellerCourse(this.categories[this.selectedIndex]);
+    })
+    this.indexSubscription = this.uiService.tabSelectedIndexSub.subscribe(index => {
+      this.selectedIndex = index;
+      // console.log('category: '+this.categories[index].title);
+      this.getBestSellerCourse(this.categories[index]);
+    })
     this.size = window.innerWidth;
     this.getCounter();
 
@@ -47,14 +67,19 @@ export class FeaturesComponent implements OnInit {
     })
   }
 
+  ngOnDestroy(): void {
+    this.categoriesSubscription.unsubscribe();
+    this.indexSubscription.unsubscribe();
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.size = window.innerWidth;
     this.getCounter();
   }
 
-  getBestSellerCourse(){
-    this.dataService.getBestSellerCourses(this.page).subscribe(res => {
+  getBestSellerCourse(category: Category){
+    this.dataService.getBestSellerCourseByCate(category, this.page).subscribe(res => {
       this.courses = (res as any).data as Course[];
       this.isNext = (res as any).pagination.next;
       this.isPrevious = (res as any).pagination.prev;
@@ -65,14 +90,14 @@ export class FeaturesComponent implements OnInit {
   next() {
     if(this.isNext && !this.isLastPage){
       this.page += 1;
-      this.getBestSellerCourse();
+      this.getBestSellerCourse(this.categories[this.selectedIndex]);
     }
   }
 
   back() {
     if(this.isPrevious){
       this.page -= 1;
-      this.getBestSellerCourse();
+      this.getBestSellerCourse(this.categories[this.selectedIndex]);
     }
   }
 
@@ -96,6 +121,5 @@ export class FeaturesComponent implements OnInit {
     } else {
       this.counter = 1;
     }
-    console.log('counter: '+this.counter);
   }
 }

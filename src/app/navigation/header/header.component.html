@@ -29,5 +29,5 @@
   </div>
 </mat-toolbar>
 <mat-menu #menu="matMenu">
-  <button *ngFor="let category of categories" mat-menu-item>{{ category.title }}</button>
+  <button *ngFor="let category of categories" mat-menu-item (click)="onClickMenu(category)">{{ category.title }}</button>
 </mat-menu>

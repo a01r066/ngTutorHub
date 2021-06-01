@@ -23,8 +23,8 @@ export class DataService {
     return this.http.get<Course>(url);
   }
 
-  getBestSellerCourses(page: number){
-    const url = `${this.base_url}/courses?bestseller=true&page=${page}&limit=5`;
+  getBestSellerCourseByCate(category: Category, page: number){
+    const url = `${this.base_url}/categories/${category._id}/courses?bestseller=true&page=${page}&limit=5`;
     return this.http.get<any>(url);
   }
 

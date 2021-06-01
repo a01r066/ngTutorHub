@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {UiService} from "../../../services/ui.service";
@@ -36,15 +36,12 @@ export class CourseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.uiService.categorySub.subscribe(category => {
+      this.selectedCategory = category;
+      this.getCategoryBySlug();
+    })
     // Get courses by category
-    const slug = this.route.snapshot.params['id'];
-   this.dataService.getCategoryBySlug(slug).subscribe(res => {
-     this.selectedCategory = (res as any).data;
-
-     this.dataService.getCoursesByCategoryId(this.selectedCategory._id).subscribe(res => {
-       this.courses = (res as any).data;
-     })
-   })
+    this.getCategoryBySlug();
   }
 
   next() {
@@ -62,16 +59,16 @@ export class CourseListComponent implements OnInit {
   }
 
   getBestSellerCourse(){
-    this.dataService.getBestSellerCourses(this.page).subscribe(res => {
-      this.courses = (res as any).data as Course[];
-      this.isNext = (res as any).pagination.next;
-      this.isPrevious = (res as any).pagination.prev;
-      this.lastPageSub.next(res.count);
-    }, error => console.log(error.message));
+    // this.dataService.getBestSellerCourses(this.page).subscribe(res => {
+    //   this.courses = (res as any).data as Course[];
+    //   this.isNext = (res as any).pagination.next;
+    //   this.isPrevious = (res as any).pagination.prev;
+    //   this.lastPageSub.next(res.count);
+    // });
   }
 
   onClick(course: any){
-    this.router.navigate(['course', course.slug]);
+    this.router.navigate(['/course', course.slug]);
   }
 
   getCoursePrice(course: any){
@@ -90,6 +87,21 @@ export class CourseListComponent implements OnInit {
     } else {
       this.counter = 1;
     }
-    console.log('counter: '+this.counter);
+  }
+
+  private getCategoryBySlug() {
+    let slug;
+    if(this.selectedCategory){
+      slug = this.selectedCategory.slug;
+    } else {
+      slug = this.route.snapshot.params['id'];
+    }
+    this.dataService.getCategoryBySlug(slug).subscribe(res => {
+      this.selectedCategory = (res as any).data;
+
+      this.dataService.getCoursesByCategoryId(this.selectedCategory._id).subscribe(res => {
+        this.courses = (res as any).data;
+      })
+    })
   }
 }

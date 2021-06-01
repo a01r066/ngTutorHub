@@ -7,4 +7,7 @@ import {Category} from "../app/models/category.model";
 })
 
 export class UiService {
+  tabSelectedIndexSub = new Subject<number>();
+  categorySub = new Subject<Category>();
+  categoriesSub = new Subject<Category[]>();
 }

@@ -1,8 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../models/user.model";
 import {DataService} from "../../../services/data.service";
+import {Category} from "../../models/category.model";
+import {UiService} from "../../../services/ui.service";
 
 @Component({
   selector: 'app-header',
@@ -13,11 +15,13 @@ export class HeaderComponent implements OnInit {
   categories: any;
   @Input() isAuth = false;
   @Input() user!: User;
+  // @Output() clickedMenuItem = new EventEmitter<Category>();
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private uiService: UiService
   ) { }
 
   ngOnInit(): void {
@@ -37,5 +41,10 @@ export class HeaderComponent implements OnInit {
     } else {
       this.router.navigate(['/login']);
     }
+  }
+
+  onClickMenu(category: Category){
+    this.uiService.categorySub.next(category);
+    // this.clickedMenuItem.emit(category);
   }
 }

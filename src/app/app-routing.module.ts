@@ -8,6 +8,7 @@ import {AuthGuard} from "./auth/auth.guard";
 import {CartComponent} from "./cart/cart.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {LearningComponent} from "./home/learning/learning.component";
+import {SearchComponent} from "./search/search.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +20,9 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent},
   {
     path: 'home/my-courses/learning', component: LearningComponent
-  }
+  },
+  { path: 'search', component: SearchComponent }
+
 ]
 
 @NgModule({
