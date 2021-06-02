@@ -93,7 +93,6 @@ export class DataService {
       "userId": userId,
       "courseId": courseId
     }
-    console.log('Remove: '+data);
     return this.http.put(url, data);
   }
 

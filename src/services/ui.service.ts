@@ -11,4 +11,5 @@ export class UiService {
   categorySub = new Subject<Category>();
   categoriesSub = new Subject<Category[]>();
   searchTextSub = new Subject<string>();
+  isPlayerSub = new Subject<boolean>();
 }

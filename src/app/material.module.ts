@@ -15,10 +15,12 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
-import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
   imports: [
@@ -41,7 +43,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatSnackBarModule,
     MatRadioModule,
     MatBadgeModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSliderModule,
+    MatProgressBarModule,
   ],
   exports: [
     MatToolbarModule,
@@ -63,7 +67,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatSnackBarModule,
     MatRadioModule,
     MatBadgeModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSliderModule,
+    MatProgressBarModule
   ]
 })
 

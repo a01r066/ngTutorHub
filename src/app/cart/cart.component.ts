@@ -26,10 +26,15 @@ export class CartComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+    this.user = this.authService.user;
+    if(this.user){
+      this.fetchCourses();
+    }
+
     this.authService.authChanged.subscribe(isAuth => {
       this.user = this.authService.user;
+      this.fetchCourses();
     })
-    this.fetchCourses();
   }
 
   private fetchCourses() {

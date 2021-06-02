@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   @Input() user!: User;
   // @Output() clickedMenuItem = new EventEmitter<Category>();
   @ViewChild('searchText') searchTextRef!: ElementRef;
+  isPlayer = false;
 
   constructor(
     private authService: AuthService,
@@ -28,6 +29,10 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.uiService.isPlayerSub.subscribe(isPlayer => {
+      this.isPlayer = isPlayer;
+    })
+
     this.dataService.getCategories().subscribe(res => {
       this.categories = (res as any).data;
     })

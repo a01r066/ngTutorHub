@@ -70,21 +70,19 @@
       <div fxFlex="20" style="background-color: white; color: darkslategray; margin-top: 16px; border-radius: 4px" fxLayout="column">
         <div style="background-color: #1E1E1C; border-radius: 4px">
           <iframe class="e2e-iframe-trusted-src" [src]="videoUrl" width="100%" height="190px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-<!--          <div fxLayoutAlign="center"><mat-icon style="margin-top: -110px; transform: scale(3)">play_circle</mat-icon></div>-->
-<!--          <div fxLayoutAlign="center"><span style="margin-top: -60px; color: white; font-weight: 500">Preview this course</span></div>-->
         </div>
         <div style="margin: 32px">
           <div><span class="mat-display-1" style="font-weight: 600">${{ course.tuition | number }}</span><span style="text-decoration: line-through; margin-left: 12px">$99.99</span><span style="margin-left: 12px">89% off</span></div>
           <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)">Add to cart</button></div>
-          <div><button mat-raised-button color="primary" fxFlex style="height: 40px;">Buy now</button></div>
+          <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="buyNow(course)">Buy now</button></div>
           <div><p>This course includes: </p></div>
           <div>
             <mat-list role="list">
               <mat-list-item role="listitem" style="color: black">
-                <mat-icon>smart_display</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">22 hours on-demand video</span>
+                <mat-icon>description</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ lectures?.length }} Sections</span>
               </mat-list-item>
               <mat-list-item role="listitem" style="color: black">
-                <mat-icon>description</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">14 articles</span>
+                <mat-icon>smart_display</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ chapters?.length }} chapters</span>
               </mat-list-item>
               <mat-list-item role="listitem" style="color: black">
                 <mat-icon>code</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">19 coding exercises</span>

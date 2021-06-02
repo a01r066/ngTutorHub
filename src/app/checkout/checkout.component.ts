@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {DataService} from "../../services/data.service";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {DecimalPipe} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -15,7 +15,7 @@ declare var paypal: any;
   styleUrls: ['./checkout.component.css']
 })
 
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit {
   courses: any;
   coursesId: string[] = [];
   base_url = 'http://localhost:3000/uploads/courses/';
@@ -32,12 +32,6 @@ export class CheckoutComponent implements OnInit {
   // Paypal
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
 
-  product = {
-    price: 777.77,
-    description: 'used couch, decent condition',
-    img: 'assets/couch.jpg'
-  };
-
   paidFor = false;
 
   isDataFetched = new Subject();
@@ -50,12 +44,19 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchCourses();
+    this.user = this.authService.user;
+    if(this.user){
+      this.fetchCourses();
+    }
 
-    // this.createPaypalButton();
-    this.isDataFetched.subscribe(isFetched => {
-      this.createPaypalButton();
+    this.authService.authChanged.subscribe(isAuth => {
+      this.user = this.authService.user;
+      this.fetchCourses();
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.createPaypalButton();
   }
 
   private fetchCourses() {
@@ -151,31 +152,7 @@ export class CheckoutComponent implements OnInit {
           }
         }
       }]
-
-    this.createPaypalButton();
   }
-
-  // getPurchasedItems() {
-  //   for(let course of this.courses){
-  //     let item =
-  //       {
-  //         "name": course.courseId.title,
-  //         "description": course.courseId.description,
-  //         // "sku": "sku01",
-  //         "unit_amount": {
-  //           "currency_code": "USD",
-  //           "value": this.getValue(course.courseId.tuition * (1 - this.discount/100))
-  //         },
-  //         "tax": {
-  //           "currency_code": "USD",
-  //           "value": "0"
-  //         },
-  //         "quantity": "1",
-  //         "category": "Online Learning Course"
-  //       }
-  //       this.items.push(item);
-  //   }
-  // }
 
   private calculate(course: any){
     this.originalPrice += course.courseId.tuition;

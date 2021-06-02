@@ -1,54 +1,73 @@
-<mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
-</mat-toolbar>
-<div fxFlext fxLayout="row">
-  <div fxFlex="75">
-    <div fxLayout="column">
-      <div *ngIf="videoUrl">
-        <iframe class="e2e-iframe-trusted-src" [src]="videoUrl" width="100%" height="640px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-      </div>
-      <div>
-        <mat-tab-group>
-          <mat-tab label="Overview"> Overview </mat-tab>
-          <mat-tab label="Q&A"> Q&A </mat-tab>
-        </mat-tab-group>
-      </div>
-      <div>Content</div>
+<div class="container">
+  <mat-toolbar>
+    <div fxFill fxLayout="row" fxLayoutAlign="left center">
+      <span fxFlex="5" routerLink="" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600">TutorHub</span>
+      <span fxFlex="80" style="font-weight: 400; text-align: center">{{ course.title }}</span>
+      <span fxFlex="15" style="display: flex; justify-content: flex-end">
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+    </span>
     </div>
-  </div>
-  <div fxFlex="25">
-    <div>
-      <mat-accordion>
-        <mat-expansion-panel disabled>
-          <mat-expansion-panel-header style="background-color: #B0BEC5">
-            <mat-panel-title>
-              <p style="color: #2F302F; font-weight: 500">Course content</p>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <p>This is the primary content of the panel.</p>
-        </mat-expansion-panel>
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                             (closed)="panelOpenState = false" *ngFor="let lecture of lectures; let i = index">
-          <mat-expansion-panel-header>
-            <mat-panel-title (click)="onClickLecture(lecture)">
-              {{ lecture.title }}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div *ngFor="let chapter of chapters; let i = index">
-            <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter.title }}</p></div>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
+  </mat-toolbar>
+
+  <div fxFlext fxLayout="row">
+    <div fxFlex="75">
+      <div fxLayout="column">
+        <div *ngIf="videoUrl">
+<!--          <iframe class="e2e-iframe-trusted-src" [src]="videoUrl" width="100%" height="640px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->
+<!--          <iframe [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen allow="autoplay;"></iframe>-->
+          <iframe [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div>
+          <mat-tab-group>
+            <mat-tab label="Overview"> Overview </mat-tab>
+            <mat-tab label="Q&A"> Q&A </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div>Content</div>
+      </div>
+    </div>
+    <div fxFlex="25">
+      <div>
+        <mat-accordion>
+          <mat-expansion-panel disabled>
+            <mat-expansion-panel-header style="background-color: #1E1E1C">
+              <mat-panel-title>
+                <p style="color: white; font-weight: 500">Course content</p>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false" *ngFor="let lecture of lectures; let i = index">
+            <mat-expansion-panel-header>
+              <mat-panel-title (click)="onClickLecture(lecture)">
+                {{ lecture.title }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let chapter of chapters; let i = index">
+              <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter.title }}</p></div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
     </div>
   </div>
 </div>
+<!--<script>-->
+<!--  import Vimeo from "@vimeo/player";-->
+<!--  const iframe = document.querySelector('iframe');-->
+<!--  const player = new Vimeo.Player(iframe);-->
+
+<!--  player.on('play', function() {-->
+<!--    // console.log('played the video!');-->
+<!--  });-->
+
+<!--  player.getVideoTitle().then(function(title) {-->
+<!--    // console.log('title:', title);-->
+<!--  });-->
+<!--</script>-->
