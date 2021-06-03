@@ -2,10 +2,6 @@
   margin-left: 8px;
 }
 
-.mat-form-field {
-  width: 330px;
-}
-
 ::ng-deep.mat-error .mat-warn {
   color: red;
 }
@@ -38,7 +34,7 @@
 }
 
 .fb-button {
-  width: 300px;
+  width: 224px;
   height: 40px;
   border-radius: 20px;
 }

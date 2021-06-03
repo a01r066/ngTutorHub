@@ -1,10 +1,21 @@
-<div fxFlex fxLayout="row">
-  <div fxFlex="35"></div>
-  <div fxFlex="30">
-    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-      <div style="font-size: 1.25rem; color: darkslategrey; font-weight: 500;margin-top: 48px; width: 330px">Log In to Your TutorHub Account!</div>
-      <mat-divider style="background-color: lightgray; width: 330px; margin-top: 8px"></mat-divider>
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" style="width: 330px">
+<div class="container">
+  <div fxFlex="30"></div>
+  <div fxFlex="40" style="margin-top: 32px">
+    <div fxFlex fxLayout="column" fxLayoutAlign="top center">
+      <div>
+        <mat-label class="continue-label">To continue, please login with</mat-label>
+      </div>
+      <div fxLayoutGap="12px" fxLayout="column" style="margin-top: 16px">
+        <div><button mat-raised-button color="primary" class="fb-button" (click)="onGmailFbRegister('fb')"><mat-icon>facebook</mat-icon>   LOGIN WITH FACEBOOK</button></div>
+        <div><button mat-raised-button color="warn" class="fb-button" (click)="onGmailFbRegister('google')"><mat-icon style="font-weight: bold; font-family: Arial">G</mat-icon>  LOGIN WITH GOOGLE</button></div>
+      </div>
+      <div style="margin-top: 16px">
+        <mat-label STYLE="font-size: 0.75rem">OR</mat-label>
+      </div>
+
+      <div style="font-size: 1.25rem; color: darkslategrey; font-weight: 400;margin-top: 16px;">Log In to Your TutorHub Account!</div>
+      <mat-divider style="background-color: lightgray; width: 160px; margin-top: 8px"></mat-divider>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" style="width: 320px" fxLayout="column">
         <mat-form-field appearance="standard">
           <mat-label>Your email</mat-label>
           <input matInput placeholder="Your email" formControlName="email" required>
@@ -15,9 +26,9 @@
           <input matInput type="password" placeholder="Your password" autocomplete="on" formControlName="password" required>
           <mat-error>Missing password.</mat-error>
         </mat-form-field>
-        <div style="text-align: center"><button mat-flat-button color="primary" style="width: 165px; height: 44px" [disabled]="loginForm.invalid">Login</button></div>
+        <div style="text-align: center"><button mat-flat-button color="primary" style="width: 96px; height: 44px; font-size: 1.1rem" [disabled]="loginForm.invalid">Login</button></div>
       </form>
     </div>
   </div>
-  <div fxFlex="35"></div>
+  <div fxFlex="30"></div>
 </div>

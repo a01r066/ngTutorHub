@@ -2,10 +2,6 @@
   margin-left: 8px;
 }
 
-.mat-form-field {
-  width: 330px;
-}
-
 ::ng-deep.mat-error .mat-warn {
   color: red;
 }
@@ -35,4 +31,10 @@
 
 .mat-flat-button:disabled {
   background-color: dimgray;
+}
+
+.fb-button {
+  width: 224px;
+  height: 40px;
+  border-radius: 20px;
 }

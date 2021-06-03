@@ -42,4 +42,20 @@ export class LoginComponent implements OnInit {
       })
     });
   }
+
+  onGmailFbRegister(type: any) {
+    this.authService.loginViaGmailFB(type).then(res => {
+      // console.log('gmail: '+JSON.stringify(res));
+      const user = (res as any).user;
+      const token = (res as any).credential.accessToken;
+      this.authService.storeGmailFbUserData((res as any).user, token).subscribe(() => {
+        this.authService.setCurrentUser(token, user.email);
+        this.router.navigate(['']);
+      });
+    }).catch(error => {
+      this.snackBar.open(`Gmail sign up failed: ${error.message}`, null!, {
+        duration: 3000
+      });
+    });
+  }
 }

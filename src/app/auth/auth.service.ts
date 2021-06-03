@@ -6,7 +6,7 @@ import {Constants} from "../helpers/constants";
 import {AngularFireAuth} from "@angular/fire/auth";
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import firebase from 'firebase';
-import {emailVerified} from "@angular/fire/auth-guard";
+import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
 
 @Injectable({
   providedIn: "root"
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   // Store gmail user data to db
-  storeGmailUserData(user: any, accessToken: any){
+  storeGmailFbUserData(user: any, accessToken: any){
     // console.log('name: '+user.displayName);
     const data = {
       "name": user.displayName,
@@ -59,12 +59,14 @@ export class AuthService {
     return this.http.post(url, data);
   }
 
-  loginViaFB(){
-
-  }
-
-  loginViaGmail(){
-    return this.afAuth.signInWithPopup(new GoogleAuthProvider());
+  loginViaGmailFB(type: any){
+    let provider: any;
+    if(type === 'fb'){
+      provider = new FacebookAuthProvider();
+    } else if(type === 'google') {
+      provider = new GoogleAuthProvider();
+    }
+    return this.afAuth.signInWithPopup(provider);
   }
 
   // Set current user in your session after a successful login
@@ -74,7 +76,7 @@ export class AuthService {
     this.getCurrentUser();
   }
 
-  loginWithGmailToken(accessToken: any, email: any) {
+  loginWithGmailFbToken(accessToken: any, email: any) {
     const data = {
       "email": email,
       "accessToken": accessToken
@@ -88,14 +90,7 @@ export class AuthService {
     const token = sessionStorage.getItem('token') || undefined;
     const email = sessionStorage.getItem('email') || undefined;
 
-    if(token?.length === 165){
-      // Gmail token
-      this.loginWithGmailToken(token, email).subscribe(res => {
-        this.user = (res as any).data;
-        this.authChanged.next(true);
-        this.isAuthenticated = true;
-      });
-    } else if(token?.length === 171){
+    if(token?.length === 171){
       // JWT token
       const url = `${Constants.base_url}/auth/me`;
       this.http.get(url, {
@@ -109,6 +104,13 @@ export class AuthService {
       }, error => {
         // console.log(`User is un-authorized: ${error.message}`);
       })
+    } else if(typeof token !== undefined) {
+      // Gmail, facebook token
+      this.loginWithGmailFbToken(token, email).subscribe(res => {
+        this.user = (res as any).data;
+        this.authChanged.next(true);
+        this.isAuthenticated = true;
+      });
     }
 
     return this.user || undefined;
@@ -122,6 +124,7 @@ export class AuthService {
     this.afAuth.signOut().then();
 
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('email');
     this.isAuthenticated = false;
     this.user = null!;
     this.authChanged.next(false);

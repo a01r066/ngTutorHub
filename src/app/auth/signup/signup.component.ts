@@ -44,19 +44,12 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  onFbRegister() {
-    console.log('fb');
-  }
-
-  onGmailRegister() {
-    this.authService.loginViaGmail().then(res => {
+  onGmailFbRegister(type: any) {
+    this.authService.loginViaGmailFB(type).then(res => {
       // console.log('gmail: '+JSON.stringify(res));
       const user = (res as any).user;
       const token = (res as any).credential.accessToken;
-      // console.log('token: '+token);
-      // sessionStorage.setItem('token', token);
-      // sessionStorage.setItem('email', user.email);
-      this.authService.storeGmailUserData((res as any).user, token).subscribe(() => {
+      this.authService.storeGmailFbUserData((res as any).user, token).subscribe(() => {
         this.authService.setCurrentUser(token, user.email);
         this.router.navigate(['']);
       });
