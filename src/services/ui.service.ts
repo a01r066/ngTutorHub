@@ -12,4 +12,5 @@ export class UiService {
   categoriesSub = new Subject<Category[]>();
   searchTextSub = new Subject<string>();
   isPlayerSub = new Subject<boolean>();
+  isCoursePurchased = new Subject<boolean>();
 }

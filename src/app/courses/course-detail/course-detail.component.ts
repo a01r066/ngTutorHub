@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {DataService} from "../../../services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
+import {UiService} from "../../../services/ui.service";
 
 @Component({
   selector: 'app-course-detail',
@@ -12,14 +13,15 @@ import {User} from "../../models/user.model";
   styleUrls: ['./course-detail.component.css'],
 })
 
-export class CourseDetailComponent implements OnInit {
+export class CourseDetailComponent implements OnInit, AfterViewInit {
   course: any;
   lectures: any;
   chapters: any;
   demoChapters: any;
   objectives: any;
   videoUrl!: SafeResourceUrl;
-  base_url = 'http://localhost:3000/uploads/courses';
+
+  base_url = 'http://18.117.94.38:3000/uploads/courses';
 
   isPurchased = false;
   user!: User;
@@ -31,11 +33,11 @@ export class CourseDetailComponent implements OnInit {
               private authService: AuthService,
               private router: Router,
               private sanitizer: DomSanitizer,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              private uiService: UiService) { }
 
   ngOnInit(): void {
     this.user = this.authService.user;
-
     const slug = this.route.snapshot.params['id'];
     this.dataService.getCourseBySlug(slug).subscribe(res => {
       this.course = (res as any).data;
@@ -59,6 +61,10 @@ export class CourseDetailComponent implements OnInit {
         })
       }
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.authService.getCurrentUser();
   }
 
   onClickLecture(lecture: any){
@@ -104,6 +110,8 @@ export class CourseDetailComponent implements OnInit {
       const pCourse = (res as any).courseId;
       if(pCourse._id === course._id){
         this.isPurchased = true;
+        console.log('isCoursePurchased: '+this.isPurchased);
+        this.uiService.isCoursePurchased.next(true);
         return
       }
     }

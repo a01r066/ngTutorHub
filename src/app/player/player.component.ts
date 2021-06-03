@@ -14,6 +14,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   course: any;
   lectures: any;
   chapters: any;
+  unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
   base_url = 'http://localhost:3000/uploads/courses';
 
@@ -46,8 +47,29 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onClickChapter(chapter: any){
-    let unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.file}`;
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unSafeUrl);
-    console.log('videoURL: '+this.videoUrl);
+    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.file}`;
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
+    // this.getVideoDuration();
   }
+
+//   getVideoDuration(){
+//     // Create a non-dom allocated Audio element
+//     const au = document.createElement('video');
+//
+// // Define the URL of the MP3 audio file
+//     au.src = this.unSafeUrl;
+//
+// // Once the metadata has been loaded, display the duration in the console
+//     au.addEventListener('loadedmetadata', () => {
+//       // Obtain the duration in seconds of the audio file (with milliseconds as well, a float value)
+//       const duration = au.duration;
+//       console.log('Duration: '+duration);
+//
+//       // example 12.3234 seconds
+//       // console.log("The duration of the song is of: " + durationStr + " seconds");
+//       // Alternatively, just display the integer value with
+//       // parseInt(duration)
+//       // 12 seconds
+//     });
+//   }
 }

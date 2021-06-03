@@ -33,11 +33,35 @@ export class SignupComponent implements OnInit {
 
   onRegister(){
     this.authService.registerUser(this.signupForm.value).subscribe(res => {
+      const user = (res as any).data;
       const token = (res as any).token;
-      this.authService.setCurrentUser(token);
+      this.authService.setCurrentUser(token, user.email);
       this.router.navigate(['']);
     }, error => {
       this.snackBar.open(`Register error: ${error.message}`, null!, {
+        duration: 3000
+      });
+    });
+  }
+
+  onFbRegister() {
+    console.log('fb');
+  }
+
+  onGmailRegister() {
+    this.authService.loginViaGmail().then(res => {
+      // console.log('gmail: '+JSON.stringify(res));
+      const user = (res as any).user;
+      const token = (res as any).credential.accessToken;
+      // console.log('token: '+token);
+      // sessionStorage.setItem('token', token);
+      // sessionStorage.setItem('email', user.email);
+      this.authService.storeGmailUserData((res as any).user, token).subscribe(() => {
+        this.authService.setCurrentUser(token, user.email);
+        this.router.navigate(['']);
+      });
+    }).catch(error => {
+      this.snackBar.open(`Gmail sign up failed: ${error.message}`, null!, {
         duration: 3000
       });
     });

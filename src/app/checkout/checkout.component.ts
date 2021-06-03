@@ -18,7 +18,7 @@ declare var paypal: any;
 export class CheckoutComponent implements OnInit, AfterViewInit {
   courses: any;
   coursesId: string[] = [];
-  base_url = 'http://localhost:3000/uploads/courses/';
+  base_url = 'http://18.117.94.38:3000/uploads/courses/';
 
   originalPrice = 0;
   discountedAmount = 0;

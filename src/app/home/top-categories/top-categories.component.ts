@@ -11,7 +11,7 @@ import {Category} from "../../models/category.model";
   styleUrls: ['./top-categories.component.css']
 })
 export class TopCategoriesComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/categories/';
+  base_url = 'http://18.117.94.38:3000/uploads/categories/';
   categories: any;
 
   constructor(private http: HttpClient,

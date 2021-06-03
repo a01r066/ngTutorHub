@@ -3,6 +3,7 @@ export interface Chapter {
   title: string;
   format: string;
   file: string;
+  duration: number;
   lecture: string;
   index: string;
 }

@@ -30,8 +30,9 @@ export class LoginComponent implements OnInit {
 
   onLogin(){
     this.authService.loginUser(this.loginForm.value).subscribe(res => {
+      const user = (res as any).data;
       const token = (res as any).token;
-      this.authService.setCurrentUser(token);
+      this.authService.setCurrentUser(token, user.email);
       // this.authService.authChanged.next(true);
       // this.authService.isAuthenticated = true;
       this.router.navigate(['']);

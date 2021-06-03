@@ -9,6 +9,7 @@ import {CartComponent} from "./cart/cart.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {LearningComponent} from "./home/learning/learning.component";
 import {SearchComponent} from "./search/search.component";
+import {PlayerComponent} from "./player/player.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,7 +23,6 @@ const routes: Routes = [
     path: 'home/my-courses/learning', component: LearningComponent
   },
   { path: 'search', component: SearchComponent }
-
 ]
 
 @NgModule({

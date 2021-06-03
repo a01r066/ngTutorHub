@@ -11,7 +11,7 @@ import {map} from "rxjs/operators";
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/courses/';
+  base_url = 'http://18.117.94.38:3000/uploads/courses/';
   courses: Course[] = [];
   discount = 90;
   searchText!: string;

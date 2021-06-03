@@ -13,7 +13,7 @@ import {Subject} from "rxjs";
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/courses/';
+  base_url = 'http://18.117.94.38:3000/uploads/courses/';
   selectedCategory!: Category;
   courses: Course[] = [];
   page = 1;

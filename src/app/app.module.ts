@@ -23,6 +23,9 @@ import { OrdersComponent } from './home/orders/orders.component';
 import {ShareModule} from "./share.module";
 import { SearchComponent } from './search/search.component';
 import {SlugifyPipe} from "./helpers/slugify.pipe";
+import {AngularFireModule} from "@angular/fire";
+import {environment} from "../environments/environment";
+import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
 
 @NgModule({
   declarations: [
@@ -45,12 +48,14 @@ import {SlugifyPipe} from "./helpers/slugify.pipe";
     SlugifyPipe
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAnalyticsModule,
     ShareModule,
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
     MaterialModule,
-    FlexLayoutModule,
+    FlexLayoutModule
   ],
   providers: [DecimalPipe],
   bootstrap: [AppComponent]

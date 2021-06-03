@@ -36,3 +36,9 @@
 .mat-flat-button:disabled {
   background-color: dimgray;
 }
+
+.fb-button {
+  width: 300px;
+  height: 40px;
+  border-radius: 20px;
+}

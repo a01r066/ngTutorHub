@@ -5,5 +5,5 @@ export interface User {
   role: string;
   token: string;
   cart: any;
-  purchased_courses: [string];
+  purchased_courses: [any];
 }

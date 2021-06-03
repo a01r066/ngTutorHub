@@ -10,7 +10,7 @@ import {User} from "../../models/user.model";
   styleUrls: ['./learning.component.css']
 })
 export class LearningComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/courses/';
+  base_url = 'http://18.117.94.38:3000/uploads/';
   user!: User;
   purchasedCourses: any[] = [];
 
