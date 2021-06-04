@@ -1,0 +1,57 @@
+<div class="container" style="margin-top: 16px;">
+  <div fxFlex="20"></div>
+  <div fxFlex="60" style="border: 1px solid lightgray">
+    <div fxLayout="row">
+      <div fxFlex="20" style="border-right: 1px solid lightgray">
+        <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="top center" style="margin-top: 16px">
+          <div>
+            <img class="center" [src]="user?.photoURL" alt=""></div>
+          <div class="mat-title" style="color: darkslategray; font-size: 1rem">{{ user?.displayName }}</div>
+          <div class="mat-card-subtitle">{{ user?.headLine }}</div>
+        </div>
+        <div>
+          <mat-nav-list>
+            <mat-list-item *ngFor="let link of links">
+              <a matLine (click)="showInfo(link)">{{ link }}</a>
+            </mat-list-item>
+          </mat-nav-list>
+        </div>
+      </div>
+      <div fxFlex="80" style="margin-top: 16px">
+        <div style="text-align: center; border-bottom: 1px solid lightgray; padding-bottom: 16px">
+          <div class="mat-card-title" style="color: darkslategray;">Public profile</div>
+          <div class="mat-card-subtitle" style="color: darkslategray">Add information about yourself</div>
+        </div>
+<!--        Form field-->
+        <div fxLayout="row">
+          <div fxFlex="15"></div>
+          <div fxFlex="70">
+            <div style="margin-top: 24px">Basic</div>
+            <div>
+              <form [formGroup]="profileForm" (ngSubmit)="save()" fxLayout="column">
+                <mat-form-field appearance="standard">
+                  <mat-label>First Name</mat-label>
+                  <input matInput placeholder="First name" formControlName="fName" required value="{{ user?.fName }}">
+                  <mat-error>First name must be less than 16 characters</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="standard">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput placeholder="Last name" formControlName="lName" required value="{{ user?.lName }}">
+                  <mat-error>Last name must less than 16 characters</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="standard">
+                  <mat-label>Headline</mat-label>
+                  <input matInput placeholder="Headline" formControlName="headLine" value="{{ user?.headLine }}">
+                  <mat-hint>Add a professional headline like, "Engineer at Tutor" or "Architect."</mat-hint>
+                </mat-form-field>
+                <div style="margin: 16px auto 16px auto"><button mat-raised-button color="warn" [disabled]="profileForm.invalid">Save</button></div>
+              </form>
+            </div>
+          </div>
+          <div fxFlex="15"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxFlex="20"></div>
+</div>

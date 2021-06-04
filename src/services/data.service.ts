@@ -99,4 +99,16 @@ export class DataService {
     const url = `${Constants.base_url}/payments`;
     return this.http.post(url, payment);
   }
+
+  // User
+  updateProfile(formData: any, uid: string){
+    const data = {
+      "displayName": `${formData.fName} ${formData.lName}`,
+      "fName": formData.fName,
+      "lName": formData.lName,
+      "headLine": formData.headLine
+    }
+    const url = `${Constants.base_url}/auth/${uid}`;
+    return this.http.put(url, data);
+  }
 }

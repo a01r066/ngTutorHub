@@ -26,6 +26,7 @@ import {SlugifyPipe} from "./helpers/slugify.pipe";
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
+import { ProfileComponent } from './home/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
     LearningComponent,
     OrdersComponent,
     SearchComponent,
-    SlugifyPipe
+    SlugifyPipe,
+    ProfileComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

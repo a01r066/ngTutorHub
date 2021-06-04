@@ -1,7 +1,11 @@
 export interface User {
   _id?: string;
-  name: string;
+  displayName: string;
+  fName: string;
+  lName: string;
+  headLine: string;
   email: string;
+  photoURL: string;
   role: string;
   token: string;
   cart: any;

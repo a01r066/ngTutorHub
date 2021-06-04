@@ -18,8 +18,10 @@
       <button mat-button style="border: 1px solid #0F7C90; color: #0F7C90; font-weight: bold" [routerLink]="['/login']" *ngIf="!isAuth">Login</button>
       <button mat-raised-button color="primary" [routerLink]="['/signup']" *ngIf="!isAuth">Sign up</button>
       <div *ngIf="isAuth">
-        <button mat-icon-button style="transform: scale(1.5);" [matMenuTriggerFor]="profileMenu"><mat-icon>account_circle</mat-icon></button>
+        <button mat-icon-button style="transform: scale(1.5);" [matMenuTriggerFor]="profileMenu" *ngIf="this.user.photoURL.length === 0"><mat-icon>account_circle</mat-icon></button>
+        <button mat-icon-button style="background-image: url({{this.user.photoURL}}); background-size: cover" [matMenuTriggerFor]="profileMenu" *ngIf="this.user.photoURL.length !== 0"></button>
         <mat-menu #profileMenu="matMenu">
+          <button mat-menu-item [routerLink]="['/user/profile']">My Profile</button>
           <button mat-menu-item [routerLink]="['/home/my-courses/learning']">My Learning</button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="logout()">Log out</button>

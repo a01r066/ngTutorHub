@@ -28,7 +28,7 @@ export class AuthService {
   // Authentication
   registerUser(formData: any){
     const data = {
-      "name": formData.name,
+      "displayName": formData.name,
       "email": formData.email,
       "password": formData.password
     }
@@ -40,7 +40,7 @@ export class AuthService {
   storeGmailFbUserData(user: any, accessToken: any){
     // console.log('name: '+user.displayName);
     const data = {
-      "name": user.displayName,
+      "displayName": user.displayName,
       "email": user.email,
       "password": user.uid,
       "photoURL": user.photoURL,
