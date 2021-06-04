@@ -4,3 +4,9 @@
   margin-right: auto;
   width: 80%;
 }
+
+.highlight {
+  background-color: dimgray;
+  color: white;
+  font-weight: 500;
+}

@@ -9,7 +9,6 @@ import {CartComponent} from "./cart/cart.component";
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {LearningComponent} from "./home/learning/learning.component";
 import {SearchComponent} from "./search/search.component";
-import {PlayerComponent} from "./player/player.component";
 import {ProfileComponent} from "./home/profile/profile.component";
 
 const routes: Routes = [
@@ -18,13 +17,11 @@ const routes: Routes = [
       { path: ':id', component: CourseListComponent },
     ]},
   { path: 'course/:id', component: CourseDetailComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'checkout', component: CheckoutComponent},
-  {
-    path: 'home/my-courses/learning', component: LearningComponent
-  },
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard]},
+  { path: 'home/my-courses/learning', component: LearningComponent, canActivate: [AuthGuard]},
   { path: 'search', component: SearchComponent },
-  { path: 'user/profile', component: ProfileComponent}
+  { path: 'user/profile', component: ProfileComponent, canActivate: [AuthGuard]}
 ]
 
 @NgModule({

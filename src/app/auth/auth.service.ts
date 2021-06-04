@@ -30,7 +30,8 @@ export class AuthService {
     const data = {
       "displayName": formData.name,
       "email": formData.email,
-      "password": formData.password
+      "password": formData.password,
+      "isSocial": false
     }
     const url = `${Constants.base_url}/auth/register`;
     return this.http.post(url, data);
@@ -44,7 +45,8 @@ export class AuthService {
       "email": user.email,
       "password": user.uid,
       "photoURL": user.photoURL,
-      "accessToken": accessToken
+      "accessToken": accessToken,
+      "isSocial": true
     }
     const url = `${Constants.base_url}/auth/register`;
     return this.http.post(url, data);

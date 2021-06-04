@@ -6,6 +6,7 @@ export interface User {
   headLine: string;
   email: string;
   photoURL: string;
+  isSocial: boolean;
   role: string;
   token: string;
   cart: any;

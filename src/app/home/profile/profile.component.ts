@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import validate = WebAssembly.validate;
 import {DataService} from "../../../services/data.service";
 import {AuthService} from "../../auth/auth.service";
 
@@ -10,9 +9,14 @@ import {AuthService} from "../../auth/auth.service";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  base_url = 'http://localhost:3000/uploads/users';
   links = ['Profile', 'Photo'];
   profileForm!: FormGroup;
   user!: any;
+  selectedIndex = 0;
+
+  fileData!: File;
+  previewUrl!: any;
 
   constructor(
     private dataService: DataService,
@@ -21,6 +25,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.user;
+    if(!this.user.isSocial){
+      this.previewUrl = `${this.base_url}/${this.user.photoURL}`;
+    } else {
+      this.previewUrl = this.user.photoURL;
+    }
+
     this.authService.authChanged.subscribe(isAuth => {
       this.user = this.authService.user;
     })
@@ -38,8 +48,8 @@ export class ProfileComponent implements OnInit {
     this.patchFormValues();
   }
 
-  showInfo(link: any) {
-
+  showInfo(index: any) {
+    this.selectedIndex = index;
   }
 
   save() {
@@ -55,5 +65,27 @@ export class ProfileComponent implements OnInit {
       lName: this.user.lName,
       headLine: this.user.headLine
     });
+  }
+
+  savePhoto() {
+
+  }
+
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    this.preview();
+  }
+
+  preview() {
+    let mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+
+    let reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (_event) => {
+      this.previewUrl = reader.result;
+    };
   }
 }

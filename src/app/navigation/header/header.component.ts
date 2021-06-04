@@ -13,6 +13,9 @@ import {SlugifyPipe} from "../../helpers/slugify.pipe";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  base_url = 'http://localhost:3000/uploads/users';
+  photoURL!: any;
+
   categories: any;
   @Input() isAuth = false;
   @Input() user!: User;
@@ -29,6 +32,10 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authService.authChanged.subscribe(isAuth => {
+     this.refreshUser();
+    })
+
     this.uiService.isPlayerSub.subscribe(isPlayer => {
       this.isPlayer = isPlayer;
     })
@@ -36,6 +43,15 @@ export class HeaderComponent implements OnInit {
     this.dataService.getCategories().subscribe(res => {
       this.categories = (res as any).data;
     })
+  }
+
+  refreshUser(){
+    this.user = this.authService.user;
+    if(!this.user.isSocial){
+      this.photoURL = `${this.base_url}/${this.user.photoURL}`;
+    } else {
+      this.photoURL = this.user.photoURL;
+    }
   }
 
   logout(){

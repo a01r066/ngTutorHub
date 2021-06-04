@@ -5,52 +5,94 @@
       <div fxFlex="20" style="border-right: 1px solid lightgray">
         <div fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="top center" style="margin-top: 16px">
           <div>
-            <img class="center" [src]="user?.photoURL" alt=""></div>
+            <img class="center" [src]="previewUrl" alt=""></div>
           <div class="mat-title" style="color: darkslategray; font-size: 1rem">{{ user?.displayName }}</div>
           <div class="mat-card-subtitle">{{ user?.headLine }}</div>
         </div>
         <div>
           <mat-nav-list>
-            <mat-list-item *ngFor="let link of links">
-              <a matLine (click)="showInfo(link)">{{ link }}</a>
+            <mat-list-item *ngFor="let link of links; let i = index" [ngClass]="{highlight: i === selectedIndex}">
+              <a matLine (click)="showInfo(i)">{{ link }}</a>
             </mat-list-item>
           </mat-nav-list>
         </div>
       </div>
-      <div fxFlex="80" style="margin-top: 16px">
-        <div style="text-align: center; border-bottom: 1px solid lightgray; padding-bottom: 16px">
-          <div class="mat-card-title" style="color: darkslategray;">Public profile</div>
-          <div class="mat-card-subtitle" style="color: darkslategray">Add information about yourself</div>
-        </div>
-<!--        Form field-->
-        <div fxLayout="row">
-          <div fxFlex="15"></div>
-          <div fxFlex="70">
-            <div style="margin-top: 24px">Basic</div>
-            <div>
-              <form [formGroup]="profileForm" (ngSubmit)="save()" fxLayout="column">
-                <mat-form-field appearance="standard">
-                  <mat-label>First Name</mat-label>
-                  <input matInput placeholder="First name" formControlName="fName" required value="{{ user?.fName }}">
-                  <mat-error>First name must be less than 16 characters</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="standard">
-                  <mat-label>Last Name</mat-label>
-                  <input matInput placeholder="Last name" formControlName="lName" required value="{{ user?.lName }}">
-                  <mat-error>Last name must less than 16 characters</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="standard">
-                  <mat-label>Headline</mat-label>
-                  <input matInput placeholder="Headline" formControlName="headLine" value="{{ user?.headLine }}">
-                  <mat-hint>Add a professional headline like, "Engineer at Tutor" or "Architect."</mat-hint>
-                </mat-form-field>
-                <div style="margin: 16px auto 16px auto"><button mat-raised-button color="warn" [disabled]="profileForm.invalid">Save</button></div>
-              </form>
-            </div>
+      <ng-template [ngIf]="selectedIndex === 0" [ngIfElse]="photo">
+        <div fxFlex="80" style="margin-top: 16px">
+          <div style="text-align: center; border-bottom: 1px solid lightgray; padding-bottom: 16px">
+            <ng-template>
+
+            </ng-template>
+            <div class="mat-card-title" style="color: darkslategray;">Public profile</div>
+            <div class="mat-card-subtitle" style="color: darkslategray">Add information about yourself</div>
           </div>
-          <div fxFlex="15"></div>
+          <!--        Form field-->
+          <div fxLayout="row">
+            <div fxFlex="15"></div>
+            <div fxFlex="70">
+              <div style="margin-top: 24px">Basic</div>
+              <div>
+                <form [formGroup]="profileForm" (ngSubmit)="save()" fxLayout="column">
+                  <mat-form-field appearance="standard">
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="First name" formControlName="fName" required value="{{ user?.fName }}">
+                    <mat-error>First name must be less than 16 characters</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="standard">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Last name" formControlName="lName" required value="{{ user?.lName }}">
+                    <mat-error>Last name must less than 16 characters</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="standard">
+                    <mat-label>Headline</mat-label>
+                    <input matInput placeholder="Headline" formControlName="headLine" value="{{ user?.headLine }}">
+                    <mat-hint>Add a professional headline like, "Engineer at Tutor" or "Architect."</mat-hint>
+                  </mat-form-field>
+                  <div style="margin: 16px auto 16px auto"><button mat-raised-button color="warn" [disabled]="profileForm.invalid">Save</button></div>
+                </form>
+              </div>
+            </div>
+            <div fxFlex="15"></div>
+          </div>
         </div>
-      </div>
+      </ng-template>
+      <ng-template #photo>
+        <div fxFlex="80" style="margin-top: 16px">
+          <div style="text-align: center; border-bottom: 1px solid lightgray; padding-bottom: 16px">
+            <div class="mat-card-title" style="color: darkslategray;">Photo</div>
+            <div class="mat-card-subtitle" style="color: darkslategray">Add a nice photo of yourself for your profile.</div>
+          </div>
+          <!--        Form field-->
+          <div fxLayout="row">
+            <div fxFlex="15"></div>
+            <div fxFlex="70">
+              <div style="margin-top: 24px">Image preview</div>
+              <div style="margin: 16px 0 16px 0">
+                <div fxLayout="row" style="padding: 16px; border: 1px solid lightgray; border-radius: 4px; background-color: #F2F3F5">
+                  <div fxFlex="33"></div>
+                  <div fxFlex="34">
+                    <img class="center" [src]="previewUrl" alt="" style="cursor: pointer" (click)="hiddenfileinput.click()">
+                  </div>
+                  <div fxFlex="33"></div>
+                </div>
+                <div style="margin-top: 16px">Add/Change image</div>
+                <div style="margin-top: 12px">
+                  <form>
+                    <div fxLayout="column">
+                      <input type="file" style="width: 90%; cursor: pointer" #hiddenfileinput (change)="fileProgress($event)">
+                    </div>
+                  </form>
+                </div>
+                <mat-divider style="margin: 16px 0 16px 0"></mat-divider>
+                <div fxLayoutAlign="center center">
+                  <button mat-raised-button color="warn" (click)="savePhoto()">Save</button>
+                </div>
+              </div>
+            </div>
+            <div fxFlex="15"></div>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
   <div fxFlex="20"></div>
