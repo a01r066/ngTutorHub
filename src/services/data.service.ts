@@ -111,4 +111,11 @@ export class DataService {
     const url = `${Constants.base_url}/auth/${uid}`;
     return this.http.put(url, data);
   }
+
+  updatePhotoProfile(file: any, uid: any){
+    const formData = new FormData();
+    formData.append('file', file);
+    const url = `${Constants.base_url}/auth/${uid}/photo`;
+    return this.http.put(url, formData);
+  }
 }

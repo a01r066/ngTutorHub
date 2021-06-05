@@ -13,14 +13,14 @@
           <ng-template [ngIf]="courses?.length > 0" [ngIfElse]="cartEmpty">
             <mat-grid-list cols="1" rowHeight="6:1" gutterSize="1px">
               <mat-grid-tile *ngFor="let course of courses; let i = index" style="border: 1px solid lightgray;">
-                <div fxFlex fxLayout="row" style="margin-top: 16px" fxLayoutAlign="center center" fxLayoutGap="16px">
-                  <div fxFlex="15"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" style="width: 8vw;"></div>
-                  <div fxFlex="65" style="padding: 0 16px 0 16px">
+                <div fxFlex fxLayout="row" style="margin-top: 16px" fxLayoutAlign="center center">
+                  <div fxFlex="15"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" width="100%"></div>
+                  <div fxFlex="70" style="padding: 16px">
                     <div class="mat-title">{{ course.courseId.title }}</div>
                     <div class="mat-card-subtitle" style="color: darkslategray">{{ course.courseId.description }}</div>
                   </div>
                   <div fxFlex="10"><span style="font-weight: bold; color: red">$ {{ getDiscountedPrice(course) | number }}</span><br/><span style="text-decoration: line-through; color: gray; font-style: italic">$ {{ getPrice(course) }}</span></div>
-                  <div fxFlex="10"><button mat-icon-button (click)="removeCourse(i)"><mat-icon>delete</mat-icon></button></div>
+                  <div fxFlex="5"><button mat-icon-button (click)="removeCourse(i)"><mat-icon>delete</mat-icon></button></div>
                 </div>
               </mat-grid-tile>
             </mat-grid-list>

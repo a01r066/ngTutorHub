@@ -13,10 +13,10 @@
         <div style="margin-top: 48px">
           <div style="font-size: 1.25rem; font-weight: 500; color: darkslategray; margin-bottom: 16px">Order Details</div>
           <div>
-            <mat-grid-list cols="1" rowHeight="8:1" gutterSize="1px">
+            <mat-grid-list cols="1" rowHeight="7:1" gutterSize="1px">
               <mat-grid-tile *ngFor="let course of courses; let i = index" style="border: 1px solid lightgray;">
                 <div fxFlex fxLayout="row" style="margin-top: 16px" fxLayoutAlign="center center">
-                  <div fxFlex="15" style="margin: 16px 0 0 16px"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" style="width: 6vw;"></div>
+                  <div fxFlex="15" style="margin: 16px 0 0 16px"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" width="100%"></div>
                   <div fxFlex="75" style="margin: -8px 0 0 16px">
                     <div class="mat-title">{{ course.title }}</div>
                     <div class="mat-card-subtitle" style="color: darkslategray">{{ course.courseId.description }}</div>

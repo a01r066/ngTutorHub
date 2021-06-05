@@ -7,6 +7,9 @@ import {AngularFireAuth} from "@angular/fire/auth";
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import firebase from 'firebase';
 import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
+import {UiService} from "../../services/ui.service";
+import {Store} from "@ngrx/store";
+import * as fromApp from '../app.reducer';
 
 @Injectable({
   providedIn: "root"
@@ -18,15 +21,51 @@ export class AuthService {
   authChanged = new Subject<boolean>();
 
   constructor(private http: HttpClient,
-              private afAuth: AngularFireAuth) {
+              private afAuth: AngularFireAuth,
+              private uiService: UiService,
+              private store: Store<{ui: fromApp.State}>) {
   }
 
   initAuthListener(){
     this.user = this.getCurrentUser();
   }
 
+  // Get currently logged in user from session
+  getCurrentUser(): User {
+    const token = sessionStorage.getItem('token') || undefined;
+    const email = sessionStorage.getItem('email') || undefined;
+
+    if(token?.length === 171){
+      // JWT token
+      const url = `${Constants.base_url}/auth/me`;
+      this.http.get(url, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        }
+      }).subscribe(res => {
+        this.user = (res as any).data;
+        this.authChanged.next(true);
+        this.isAuthenticated = true;
+        return this.user;
+      }, error => {
+        // console.log(`User is un-authorized: ${error.message}`);
+      })
+    } else if(typeof token !== undefined) {
+      // Gmail, facebook token
+      this.loginWithGmailFbToken(token, email).subscribe(res => {
+        this.user = (res as any).data;
+        this.authChanged.next(true);
+        this.isAuthenticated = true;
+        return this.user;
+      });
+    }
+
+    return this.user || undefined;
+  }
+
   // Authentication
   registerUser(formData: any){
+    this.store.dispatch({ type: 'START_LOADING' });
     const data = {
       "displayName": formData.name,
       "email": formData.email,
@@ -53,6 +92,7 @@ export class AuthService {
   }
 
   loginUser(formData: any){
+    this.store.dispatch({ type: 'START_LOADING' });
     const data = {
       "email": formData.email,
       "password": formData.password
@@ -62,6 +102,7 @@ export class AuthService {
   }
 
   loginViaGmailFB(type: any){
+    this.store.dispatch({ type: 'START_LOADING' });
     let provider: any;
     if(type === 'fb'){
       provider = new FacebookAuthProvider();
@@ -85,37 +126,6 @@ export class AuthService {
     }
     const url = `${Constants.base_url}/auth/gLogin`;
     return this.http.post(url, data);
-  }
-
-  // Get currently logged in user from session
-  getCurrentUser(): User {
-    const token = sessionStorage.getItem('token') || undefined;
-    const email = sessionStorage.getItem('email') || undefined;
-
-    if(token?.length === 171){
-      // JWT token
-      const url = `${Constants.base_url}/auth/me`;
-      this.http.get(url, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        }
-      }).subscribe(res => {
-        this.user = (res as any).data;
-        this.authChanged.next(true);
-        this.isAuthenticated = true;
-      }, error => {
-        // console.log(`User is un-authorized: ${error.message}`);
-      })
-    } else if(typeof token !== undefined) {
-      // Gmail, facebook token
-      this.loginWithGmailFbToken(token, email).subscribe(res => {
-        this.user = (res as any).data;
-        this.authChanged.next(true);
-        this.isAuthenticated = true;
-      });
-    }
-
-    return this.user || undefined;
   }
 
   isAuth(){

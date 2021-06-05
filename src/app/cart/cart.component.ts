@@ -4,6 +4,7 @@ import {DataService} from "../../services/data.service";
 import {Course} from "../models/course.model";
 import {Router} from "@angular/router";
 import {User} from "../models/user.model";
+import {Constants} from "../helpers/constants";
 
 @Component({
   selector: 'app-cart',
@@ -12,7 +13,7 @@ import {User} from "../models/user.model";
 })
 export class CartComponent implements OnInit {
   courses: any;
-  base_url = 'http://18.117.94.38:3000/uploads/';
+  base_url = `${Constants.base_upload}/courses/`;
 
   originalPrice = 0;
   discountedAmount = 0;

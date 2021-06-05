@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../models/user.model";
@@ -12,7 +12,7 @@ import {SlugifyPipe} from "../../helpers/slugify.pipe";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
   base_url = 'http://localhost:3000/uploads/users';
   photoURL!: any;
 
@@ -43,6 +43,9 @@ export class HeaderComponent implements OnInit {
     this.dataService.getCategories().subscribe(res => {
       this.categories = (res as any).data;
     })
+  }
+
+  ngAfterViewInit(): void {
   }
 
   refreshUser(){

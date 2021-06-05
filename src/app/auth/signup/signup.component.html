@@ -31,7 +31,10 @@
           <input matInput type="password" placeholder="Your password" autocomplete="on" formControlName="password" required>
           <mat-error>Missing password.</mat-error>
         </mat-form-field>
-        <div style="text-align: center"><button mat-raised-button color="primary" style="width: 96px; height: 40px; font-size: 1.1rem" [disabled]="signupForm.invalid">Login</button></div>
+        <div fxLayoutAlign="center center">
+          <button mat-raised-button color="primary" style="width: 96px; height: 40px; font-size: 1.1rem" [disabled]="signupForm.invalid" *ngIf="!(isLoading$ | async)">Sign up</button>
+          <mat-spinner style="transform: scale(0.5)" *ngIf="(isLoading$ | async)"></mat-spinner>
+        </div>
       </form>
     </div>
   </div>

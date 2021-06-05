@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {Subject, Subscription} from "rxjs";
 import {DecimalPipe} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Constants} from "../helpers/constants";
 
 declare var paypal: any;
 
@@ -18,7 +19,7 @@ declare var paypal: any;
 export class CheckoutComponent implements OnInit, AfterViewInit {
   courses: any;
   coursesId: string[] = [];
-  base_url = 'http://18.117.94.38:3000/uploads/courses/';
+  base_url = `${Constants.base_upload}/courses/`;
 
   originalPrice = 0;
   discountedAmount = 0;

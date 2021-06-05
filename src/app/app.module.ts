@@ -27,6 +27,8 @@ import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
 import { ProfileComponent } from './home/profile/profile.component';
+import {StoreModule} from "@ngrx/store";
+import { appReducer} from "./app.reducer";
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { ProfileComponent } from './home/profile/profile.component';
     HttpClientModule,
     AuthModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    StoreModule.forRoot({ui: appReducer}) // allow map multiple reducer with key
   ],
   providers: [DecimalPipe],
   bootstrap: [AppComponent]

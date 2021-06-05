@@ -6,6 +6,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
 import {UiService} from "../../../services/ui.service";
+import {Constants} from "../../helpers/constants";
 
 @Component({
   selector: 'app-course-detail',
@@ -21,7 +22,7 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
   objectives: any;
   videoUrl!: SafeResourceUrl;
 
-  base_url = 'http://18.117.94.38:3000/uploads/courses';
+  base_url = `${Constants.base_upload}/courses/`;
 
   isPurchased = false;
   user!: User;
@@ -54,7 +55,8 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
           const demoLecture = this.lectures[0];
           this.dataService.getChaptersByLectureId(demoLecture._id).subscribe(res => {
             this.demoChapters = (res as any).data;
-            // console.log('demoChapters: '+this.demoChapters[0].title);
+            console.log('couseId: '+this.course._id);
+
             let unSafeUrl = `${this.base_url}/${this.course._id}/${this.demoChapters[0].file}`;
             this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unSafeUrl);
           })
