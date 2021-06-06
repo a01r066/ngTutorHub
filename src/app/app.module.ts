@@ -29,6 +29,7 @@ import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
 import { ProfileComponent } from './home/profile/profile.component';
 import {StoreModule} from "@ngrx/store";
 import { appReducer} from "./app.reducer";
+import { LoadingComponent } from './shares/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { appReducer} from "./app.reducer";
     OrdersComponent,
     SearchComponent,
     SlugifyPipe,
-    ProfileComponent
+    ProfileComponent,
+    LoadingComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

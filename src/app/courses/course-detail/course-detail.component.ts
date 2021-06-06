@@ -11,6 +11,8 @@ import {Observable} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
+import {LoadingService} from "../../../services/loading.service";
+import {finalize, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-course-detail',
@@ -42,7 +44,8 @@ export class CourseDetailComponent implements OnInit {
               private router: Router,
               private sanitizer: DomSanitizer,
               private snackBar: MatSnackBar,
-              private uiService: UiService) { }
+              private uiService: UiService,
+              private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.user = this.authService.user;
@@ -72,7 +75,13 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onClickLecture(lecture: any){
-    this.chapters$ = this.dataService.getChaptersByLectureId(lecture._id);
+    this.loadingService.loadingOn();
+    this.chapters$ = this.dataService.getChaptersByLectureId(lecture._id)
+      .pipe(
+        map(chapters => chapters),
+        finalize(() => {
+      this.loadingService.loadingOff();
+    }));
   }
 
   onClickChapter(chapter: any){

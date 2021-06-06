@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {DataService} from "../../services/data.service";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
-import {Subject, Subscription} from "rxjs";
 import {DecimalPipe} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Constants} from "../helpers/constants";
@@ -18,7 +17,7 @@ declare var paypal: any;
 
 export class CheckoutComponent implements OnInit, AfterViewInit {
   courses: any;
-  coursesId: string[] = [];
+  coursesId: any[] = [];
   base_url = `${Constants.base_upload}/courses/`;
 
   originalPrice = 0;
@@ -34,8 +33,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
 
   paidFor = false;
-
-  isDataFetched = new Subject();
 
   constructor(private authService: AuthService,
               private dataService: DataService,
@@ -73,7 +70,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   private getSummary() {
     for(let course of this.courses){
       this.calculate(course);
-      this.coursesId.push(course.courseId._id);
+      this.coursesId.push({ "courseId": course.courseId._id});
     }
 
     this.getPurchaseUnits();
@@ -172,17 +169,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   checkout(payment: any){
     this.dataService.checkout(payment).subscribe(res => {
-      // console.log((res as any).data);
-      this.authService.getCurrentUser();
+
+      this.authService.initAuthListener();
 
       // Clear cart
       this.courses = this.user.cart;
       this.getSummary();
-      // if((res as any).success === true){
-      //   this.router.navigate(['home/my-courses/learning']);
-      // } else {
-      //   this.router.navigate(['']);
-      // }
+      if((res as any).success === true){
+        this.router.navigate(['home/my-courses/learning']);
+      } else {
+        this.router.navigate(['']);
+      }
     })
   }
 

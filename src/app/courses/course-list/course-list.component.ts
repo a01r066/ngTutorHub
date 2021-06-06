@@ -6,6 +6,8 @@ import {Category} from "../../models/category.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../models/course.model";
 import {Observable, Subject} from "rxjs";
+import {LoadingService} from "../../../services/loading.service";
+import {finalize, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-course-list',
@@ -31,7 +33,8 @@ export class CourseListComponent implements OnInit {
     private dataService: DataService,
     private uiService: UiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +43,7 @@ export class CourseListComponent implements OnInit {
     this.uiService.categorySub.subscribe(category => {
       this.selectedCategory = category;
       // Get courses
-      this.courses$ = this.dataService.getCoursesByCategoryId(category._id);
+      this.getCoursesByCategory();
     })
   }
 
@@ -50,8 +53,18 @@ export class CourseListComponent implements OnInit {
       this.selectedCategory = category;
 
       // Get courses
-      this.courses$ = this.dataService.getCoursesByCategoryId(category._id);
+      this.getCoursesByCategory();
     })
+  }
+
+  private getCoursesByCategory(){
+    this.loadingService.loadingOn();
+    this.courses$ = this.dataService.getCoursesByCategoryId(this.selectedCategory._id)
+      .pipe(
+        map(courses => courses),
+        finalize(() => {
+          this.loadingService.loadingOff();
+        }));
   }
 
   next() {

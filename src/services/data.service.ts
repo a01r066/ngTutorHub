@@ -7,16 +7,18 @@ import {Chapter} from "../app/models/chapter.model";
 import {AuthService} from "../app/auth/auth.service";
 import {Constants} from "../app/helpers/constants";
 import {Observable} from "rxjs";
-import {map, shareReplay} from "rxjs/operators";
+import {finalize, map, shareReplay} from "rxjs/operators";
 import {User} from "../app/models/user.model";
+import {LoadingService} from "./loading.service";
 
 @Injectable({
   providedIn: "root"
 })
 
 export class DataService {
-  constructor(private http: HttpClient,
-              private authService: AuthService) {
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService) {
   }
 
   // Course
@@ -38,12 +40,16 @@ export class DataService {
     const url = `${Constants.base_url}/course/${slug}`;
     return this.http.get<Course>(url)
       .pipe(
-        map(res => (res as any).data), shareReplay());
+        map(res => (res as any).data),
+        shareReplay());
   }
 
-  getCoursesBySearchText(searchText: string, limit: number){
+  getCoursesBySearchText(searchText: string, limit: number): Observable<Course[]>{
     const url = `${Constants.base_url}/courses?q=${searchText}&limit=${limit}`;
-    return this.http.get<any>(url);
+    return this.http.get<Course[]>(url)
+      .pipe(
+        map(res => (res as any).data),
+        shareReplay());
   }
 
   // Category
@@ -51,7 +57,8 @@ export class DataService {
     const url = `${Constants.base_url}/categories?limit=8`;
     return this.http.get<Category[]>(url)
       .pipe(
-        map(res => (res as any).data), shareReplay());
+        map(res => (res as any).data),
+        shareReplay());
   }
 
   getCategories(): Observable<Category[]>{
@@ -94,14 +101,14 @@ export class DataService {
     return this.http.put(url, data).pipe(shareReplay());
   }
 
-  removeCartItem(courseId: any){
+  removeCartItem(courseId: any): Observable<any>{
     const url = `${Constants.base_url}/auth/removeCartItem`;
     const userId = this.authService.user._id;
     const data = {
       "userId": userId,
       "courseId": courseId
     }
-    return this.http.put(url, data);
+    return this.http.put(url, data).pipe(shareReplay());
   }
 
   checkout(payment: any){

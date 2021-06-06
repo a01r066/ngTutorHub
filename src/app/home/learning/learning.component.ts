@@ -10,18 +10,22 @@ import {User} from "../../models/user.model";
   styleUrls: ['./learning.component.css']
 })
 export class LearningComponent implements OnInit {
-  base_url = 'http://18.117.94.38:3000/uploads/';
+  base_url = 'http://localhost/uploads/';
   user!: User;
   purchasedCourses: any[] = [];
 
   constructor(
     private authService: AuthService,
-    private dataService: DataService
   ) { }
 
   ngOnInit(): void {
     this.user = this.authService.user;
     this.getPurchasedCourses();
+
+    this.authService.authChanged.subscribe(isAuth => {
+      this.user = this.authService.user;
+      this.getPurchasedCourses();
+    })
   }
 
   onClick(course: Course){
