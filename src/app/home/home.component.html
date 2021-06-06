@@ -4,9 +4,8 @@
     <div fxFlex="15"></div>
     <div fxFlex="70" fxLayoutAlign="center">
       <nav mat-tab-nav-bar>
-        <a mat-tab-link *ngFor="let category of categories; let i = index"
-           (click)="onClick(i)"
-           [active]="activeItem == category">{{ category.title }}
+        <a mat-tab-link *ngFor="let category of (categories$ | async); let i = index"
+           (click)="onClick(i)" [active]="activeLink == category">{{ category.title }}
         </a>
       </nav>
       <div fxFlex="15"></div>
@@ -18,7 +17,7 @@
     <div fxFlex="15"></div>
     <div fxFlex="70" fxlayoutAlign="center">
       <div style="width: 70vw">
-        <app-features [categories]="categories" [selectedIndex]="selectedIndex"></app-features>
+        <app-features [categories$]="categories$"></app-features>
         <app-top-categories></app-top-categories>
       </div>
     </div>

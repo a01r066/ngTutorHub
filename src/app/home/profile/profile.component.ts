@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DataService} from "../../../services/data.service";
 import {AuthService} from "../../auth/auth.service";
@@ -9,7 +9,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/users';
   links = ['Profile', 'Photo'];
   profileForm!: FormGroup;
@@ -26,9 +26,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.getPhotoURL();
     this.authService.authChanged.subscribe(isAuth => {
-      this.authService.initAuthListener();
+      this.reloadData();
     })
 
     this.profileForm = new FormGroup({
@@ -41,33 +40,21 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       headLine: new FormControl('')
     })
 
+    this.reloadData();
+  }
+
+  reloadData(){
+    this.user = this.authService.user;
     this.patchFormValues();
+    this.getPhotoURL();
   }
 
-  ngAfterViewInit(): void {
-  }
-
-  showInfo(index: any) {
-    this.selectedIndex = index;
-  }
-
-  save() {
-    const formData = this.profileForm.value;
-    this.dataService.updateProfile(formData, this.user._id).subscribe(res => {
-      this.authService.initAuthListener();
-      this.snackBar.open(`Your profile info is updated!`, null!, {
-        duration: 3000
-      })
-    });
-  }
-
-  savePhoto() {
-    this.dataService.updatePhotoProfile(this.fileData, this.user._id).subscribe(res => {
-      // this.authService.initAuthListener();
-      this.snackBar.open(`Your profile photo is updated!`, null!, {
-        duration: 3000
-      })
-    });
+  private getPhotoURL() {
+    if(!this.user.isSocial){
+      this.previewUrl = `${this.base_url}/${this.user.photoURL}`;
+    } else {
+      this.previewUrl = this.user.photoURL;
+    }
   }
 
   private patchFormValues() {
@@ -75,6 +62,35 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       fName: this.user.fName,
       lName: this.user.lName,
       headLine: this.user.headLine
+    });
+  }
+
+  showInfo(index: any) {
+    this.selectedIndex = index;
+  }
+
+  save() {
+    let changes = this.profileForm.value;
+    changes.displayName = this.profileForm.controls.fName.value + ' ' + this.profileForm.controls.lName.value;
+
+    this.dataService.updateProfile(this.user._id, changes).subscribe(res => {
+      // Reload user
+      this.authService.initAuthListener();
+
+      this.snackBar.open(`Your profile info is updated!`, null!, {
+        duration: 3000
+      })
+    });
+  }
+
+  savePhoto() {
+    this.dataService.updatePhotoProfile(this.user._id, this.fileData).subscribe(res => {
+      // Reload photo
+      // this.authService.initAuthListener();
+
+      this.snackBar.open(`Your profile photo is updated!`, null!, {
+        duration: 3000
+      })
     });
   }
 
@@ -94,14 +110,5 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     reader.onload = (_event) => {
       this.previewUrl = reader.result;
     };
-  }
-
-  private getPhotoURL() {
-    this.user = this.authService.user;
-    if(!this.user.isSocial){
-      this.previewUrl = `${this.base_url}/${this.user.photoURL}`;
-    } else {
-      this.previewUrl = this.user.photoURL;
-    }
   }
 }

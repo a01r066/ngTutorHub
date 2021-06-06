@@ -3,19 +3,22 @@ import {HttpClient} from "@angular/common/http";
 import {DataService} from "../../../services/data.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
-import {Subject, Subscription} from "rxjs";
+import {Observable, Subject, Subscription} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../../services/ui.service";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-features',
   templateUrl: './features.component.html',
   styleUrls: ['./features.component.css']
 })
-export class FeaturesComponent implements OnInit, OnDestroy {
-  base_url = 'http://18.117.94.38:3000/uploads/courses/';
-  courses: Course[] = [];
+export class FeaturesComponent implements OnInit {
+  base_url = 'http://localhost:3000/uploads/courses/';
+
+  courses$!: Observable<Course[]>;
+
   page = 1;
   discount = 90;
 
@@ -27,34 +30,24 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   size: any;
   counter: any;
 
-  categoriesSubscription!: Subscription;
-  indexSubscription!: Subscription;
-
-  @Input() categories: Category[] = [];
+  @Input() categories$!: Observable<Category[]>;
   @Input() selectedIndex: number = 0;
+  selectedCategory!: Category;
 
   constructor(private http: HttpClient,
               private dataService: DataService,
               private router: Router,
               private authService: AuthService,
-              private uiService: UiService) {
-
-    // Get courses request
-    if(this.categories.length > 0){
-      this.getBestSellerCourse(this.categories[this.selectedIndex]);
-    }
-  }
+              private uiService: UiService) {}
 
   ngOnInit(): void {
-    this.categoriesSubscription = this.uiService.categoriesSub.subscribe(categories => {
-      this.categories = categories;
-      this.getBestSellerCourse(this.categories[this.selectedIndex]);
-    })
-    this.indexSubscription = this.uiService.tabSelectedIndexSub.subscribe(index => {
+    this.getCoursesByCategory();
+
+    this.uiService.tabSelectedIndexSub.subscribe(index => {
       this.selectedIndex = index;
-      // console.log('category: '+this.categories[index].title);
-      this.getBestSellerCourse(this.categories[index]);
+      this.getCoursesByCategory();
     })
+
     this.size = window.innerWidth;
     this.getCounter();
 
@@ -67,9 +60,11 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy(): void {
-    this.categoriesSubscription.unsubscribe();
-    this.indexSubscription.unsubscribe();
+  private getCoursesByCategory(){
+    this.categories$.subscribe(categories => {
+      this.selectedCategory = categories[this.selectedIndex];
+      this.courses$ = this.dataService.getBestSellerCourseByCate(this.selectedCategory, this.page);
+    })
   }
 
   @HostListener('window:resize', ['$event'])
@@ -78,26 +73,17 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     this.getCounter();
   }
 
-  getBestSellerCourse(category: Category){
-    this.dataService.getBestSellerCourseByCate(category, this.page).subscribe(res => {
-      this.courses = (res as any).data as Course[];
-      this.isNext = (res as any).pagination.next;
-      this.isPrevious = (res as any).pagination.prev;
-      this.lastPageSub.next(res.count);
-    }, error => console.log(error.message));
-  }
-
   next() {
     if(this.isNext && !this.isLastPage){
       this.page += 1;
-      this.getBestSellerCourse(this.categories[this.selectedIndex]);
+      // this.getCourses();
     }
   }
 
   back() {
     if(this.isPrevious){
       this.page -= 1;
-      this.getBestSellerCourse(this.categories[this.selectedIndex]);
+      // this.getCourses();
     }
   }
 

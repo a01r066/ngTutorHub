@@ -6,20 +6,19 @@ import {DataService} from "../../../services/data.service";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../../services/ui.service";
 import {SlugifyPipe} from "../../helpers/slugify.pipe";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/users';
   photoURL!: any;
 
-  categories: any;
-  @Input() isAuth = false;
-  @Input() user!: User;
-  // @Output() clickedMenuItem = new EventEmitter<Category>();
+  categories$!: Observable<Category[]>;
+  user!: User;
   @ViewChild('searchText') searchTextRef!: ElementRef;
   isPlayer = false;
 
@@ -32,24 +31,20 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.user = this.authService.user;
     this.authService.authChanged.subscribe(isAuth => {
-     this.refreshUser();
+      this.user = this.authService.user;
+      this.getPhoto();
     })
 
     this.uiService.isPlayerSub.subscribe(isPlayer => {
       this.isPlayer = isPlayer;
     })
 
-    this.dataService.getCategories().subscribe(res => {
-      this.categories = (res as any).data;
-    })
+    this.categories$ = this.dataService.getCategories();
   }
 
-  ngAfterViewInit(): void {
-  }
-
-  refreshUser(){
-    this.user = this.authService.user;
+  getPhoto(){
     if(!this.user.isSocial){
       this.photoURL = `${this.base_url}/${this.user.photoURL}`;
     } else {
@@ -63,7 +58,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   onClickCart(){
-    if(this.isAuth){
+    if(this.user){
       this.router.navigate(['/cart']);
     } else {
       this.router.navigate(['/login']);
@@ -72,7 +67,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   onClickMenu(category: Category){
     this.uiService.categorySub.next(category);
-    // this.clickedMenuItem.emit(category);
   }
 
   clearText() {

@@ -5,7 +5,7 @@ import {UiService} from "../../../services/ui.service";
 import {Category} from "../../models/category.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../models/course.model";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 @Component({
   selector: 'app-course-list',
@@ -13,15 +13,14 @@ import {Subject} from "rxjs";
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {
-  base_url = 'http://18.117.94.38:3000/uploads/courses/';
+  base_url = 'http://localhost:3000/uploads/courses/';
   selectedCategory!: Category;
-  courses: Course[] = [];
+  courses$!: Observable<Course[]>;
   page = 1;
   discount = 90;
 
   isNext: any;
   isPrevious: any;
-  lastPageSub = new Subject<number>();
   isLastPage = false;
 
   size: any;
@@ -36,35 +35,35 @@ export class CourseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getCategoryBySlug();
+
     this.uiService.categorySub.subscribe(category => {
       this.selectedCategory = category;
-      this.getCategoryBySlug();
+      // Get courses
+      this.courses$ = this.dataService.getCoursesByCategoryId(category._id);
     })
-    // Get courses by category
-    this.getCategoryBySlug();
+  }
+
+  private getCategoryBySlug() {
+    const slug = this.route.snapshot.params['id'];
+    this.dataService.getCategoryBySlug(slug).subscribe(category => {
+      this.selectedCategory = category;
+
+      // Get courses
+      this.courses$ = this.dataService.getCoursesByCategoryId(category._id);
+    })
   }
 
   next() {
     if(this.isNext && !this.isLastPage){
       this.page += 1;
-      this.getBestSellerCourse();
     }
   }
 
   back() {
     if(this.isPrevious){
       this.page -= 1;
-      this.getBestSellerCourse();
     }
-  }
-
-  getBestSellerCourse(){
-    // this.dataService.getBestSellerCourses(this.page).subscribe(res => {
-    //   this.courses = (res as any).data as Course[];
-    //   this.isNext = (res as any).pagination.next;
-    //   this.isPrevious = (res as any).pagination.prev;
-    //   this.lastPageSub.next(res.count);
-    // });
   }
 
   onClick(course: any){
@@ -87,21 +86,5 @@ export class CourseListComponent implements OnInit {
     } else {
       this.counter = 1;
     }
-  }
-
-  private getCategoryBySlug() {
-    let slug;
-    if(this.selectedCategory){
-      slug = this.selectedCategory.slug;
-    } else {
-      slug = this.route.snapshot.params['id'];
-    }
-    this.dataService.getCategoryBySlug(slug).subscribe(res => {
-      this.selectedCategory = (res as any).data;
-
-      this.dataService.getCoursesByCategoryId(this.selectedCategory._id).subscribe(res => {
-        this.courses = (res as any).data;
-      })
-    })
   }
 }

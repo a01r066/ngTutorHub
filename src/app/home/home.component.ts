@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Category} from "../models/category.model";
 import {DataService} from "../../services/data.service";
-import {Subject, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import {UiService} from "../../services/ui.service";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -11,27 +10,26 @@ import {Router} from "@angular/router";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  categories: Category[] = [];
-  activeItem = this.categories[0];
-
+  categories$!: Observable<Category[]>;
+  selectedCategory!: Category;
   selectedIndex = 0;
+  activeLink!: Category;
 
   constructor(
     private dataService: DataService,
-    private uiService: UiService,
-    private router: Router
+    private uiService: UiService
   ) { }
 
   ngOnInit(): void {
-    this.dataService.getTopCategories().subscribe(res => {
-      this.categories = (res as any).data;
-      this.uiService.categoriesSub.next(this.categories);
+    this.categories$ = this.dataService.getTopCategories();
+    this.categories$.subscribe(categories => {
+      this.selectedCategory = categories[this.selectedIndex];
+      this.activeLink = this.selectedCategory;
     })
   }
 
   onClick(i: number){
     this.uiService.tabSelectedIndexSub.next(i);
     this.selectedIndex = i;
-    this.activeItem = this.categories[i];
   }
 }

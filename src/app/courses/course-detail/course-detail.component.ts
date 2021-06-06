@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DataService} from "../../../services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
@@ -7,6 +7,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
 import {UiService} from "../../../services/ui.service";
 import {Constants} from "../../helpers/constants";
+import {Observable} from "rxjs";
+import {Course} from "../../models/course.model";
+import {Lecture} from "../../models/lecture.model";
+import {Chapter} from "../../models/chapter.model";
 
 @Component({
   selector: 'app-course-detail',
@@ -14,11 +18,14 @@ import {Constants} from "../../helpers/constants";
   styleUrls: ['./course-detail.component.css'],
 })
 
-export class CourseDetailComponent implements OnInit, AfterViewInit {
-  course: any;
-  lectures: any;
-  chapters: any;
-  demoChapters: any;
+export class CourseDetailComponent implements OnInit {
+  course!: Course;
+  lectures$!: Observable<Lecture[]>;
+  lectures: Lecture[] = [];
+
+  chapters$!: Observable<Chapter[]>;
+  chapters: Chapter[] = [];
+
   objectives: any;
   videoUrl!: SafeResourceUrl;
 
@@ -40,39 +47,32 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.user = this.authService.user;
     const slug = this.route.snapshot.params['id'];
-    this.dataService.getCourseBySlug(slug).subscribe(res => {
-      this.course = (res as any).data;
+    this.dataService.getCourseBySlug(slug).subscribe(course => {
+      this.course = course;
 
-      this.checkCourseIsPurchased(this.course);
+      this.checkCourseIsPurchased(course);
       if(!this.isPurchased){
         // get objectives
         this.objectives = this.course.objectives.substring(1).split('- ');
-
-        this.dataService.getLecturesByCourseId(this.course._id).subscribe(res => {
-          this.lectures = (res as any).data;
-
-          // Demo lecture
-          const demoLecture = this.lectures[0];
-          this.dataService.getChaptersByLectureId(demoLecture._id).subscribe(res => {
-            this.demoChapters = (res as any).data;
-            console.log('couseId: '+this.course._id);
-
-            let unSafeUrl = `${this.base_url}/${this.course._id}/${this.demoChapters[0].file}`;
-            this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(unSafeUrl);
-          })
-        })
+        this.lectures$ = this.dataService.getLecturesByCourseId(this.course._id);
       }
-    })
+    });
   }
 
-  ngAfterViewInit(): void {
-    this.authService.getCurrentUser();
+  private checkCourseIsPurchased(course: any) {
+    const purchasedCourses = this.user.purchased_courses;
+    for(let res of purchasedCourses){
+      const pCourse = (res as any).courseId;
+      if(pCourse._id === course._id){
+        this.isPurchased = true;
+        this.uiService.isCoursePurchased.next(true);
+        return
+      }
+    }
   }
 
   onClickLecture(lecture: any){
-    this.dataService.getChaptersByLectureId(lecture._id).subscribe(res => {
-      this.chapters = (res as any).data;
-    })
+    this.chapters$ = this.dataService.getChaptersByLectureId(lecture._id);
   }
 
   onClickChapter(chapter: any){
@@ -82,7 +82,7 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
   addToCart(course: any){
     if(this.user && !this.isPurchased){
       this.dataService.addToCart(this.authService.user, course).subscribe(res => {
-        this.authService.getCurrentUser();
+        this.authService.initAuthListener();
       });
       this.snackBar.open(`${course.title} added to cart!`, null!, {
         duration: 3000
@@ -95,7 +95,7 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
   buyNow(course: any) {
     if(this.user && !this.isPurchased){
       this.dataService.addToCart(this.authService.user, course).subscribe(res => {
-        this.authService.getCurrentUser();
+        this.authService.initAuthListener();
         this.router.navigate(['checkout']);
       });
       this.snackBar.open(`${course.title} added to cart!`, null!, {
@@ -103,19 +103,6 @@ export class CourseDetailComponent implements OnInit, AfterViewInit {
       })
     } else {
       this.router.navigate(['/login']);
-    }
-  }
-
-  private checkCourseIsPurchased(course: any) {
-    const purchasedCourses = this.user.purchased_courses;
-    for(let res of purchasedCourses){
-      const pCourse = (res as any).courseId;
-      if(pCourse._id === course._id){
-        this.isPurchased = true;
-        console.log('isCoursePurchased: '+this.isPurchased);
-        this.uiService.isCoursePurchased.next(true);
-        return
-      }
     }
   }
 }

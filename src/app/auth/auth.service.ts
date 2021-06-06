@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Constants} from "../helpers/constants";
 import {AngularFireAuth} from "@angular/fire/auth";
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
@@ -10,6 +10,7 @@ import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
 import {UiService} from "../../services/ui.service";
 import {Store} from "@ngrx/store";
 import * as fromApp from '../app.reducer';
+import {map, shareReplay} from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -17,7 +18,6 @@ import * as fromApp from '../app.reducer';
 
 export class AuthService {
   user!: User;
-  isAuthenticated = false;
   authChanged = new Subject<boolean>();
 
   constructor(private http: HttpClient,
@@ -27,40 +27,49 @@ export class AuthService {
   }
 
   initAuthListener(){
-    this.user = this.getCurrentUser();
+    this.getCurrentUser().subscribe(user => {
+      this.user = user;
+      this.authChanged.next(true);
+    });
+  }
+
+  // Set current user in your session after a successful login
+  setCurrentUser(token: any, email: any): void {
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('email', email);
+
+    this.getCurrentUser().subscribe(user => {
+      this.user = user;
+      this.authChanged.next(true);
+    });
   }
 
   // Get currently logged in user from session
-  getCurrentUser(): User {
+  getCurrentUser(): Observable<User> {
     const token = sessionStorage.getItem('token') || undefined;
     const email = sessionStorage.getItem('email') || undefined;
 
     if(token?.length === 171){
       // JWT token
       const url = `${Constants.base_url}/auth/me`;
-      this.http.get(url, {
+      return this.http.get<User>(url, {
         headers: {
           "Authorization": `Bearer ${token}`,
         }
-      }).subscribe(res => {
-        this.user = (res as any).data;
-        this.authChanged.next(true);
-        this.isAuthenticated = true;
-        return this.user;
-      }, error => {
-        // console.log(`User is un-authorized: ${error.message}`);
       })
-    } else if(typeof token !== undefined) {
-      // Gmail, facebook token
-      this.loginWithGmailFbToken(token, email).subscribe(res => {
-        this.user = (res as any).data;
-        this.authChanged.next(true);
-        this.isAuthenticated = true;
-        return this.user;
-      });
+        .pipe(
+          map(res => (res as any).data), shareReplay());
     }
-
-    return this.user || undefined;
+    else {
+      const data = {
+        "email": email,
+        "accessToken": token
+      }
+      const url = `${Constants.base_url}/auth/gLogin`;
+      return this.http.post(url, data)
+        .pipe(
+          map(res => (res as any).data), shareReplay());
+    }
   }
 
   // Authentication
@@ -78,7 +87,6 @@ export class AuthService {
 
   // Store gmail user data to db
   storeGmailFbUserData(user: any, accessToken: any){
-    // console.log('name: '+user.displayName);
     const data = {
       "displayName": user.displayName,
       "email": user.email,
@@ -112,32 +120,10 @@ export class AuthService {
     return this.afAuth.signInWithPopup(provider);
   }
 
-  // Set current user in your session after a successful login
-  setCurrentUser(token: any, email: any): void {
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('email', email);
-    this.getCurrentUser();
-  }
-
-  loginWithGmailFbToken(accessToken: any, email: any) {
-    const data = {
-      "email": email,
-      "accessToken": accessToken
-    }
-    const url = `${Constants.base_url}/auth/gLogin`;
-    return this.http.post(url, data);
-  }
-
-  isAuth(){
-    return this.isAuthenticated;
-  }
-
   logout(){
-    this.afAuth.signOut().then();
-
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('email');
-    this.isAuthenticated = false;
+    this.afAuth.signOut().then();
     this.user = null!;
     this.authChanged.next(false);
   }

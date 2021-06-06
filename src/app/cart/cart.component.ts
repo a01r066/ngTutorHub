@@ -31,11 +31,6 @@ export class CartComponent implements OnInit {
     if(this.user){
       this.fetchCourses();
     }
-
-    this.authService.authChanged.subscribe(isAuth => {
-      this.user = this.authService.user;
-      this.fetchCourses();
-    })
   }
 
   private fetchCourses() {

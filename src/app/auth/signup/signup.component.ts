@@ -49,6 +49,7 @@ export class SignupComponent implements OnInit {
         });
       } else {
         const user = (res as any).data;
+
         const token = (res as any).token;
         this.authService.setCurrentUser(token, user.email);
         this.router.navigate(['']);
@@ -64,8 +65,8 @@ export class SignupComponent implements OnInit {
   onGmailFbRegister(type: any) {
     this.authService.loginViaGmailFB(type).then(res => {
       this.store.dispatch({ type: 'STOP_LOADING' });
-
       const user = (res as any).user;
+
       const token = (res as any).credential.accessToken;
       this.authService.storeGmailFbUserData((res as any).user, token).subscribe(() => {
         this.authService.setCurrentUser(token, user.email);

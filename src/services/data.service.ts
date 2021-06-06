@@ -6,6 +6,9 @@ import {Lecture} from "../app/models/lecture.model";
 import {Chapter} from "../app/models/chapter.model";
 import {AuthService} from "../app/auth/auth.service";
 import {Constants} from "../app/helpers/constants";
+import {Observable} from "rxjs";
+import {map, shareReplay} from "rxjs/operators";
+import {User} from "../app/models/user.model";
 
 @Injectable({
   providedIn: "root"
@@ -17,29 +20,25 @@ export class DataService {
   }
 
   // Course
-  getCourses(){
-    const url = `${Constants.base_url}/courses?limit=9`;
-    return this.http.get<Course>(url);
-  }
-
-  getBestSellerCourseByCate(category: Category, page: number){
+  getBestSellerCourseByCate(category: Category, page: number): Observable<Course[]>{
     const url = `${Constants.base_url}/categories/${category._id}/courses?bestseller=true&page=${page}&limit=5`;
-    return this.http.get<any>(url);
+    return this.http.get<Course[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
-  getCourseById(courseId: any){
-    const url = `${Constants.base_url}/courses/${courseId}`;
-    return this.http.get<Course>(url);
-  }
-
-  getCoursesByCategoryId(categoryId: any){
+  getCoursesByCategoryId(categoryId: any): Observable<Course[]>{
     const url = `${Constants.base_url}/categories/${categoryId}/courses`;
-    return this.http.get<Course>(url);
+    return this.http.get<Course[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
-  getCourseBySlug(slug: any){
+  getCourseBySlug(slug: any): Observable<Course>{
     const url = `${Constants.base_url}/course/${slug}`;
-    return this.http.get<Course>(url);
+    return this.http.get<Course>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
   getCoursesBySearchText(searchText: string, limit: number){
@@ -48,41 +47,51 @@ export class DataService {
   }
 
   // Category
-  getTopCategories(){
+  getTopCategories(): Observable<Category[]>{
     const url = `${Constants.base_url}/categories?limit=8`;
-    return this.http.get<Category>(url);
+    return this.http.get<Category[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
-  getCategories(){
+  getCategories(): Observable<Category[]>{
     const url = `${Constants.base_url}/categories`;
-    return this.http.get<Category>(url);
+    return this.http.get<Category>(url).
+    pipe(
+      map(res => (res as any).data), shareReplay());
   }
 
-  getCategoryBySlug(slug: any){
+  getCategoryBySlug(slug: any): Observable<Category>{
     const url = `${Constants.base_url}/categories/${slug}`;
-    return this.http.get<Category>(url);
+    return this.http.get<Category>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
   // Lecture
-  getLecturesByCourseId(courseId: any){
+  getLecturesByCourseId(courseId: any): Observable<Lecture[]>{
     const url = `${Constants.base_url}/lectures/${courseId}`;
-    return this.http.get<Lecture[]>(url);
+    return this.http.get<Lecture[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
   // Chapter
-  getChaptersByLectureId(lectureId: any){
+  getChaptersByLectureId(lectureId: any): Observable<Chapter[]>{
     const url = `${Constants.base_url}/lectures/${lectureId}/chapters`;
-    return this.http.get<Chapter[]>(url);
+    return this.http.get<Chapter[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
   }
 
   // Cart
-  addToCart(user: any, course: any){
+  addToCart(user: any, course: any): Observable<any>{
     const url = `${Constants.base_url}/auth/addToCart`;
     const data = {
       "userId": user._id,
       "courseId": course._id
     }
-    return this.http.put(url, data);
+    return this.http.put(url, data).pipe(shareReplay());
   }
 
   removeCartItem(courseId: any){
@@ -101,21 +110,18 @@ export class DataService {
   }
 
   // User
-  updateProfile(formData: any, uid: string){
-    const data = {
-      "displayName": `${formData.fName} ${formData.lName}`,
-      "fName": formData.fName,
-      "lName": formData.lName,
-      "headLine": formData.headLine
-    }
-    const url = `${Constants.base_url}/auth/${uid}`;
-    return this.http.put(url, data);
+  updateProfile(userId: string, changes: Partial<User>): Observable<any>{
+    const url = `${Constants.base_url}/auth/${userId}`;
+    return this.http.put(url, changes).pipe(
+      shareReplay()
+    );
   }
 
-  updatePhotoProfile(file: any, uid: any){
+  updatePhotoProfile(userId: string, file: any): Observable<any>{
     const formData = new FormData();
     formData.append('file', file);
-    const url = `${Constants.base_url}/auth/${uid}/photo`;
-    return this.http.put(url, formData);
+    const url = `${Constants.base_url}/auth/${userId}/photo`;
+
+    return this.http.put(url, formData).pipe(shareReplay());
   }
 }
