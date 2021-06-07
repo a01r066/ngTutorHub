@@ -14,6 +14,7 @@ import {LoadingService} from "../services/loading.service";
 })
 export class AppComponent implements OnInit {
   user!: User;
+  isAuthenticated = false;
   constructor(private authService: AuthService,
               private router: Router,
               private uiService: UiService,

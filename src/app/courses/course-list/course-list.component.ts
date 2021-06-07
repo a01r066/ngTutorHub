@@ -17,7 +17,7 @@ import {finalize, map} from "rxjs/operators";
 export class CourseListComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
   selectedCategory!: Category;
-  courses$!: Observable<Course[]>;
+  loadingCourses$!: Observable<Course[]>;
   page = 1;
   discount = 90;
 
@@ -58,13 +58,9 @@ export class CourseListComponent implements OnInit {
   }
 
   private getCoursesByCategory(){
-    this.loadingService.loadingOn();
-    this.courses$ = this.dataService.getCoursesByCategoryId(this.selectedCategory._id)
-      .pipe(
-        map(courses => courses),
-        finalize(() => {
-          this.loadingService.loadingOff();
-        }));
+    const courses$ = this.dataService.getCoursesByCategoryId(this.selectedCategory._id)
+      .pipe(map(courses => courses));
+    this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$)
   }
 
   next() {

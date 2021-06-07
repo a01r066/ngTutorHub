@@ -3,6 +3,7 @@ import {Course} from "../../models/course.model";
 import {AuthService} from "../../auth/auth.service";
 import {DataService} from "../../../services/data.service";
 import {User} from "../../models/user.model";
+import {Constants} from "../../helpers/constants";
 
 @Component({
   selector: 'app-learning',
@@ -10,7 +11,7 @@ import {User} from "../../models/user.model";
   styleUrls: ['./learning.component.css']
 })
 export class LearningComponent implements OnInit {
-  base_url = 'http://localhost/uploads/';
+  base_url = `${Constants.base_upload}/courses/`;
   user!: User;
   purchasedCourses: any[] = [];
 

@@ -23,6 +23,7 @@
         <mat-menu #profileMenu="matMenu">
           <button mat-menu-item [routerLink]="['/user/profile']">My Profile</button>
           <button mat-menu-item [routerLink]="['/home/my-courses/learning']">My Learning</button>
+          <button mat-menu-item (click)="sendFeedback()">Send Feedback</button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="logout()">Log out</button>
         </mat-menu>

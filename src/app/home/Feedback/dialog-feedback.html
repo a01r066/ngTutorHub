@@ -1,0 +1,48 @@
+<h1 class="mat-card-title">Feedback Form</h1>
+<form [formGroup]="feedbackForm">
+  <mat-dialog-content>
+<!--    <mat-form-field>-->
+<!--      <input matInput-->
+<!--             placeholder="Enter name"-->
+<!--             formControlName="displayName" required>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field>-->
+<!--      <input matInput-->
+<!--             placeholder="Enter email"-->
+<!--             formControlName="email" required>-->
+<!--    </mat-form-field>-->
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter subject"
+             formControlName="subject">
+    </mat-form-field>
+    <!--  <mat-form-field>-->
+    <!--    <mat-select placeholder="Select category"-->
+    <!--                formControlName="category">-->
+    <!--      <mat-option value="BEGINNER">-->
+    <!--        Beginner-->
+    <!--      </mat-option>-->
+    <!--      <mat-option value="INTERMEDIATE">-->
+    <!--        Intermediate-->
+    <!--      </mat-option>-->
+    <!--      <mat-option value="ADVANCED">-->
+    <!--        Advanced-->
+    <!--      </mat-option>-->
+    <!--    </mat-select>-->
+    <!--  </mat-form-field>-->
+    <mat-form-field>
+        <textarea #messageText matInput placeholder="Enter message"
+                  formControlName="message" required>
+        </textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+    <button mat-raised-button
+            (click)="onNoClick()">
+      Back
+    </button>
+    <button mat-raised-button color="primary" (click)="send()" [disabled]="feedbackForm.invalid">
+      Send
+    </button>
+  </mat-dialog-actions>
+</form>

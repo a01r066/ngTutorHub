@@ -8,7 +8,7 @@
     <div>
       <div>
         <ul class="flex-container">
-          <li class="flex-item" style="cursor: pointer" *ngFor="let course of (courses$ | async) | slice:0:counter" (click)="onClick(course)">
+          <li class="flex-item" style="cursor: pointer" *ngFor="let course of (loadingCourses$ | async) | slice:0:counter" (click)="onClick(course)">
             <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
             <div style="margin: -8px 8px 0 8px">
               <div fxLayout="column" fxLayoutGap="-10px">
@@ -27,7 +27,7 @@
     <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px">All Development Courses</div>
     <div style="margin-top: -32px">
       <ul class="flex-container">
-        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of (courses$ | async); let i = index" (click)="onClick(course)">
+        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of (loadingCourses$ | async); let i = index" (click)="onClick(course)">
           <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
           <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
             <div class="mat-title">{{ course.title }}</div>

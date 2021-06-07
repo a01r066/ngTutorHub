@@ -30,6 +30,7 @@ import { ProfileComponent } from './home/profile/profile.component';
 import {StoreModule} from "@ngrx/store";
 import { appReducer} from "./app.reducer";
 import { LoadingComponent } from './shares/loading/loading.component';
+import {FeedbackComponent} from "./home/Feedback/feedback.component";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { LoadingComponent } from './shares/loading/loading.component';
     SearchComponent,
     SlugifyPipe,
     ProfileComponent,
-    LoadingComponent
+    LoadingComponent,
+    FeedbackComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

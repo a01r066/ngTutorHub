@@ -7,6 +7,8 @@ import {Category} from "../../models/category.model";
 import {UiService} from "../../../services/ui.service";
 import {SlugifyPipe} from "../../helpers/slugify.pipe";
 import {Observable} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
+import {FeedbackComponent} from "../../home/Feedback/feedback.component";
 
 @Component({
   selector: 'app-header',
@@ -21,13 +23,15 @@ export class HeaderComponent implements OnInit {
   user!: User;
   @ViewChild('searchText') searchTextRef!: ElementRef;
   isPlayer = false;
+  @Input() isAuthenticated: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private dataService: DataService,
     private uiService: UiService,
-    private slugifyPipe: SlugifyPipe
+    private slugifyPipe: SlugifyPipe,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +40,6 @@ export class HeaderComponent implements OnInit {
       this.user = this.authService.user;
       this.getPhoto();
     })
-
     this.uiService.isPlayerSub.subscribe(isPlayer => {
       this.isPlayer = isPlayer;
     })
@@ -80,5 +83,18 @@ export class HeaderComponent implements OnInit {
     let link = `search?${searchText}`.split('?')[0];
     const slugifyText = this.slugifyPipe.transform(searchText);
     this.router.navigate([link], { queryParams: { q: slugifyText }});
+  }
+
+  sendFeedback() {
+    const dialogRef = this.dialog.open(FeedbackComponent, {
+      width: '35vw',
+      data: {user: this.user},
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.user = result;
+    });
   }
 }

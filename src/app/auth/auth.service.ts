@@ -27,10 +27,7 @@ export class AuthService {
   }
 
   initAuthListener(){
-    this.getCurrentUser().subscribe(user => {
-      this.user = user;
-      this.authChanged.next(true);
-    });
+    this.subScribeCurrentUser();
   }
 
   // Set current user in your session after a successful login
@@ -38,6 +35,10 @@ export class AuthService {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('email', email);
 
+    this.subScribeCurrentUser();
+  }
+
+  subScribeCurrentUser(){
     this.getCurrentUser().subscribe(user => {
       this.user = user;
       this.authChanged.next(true);

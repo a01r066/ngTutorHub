@@ -1,15 +1,19 @@
 import {Injectable} from "@angular/core";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
+import {concatMap, finalize, tap} from "rxjs/operators";
 
 @Injectable()
 
 export class LoadingService {
-  private loadingSub = new Subject<boolean>();
+  private loadingSub = new BehaviorSubject<boolean>(false);
   loading$: Observable<boolean> = this.loadingSub.asObservable();
 
   showLoaderUntilCompleted<T>(obs$: Observable<T>): Observable<T>{
-    return null!;
-    // return undefined;
+    return of(null)
+      .pipe(
+        tap(() => this.loadingOn()), // side effect
+        concatMap(() => obs$), // emit to obs$
+        finalize(() => this.loadingOff()));
   }
 
   loadingOn(){

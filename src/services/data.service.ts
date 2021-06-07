@@ -131,4 +131,16 @@ export class DataService {
 
     return this.http.put(url, formData).pipe(shareReplay());
   }
+
+  // Feedbacks
+  createFeedback(formData: any, uid: any): Observable<any>{
+    const data = {
+      "user": uid,
+      "subject": formData.subject,
+      "message": formData.message
+    }
+    const url = `${Constants.base_url}/feedbacks`;
+    return this.http.post(url, data);
+  }
+
 }

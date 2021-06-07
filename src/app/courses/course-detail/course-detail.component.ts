@@ -22,10 +22,10 @@ import {finalize, map} from "rxjs/operators";
 
 export class CourseDetailComponent implements OnInit {
   course!: Course;
-  lectures$!: Observable<Lecture[]>;
+  loadingLectures$!: Observable<Lecture[]>;
   lectures: Lecture[] = [];
 
-  chapters$!: Observable<Chapter[]>;
+  loadingChapters$!: Observable<Chapter[]>;
   chapters: Chapter[] = [];
 
   objectives: any;
@@ -57,7 +57,8 @@ export class CourseDetailComponent implements OnInit {
       if(!this.isPurchased){
         // get objectives
         this.objectives = this.course.objectives.substring(1).split('- ');
-        this.lectures$ = this.dataService.getLecturesByCourseId(this.course._id);
+        const lectures$ = this.dataService.getLecturesByCourseId(this.course._id);
+        this.loadingLectures$ = this.loadingService.showLoaderUntilCompleted(lectures$);
       }
     });
   }
@@ -75,13 +76,9 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onClickLecture(lecture: any){
-    this.loadingService.loadingOn();
-    this.chapters$ = this.dataService.getChaptersByLectureId(lecture._id)
-      .pipe(
-        map(chapters => chapters),
-        finalize(() => {
-      this.loadingService.loadingOff();
-    }));
+    const chapters$ = this.dataService.getChaptersByLectureId(lecture._id)
+      .pipe(map(chapters => chapters));
+    this.loadingChapters$ = this.loadingService.showLoaderUntilCompleted(chapters$);
   }
 
   onClickChapter(chapter: any){

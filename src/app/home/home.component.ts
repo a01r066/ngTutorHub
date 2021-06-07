@@ -12,8 +12,7 @@ import {finalize, map} from "rxjs/operators";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  categories$!: Observable<Category[]>;
-  selectedCategory!: Category;
+  loadingCategories$!: Observable<Category[]>;
   selectedIndex = 0;
   activeLink!: Category;
 
@@ -24,15 +23,8 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadingService.loadingOn();
-    this.categories$ = this.dataService.getTopCategories().pipe(map(categories => categories), finalize(() => {
-      this.loadingService.loadingOff();
-    }))
-
-    // this.categories$.subscribe(categories => {
-    //   this.selectedCategory = categories[this.selectedIndex];
-    //   this.activeLink = this.selectedCategory;
-    // })
+    const categories$ = this.dataService.getTopCategories().pipe(map(categories => categories));
+    this.loadingCategories$ = this.loadingService.showLoaderUntilCompleted(categories$);
   }
 
   onClick(i: number){
