@@ -10,14 +10,14 @@ import {MessagesService} from "../services/messages.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers: [LoadingService, MessagesService]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   user!: User;
   constructor(private authService: AuthService,
               private router: Router,
-              private uiService: UiService){}
+              private uiService: UiService
+  ){}
 
   ngOnInit(): void {
     this.authService.initAuthListener();

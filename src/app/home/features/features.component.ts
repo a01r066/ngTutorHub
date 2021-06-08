@@ -9,6 +9,7 @@ import {Category} from "../../models/category.model";
 import {UiService} from "../../../services/ui.service";
 import {map} from "rxjs/operators";
 import {LoadingService} from "../../../services/loading.service";
+import {DataStore} from "../../../services/data.store";
 
 @Component({
   selector: 'app-features',
@@ -18,7 +19,8 @@ import {LoadingService} from "../../../services/loading.service";
 export class FeaturesComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
 
-  loadingCourses$!: Observable<Course[]>;
+  // loadingCourses$!: Observable<Course[]>;
+  courses$!: Observable<Course[]>;
 
   page = 1;
   discount = 90;
@@ -40,7 +42,8 @@ export class FeaturesComponent implements OnInit {
               private router: Router,
               private authService: AuthService,
               private uiService: UiService,
-              private loadingService: LoadingService) {}
+              private loadingService: LoadingService,
+              private dataStore: DataStore) {}
 
   ngOnInit(): void {
     this.getCoursesByCategory();
@@ -65,8 +68,9 @@ export class FeaturesComponent implements OnInit {
   private getCoursesByCategory(){
     this.categories$.subscribe(categories => {
       this.selectedCategory = categories[this.selectedIndex];
-      const courses$ = this.dataService.getBestSellerCourseByCate(this.selectedCategory, this.page);
-      this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
+      // const courses$ = this.dataService.getBestSellerCourseByCate(this.selectedCategory, this.page);
+      // this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
+      this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.selectedCategory._id);
     })
   }
 

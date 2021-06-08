@@ -5,6 +5,9 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DataService} from "../../../services/data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {LoadingService} from "../../../services/loading.service";
+import {MessagesService} from "../../../services/messages.service";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
 
 export interface DialogData {
   user: User;
@@ -14,7 +17,7 @@ export interface DialogData {
   selector: 'app-feedback',
   templateUrl: './dialog-feedback.html',
   styleUrls: ['./feedback.component.css'],
-  providers: [LoadingService]
+  providers: [LoadingService, MessagesService]
 })
 export class FeedbackComponent implements OnInit{
   feedbackForm!: FormGroup;
@@ -25,7 +28,8 @@ export class FeedbackComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dataService: DataService,
     private snackBar: MatSnackBar,
-    private loadingService: LoadingService) {}
+    private loadingService: LoadingService,
+    private messageService: MessagesService) {}
 
     ngOnInit(): void {
       this.feedbackForm = new FormGroup({
@@ -44,7 +48,11 @@ export class FeedbackComponent implements OnInit{
 
   send() {
     if(this.feedbackForm.valid){
-      const createFeedback$ = this.dataService.createFeedback(this.feedbackForm.value, this.data.user._id);
+      const createFeedback$ = this.dataService.createFeedback(this.feedbackForm.value, this.data.user._id).pipe(catchError(err => {
+        const message = 'Feedback failed. Duplicated feedback!';
+        this.messageService.showErrors(message);
+        return throwError(err);
+      }));
       this.loadingService.showLoaderUntilCompleted(createFeedback$)
       .subscribe(res => {
         this.dialogRef.close();

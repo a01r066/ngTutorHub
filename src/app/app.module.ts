@@ -32,6 +32,8 @@ import { appReducer} from "./app.reducer";
 import { LoadingComponent } from './shares/loading/loading.component';
 import {FeedbackComponent} from "./home/Feedback/feedback.component";
 import { MessageComponent } from './shares/message/message.component';
+import {LoadingService} from "../services/loading.service";
+import {MessagesService} from "../services/messages.service";
 
 @NgModule({
   declarations: [
@@ -68,7 +70,11 @@ import { MessageComponent } from './shares/message/message.component';
     FlexLayoutModule,
     StoreModule.forRoot({ui: appReducer}) // allow map multiple reducer with key
   ],
-  providers: [DecimalPipe],
+  providers: [
+    DecimalPipe,
+    LoadingService,
+    MessagesService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,6 +8,7 @@ import {Course} from "../../models/course.model";
 import {Observable, Subject} from "rxjs";
 import {LoadingService} from "../../../services/loading.service";
 import {finalize, map} from "rxjs/operators";
+import {DataStore} from "../../../services/data.store";
 
 @Component({
   selector: 'app-course-list',
@@ -17,7 +18,7 @@ import {finalize, map} from "rxjs/operators";
 export class CourseListComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
   selectedCategory!: Category;
-  loadingCourses$!: Observable<Course[]>;
+  courses$!: Observable<Course[]>;
   page = 1;
   discount = 90;
 
@@ -29,12 +30,12 @@ export class CourseListComponent implements OnInit {
   counter: any;
 
   constructor(
-    private http: HttpClient,
     private dataService: DataService,
+    private dataStore: DataStore,
     private uiService: UiService,
     private route: ActivatedRoute,
     private router: Router,
-    private loadingService: LoadingService
+    // private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +44,8 @@ export class CourseListComponent implements OnInit {
     this.uiService.categorySub.subscribe(category => {
       this.selectedCategory = category;
       // Get courses
-      this.getCoursesByCategory();
+      // this.getCoursesByCategory();
+      this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
   }
 
@@ -53,15 +55,16 @@ export class CourseListComponent implements OnInit {
       this.selectedCategory = category;
 
       // Get courses
-      this.getCoursesByCategory();
+      // this.getCoursesByCategory();
+      this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
   }
 
-  private getCoursesByCategory(){
-    const courses$ = this.dataService.getCoursesByCategoryId(this.selectedCategory._id)
-      .pipe(map(courses => courses));
-    this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$)
-  }
+  // private getCoursesByCategory(){
+  //   const courses$ = this.dataService.getCoursesByCategoryId(this.selectedCategory._id)
+  //     .pipe(map(courses => courses));
+  //   this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$)
+  // }
 
   next() {
     if(this.isNext && !this.isLastPage){

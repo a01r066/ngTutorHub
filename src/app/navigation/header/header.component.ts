@@ -9,6 +9,7 @@ import {SlugifyPipe} from "../../helpers/slugify.pipe";
 import {Observable} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {FeedbackComponent} from "../../home/Feedback/feedback.component";
+import {DataStore} from "../../../services/data.store";
 
 @Component({
   selector: 'app-header',
@@ -28,7 +29,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private dataService: DataService,
+    // private dataService: DataService,
+    private dataStore: DataStore,
     private uiService: UiService,
     private slugifyPipe: SlugifyPipe,
     public dialog: MatDialog
@@ -44,7 +46,8 @@ export class HeaderComponent implements OnInit {
       this.isPlayer = isPlayer;
     })
 
-    this.categories$ = this.dataService.getCategories();
+    // this.categories$ = this.dataService.getCategories();
+    this.categories$ = this.dataStore.categories$;
   }
 
   getPhoto(){

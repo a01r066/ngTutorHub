@@ -7,9 +7,8 @@ import {Chapter} from "../app/models/chapter.model";
 import {AuthService} from "../app/auth/auth.service";
 import {Constants} from "../app/helpers/constants";
 import {Observable} from "rxjs";
-import {finalize, map, shareReplay} from "rxjs/operators";
+import {map, shareReplay} from "rxjs/operators";
 import {User} from "../app/models/user.model";
-import {LoadingService} from "./loading.service";
 
 @Injectable({
   providedIn: "root"
@@ -53,13 +52,13 @@ export class DataService {
   }
 
   // Category
-  getTopCategories(): Observable<Category[]>{
-    const url = `${Constants.base_url}/categories?limit=8`;
-    return this.http.get<Category[]>(url)
-      .pipe(
-        map(res => (res as any).data),
-        shareReplay());
-  }
+  // getTopCategories(): Observable<Category[]>{
+  //   const url = `${Constants.base_url}/categories?limit=8`;
+  //   return this.http.get<Category[]>(url)
+  //     .pipe(
+  //       map(res => (res as any).data),
+  //       shareReplay());
+  // }
 
   getCategories(): Observable<Category[]>{
     const url = `${Constants.base_url}/categories`;

@@ -6,6 +6,7 @@ import {UiService} from "../../services/ui.service";
 import {LoadingService} from "../../services/loading.service";
 import {catchError, map} from "rxjs/operators";
 import {MessagesService} from "../../services/messages.service";
+import {DataStore} from "../../services/data.store";
 
 @Component({
   selector: 'app-home',
@@ -13,30 +14,19 @@ import {MessagesService} from "../../services/messages.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  loadingCategories$!: Observable<Category[]>;
-  selectedIndex = 0;
+  categories$!: Observable<Category[]>;
   activeLink!: Category;
 
   constructor(
-    private dataService: DataService,
     private uiService: UiService,
-    private loadingService: LoadingService,
-    private messageService: MessagesService
+    private dataStore: DataStore
   ) { }
 
   ngOnInit(): void {
-    const categories$ = this.dataService.getTopCategories()
-      .pipe(
-        map(categories => categories), catchError(err => {
-          const message = 'Could not load data. Please check your connection or try again later!';
-          this.messageService.showErrors(message);
-          return throwError(err); // terminate the process and create new observable that emit the error it's end of life cycle
-        }));
-    this.loadingCategories$ = this.loadingService.showLoaderUntilCompleted(categories$);
+    this.categories$ = this.dataStore.getTopCategories();
   }
 
   onClick(i: number){
     this.uiService.tabSelectedIndexSub.next(i);
-    this.selectedIndex = i;
   }
 }

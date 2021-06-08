@@ -5,6 +5,8 @@ export interface Course {
   objectives: string;
   photo: string;
   slug: string;
+  category: string;
+  bestseller: boolean;
   weeks: string;
   tuition: number;
   minimumSkill: string;

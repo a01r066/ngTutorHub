@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {UiService} from "../../../services/ui.service";
 import {Category} from "../../models/category.model";
 import {Observable} from "rxjs";
+import {DataStore} from "../../../services/data.store";
 
 @Component({
   selector: 'app-top-categories',
@@ -16,12 +17,13 @@ export class TopCategoriesComponent implements OnInit {
   categories$!: Observable<Category[]>;
 
   constructor(private http: HttpClient,
-              private dataService: DataService,
-              private router: Router,
-              private uiService: UiService) {}
+              // private dataService: DataService,
+              private dataStore: DataStore,
+              private router: Router) {}
 
   ngOnInit(): void {
-    this.categories$ = this.dataService.getTopCategories();
+    // this.categories$ = this.dataService.getTopCategories();
+    this.categories$ = this.dataStore.getTopCategories();
   }
 
   onClick(category: Category){
