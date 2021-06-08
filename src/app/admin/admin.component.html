@@ -1,0 +1,21 @@
+<mat-sidenav-container class="example-container">
+  <mat-sidenav mode="side" opened style="background-color: #262C31; color: white">
+    <div style="display: flex; justify-content: center; margin-top: 16px"><button mat-button color="primary" style="font-size: 1.5rem; font-weight: 600" (click)="home()">TutorHub</button></div>
+    <div class="mat-title" style="text-align: center; margin-top: 16px; cursor: pointer" (click)="dashboard()">Dashboard</div>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let link of links" style="color: white">
+        <a matLine [routerLink]="['categories']">
+          <button mat-icon-button (click)="showInfo(link)">
+          <mat-icon color="accent">info</mat-icon>
+        </button> {{ link }}</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <span>My Application</span>
+      <span></span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
