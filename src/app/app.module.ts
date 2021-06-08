@@ -31,6 +31,7 @@ import {StoreModule} from "@ngrx/store";
 import { appReducer} from "./app.reducer";
 import { LoadingComponent } from './shares/loading/loading.component';
 import {FeedbackComponent} from "./home/Feedback/feedback.component";
+import { MessageComponent } from './shares/message/message.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {FeedbackComponent} from "./home/Feedback/feedback.component";
     SlugifyPipe,
     ProfileComponent,
     LoadingComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    MessageComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

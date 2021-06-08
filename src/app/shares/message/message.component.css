@@ -1,0 +1,21 @@
+.messages-container {
+  display: flex;
+  color: white;
+  background-color: darkred;
+  border: 1px solid #ebccd1;
+  padding: 20px;
+  /*font-family: Roboto;*/
+  position: relative;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top:10px;
+  cursor: pointer;
+}
+
+.message {
+}

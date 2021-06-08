@@ -4,6 +4,7 @@ import {User} from "../../models/user.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DataService} from "../../../services/data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {LoadingService} from "../../../services/loading.service";
 
 export interface DialogData {
   user: User;
@@ -12,7 +13,8 @@ export interface DialogData {
 @Component({
   selector: 'app-feedback',
   templateUrl: './dialog-feedback.html',
-  styleUrls: ['./feedback.component.css']
+  styleUrls: ['./feedback.component.css'],
+  providers: [LoadingService]
 })
 export class FeedbackComponent implements OnInit{
   feedbackForm!: FormGroup;
@@ -22,7 +24,8 @@ export class FeedbackComponent implements OnInit{
     public dialogRef: MatDialogRef<FeedbackComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dataService: DataService,
-    private snackBar: MatSnackBar) {}
+    private snackBar: MatSnackBar,
+    private loadingService: LoadingService) {}
 
     ngOnInit(): void {
       this.feedbackForm = new FormGroup({
@@ -41,7 +44,9 @@ export class FeedbackComponent implements OnInit{
 
   send() {
     if(this.feedbackForm.valid){
-      this.dataService.createFeedback(this.feedbackForm.value, this.data.user._id).subscribe(res => {
+      const createFeedback$ = this.dataService.createFeedback(this.feedbackForm.value, this.data.user._id);
+      this.loadingService.showLoaderUntilCompleted(createFeedback$)
+      .subscribe(res => {
         this.dialogRef.close();
         this.snackBar.open(`Thank you for your feedback!`, null!, {
           duration: 3000

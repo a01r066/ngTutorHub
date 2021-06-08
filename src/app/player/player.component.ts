@@ -3,6 +3,10 @@ import {DataService} from "../../services/data.service";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {UiService} from "../../services/ui.service";
+import {Observable} from "rxjs";
+import {Lecture} from "../models/lecture.model";
+import {LoadingService} from "../../services/loading.service";
+import {Chapter} from "../models/chapter.model";
 
 @Component({
   selector: 'app-player',
@@ -12,8 +16,8 @@ import {UiService} from "../../services/ui.service";
 export class PlayerComponent implements OnInit, OnDestroy {
   panelOpenState = false;
   course: any;
-  lectures: any;
-  chapters: any;
+  loadingLectures$!: Observable<Lecture[]>;
+  loadingChapters$!: Observable<Chapter[]>;
   unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
   base_url = 'http://localhost:3000/uploads/courses';
@@ -21,18 +25,18 @@ export class PlayerComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private sanitizer: DomSanitizer,
-              private uiService: UiService) { }
+              private uiService: UiService,
+              private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.uiService.isPlayerSub.next(true);
 
     const slug = this.route.snapshot.params['id'];
-    this.dataService.getCourseBySlug(slug).subscribe(res => {
-      this.course = (res as any).data;
+    this.dataService.getCourseBySlug(slug).subscribe(course => {
+      this.course = course;
 
-      this.dataService.getLecturesByCourseId(this.course._id).subscribe(res => {
-        this.lectures = (res as any).data;
-      })
+      const lectures$ = this.dataService.getLecturesByCourseId(this.course._id);
+      this.loadingLectures$ = this.loadingService.showLoaderUntilCompleted(lectures$);
     })
   }
 
@@ -41,9 +45,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onClickLecture(lecture: any){
-    this.dataService.getChaptersByLectureId(lecture._id).subscribe(res => {
-      this.chapters = (res as any).data;
-    })
+    const chapters$ = this.dataService.getChaptersByLectureId(lecture._id);
+    this.loadingChapters$ = this.loadingService.showLoaderUntilCompleted(chapters$);
   }
 
   onClickChapter(chapter: any){

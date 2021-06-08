@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UiService} from "../../services/ui.service";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
+import {LoadingService} from "../../services/loading.service";
 
 @Component({
   selector: 'app-search',
@@ -13,7 +14,7 @@ import {Observable} from "rxjs";
 })
 export class SearchComponent implements OnInit {
   base_url = 'http://18.117.94.38:3000/uploads/courses/';
-  courses$!: Observable<Course[]>;
+  loadingCourses!: Observable<Course[]>;
   discount = 90;
   searchText!: string;
   limit = 5;
@@ -21,7 +22,8 @@ export class SearchComponent implements OnInit {
   constructor(private dataService: DataService,
               private router: Router,
               private uiService: UiService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.route.queryParams
@@ -29,10 +31,8 @@ export class SearchComponent implements OnInit {
       .subscribe(params => {
           // console.log(params.q); // popular
           this.searchText = params.q;
-          this.courses$ = this.dataService.getCoursesBySearchText(this.searchText, this.limit);
-          // this.dataService.getCoursesBySearchText(this.searchText, this.limit).subscribe(res => {
-          //   this.courses = (res as any).data;
-          // })
+          const courses$ = this.dataService.getCoursesBySearchText(this.searchText, this.limit);
+          this.loadingCourses = this.loadingService.showLoaderUntilCompleted(courses$);
         }
       );
   }

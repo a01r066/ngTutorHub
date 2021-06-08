@@ -5,20 +5,19 @@ import {Category} from "./models/category.model";
 import {Router} from "@angular/router";
 import {UiService} from "../services/ui.service";
 import {LoadingService} from "../services/loading.service";
+import {MessagesService} from "../services/messages.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [LoadingService]
+  providers: [LoadingService, MessagesService]
 })
 export class AppComponent implements OnInit {
   user!: User;
-  isAuthenticated = false;
   constructor(private authService: AuthService,
               private router: Router,
-              private uiService: UiService,
-              public loadingService: LoadingService){}
+              private uiService: UiService){}
 
   ngOnInit(): void {
     this.authService.initAuthListener();

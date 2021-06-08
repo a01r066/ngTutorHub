@@ -43,13 +43,13 @@
             <p>This is the primary content of the panel.</p>
           </mat-expansion-panel>
           <mat-expansion-panel (opened)="panelOpenState = true"
-                               (closed)="panelOpenState = false" *ngFor="let lecture of lectures; let i = index">
+                               (closed)="panelOpenState = false" *ngFor="let lecture of (loadingLectures$ | async); let i = index">
             <mat-expansion-panel-header>
               <mat-panel-title (click)="onClickLecture(lecture)">
                 {{ lecture?.title }}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div *ngFor="let chapter of chapters; let i = index">
+            <div *ngFor="let chapter of (loadingChapters$ | async); let i = index">
               <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter?.title }} <span style="float: right" *ngIf="chapter.duration > 0">{{ chapter.duration | number }} min</span></p></div>
             </div>
           </mat-expansion-panel>
@@ -58,16 +58,3 @@
     </div>
   </div>
 </div>
-<!--<script>-->
-<!--  import Vimeo from "@vimeo/player";-->
-<!--  const iframe = document.querySelector('iframe');-->
-<!--  const player = new Vimeo.Player(iframe);-->
-
-<!--  player.on('play', function() {-->
-<!--    // console.log('played the video!');-->
-<!--  });-->
-
-<!--  player.getVideoTitle().then(function(title) {-->
-<!--    // console.log('title:', title);-->
-<!--  });-->
-<!--</script>-->

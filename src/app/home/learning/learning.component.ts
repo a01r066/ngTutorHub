@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Course} from "../../models/course.model";
 import {AuthService} from "../../auth/auth.service";
-import {DataService} from "../../../services/data.service";
 import {User} from "../../models/user.model";
 import {Constants} from "../../helpers/constants";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-learning',
@@ -17,6 +17,7 @@ export class LearningComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +31,7 @@ export class LearningComponent implements OnInit {
   }
 
   onClick(course: Course){
-    console.log('Clicked: '+course.title);
+    this.router.navigate(['course', course._id]);
   }
 
   private getPurchasedCourses() {

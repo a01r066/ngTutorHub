@@ -8,6 +8,7 @@ import {Course} from "../../models/course.model";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../../services/ui.service";
 import {map} from "rxjs/operators";
+import {LoadingService} from "../../../services/loading.service";
 
 @Component({
   selector: 'app-features',
@@ -17,7 +18,7 @@ import {map} from "rxjs/operators";
 export class FeaturesComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
 
-  courses$!: Observable<Course[]>;
+  loadingCourses$!: Observable<Course[]>;
 
   page = 1;
   discount = 90;
@@ -38,7 +39,8 @@ export class FeaturesComponent implements OnInit {
               private dataService: DataService,
               private router: Router,
               private authService: AuthService,
-              private uiService: UiService) {}
+              private uiService: UiService,
+              private loadingService: LoadingService) {}
 
   ngOnInit(): void {
     this.getCoursesByCategory();
@@ -63,7 +65,8 @@ export class FeaturesComponent implements OnInit {
   private getCoursesByCategory(){
     this.categories$.subscribe(categories => {
       this.selectedCategory = categories[this.selectedIndex];
-      this.courses$ = this.dataService.getBestSellerCourseByCate(this.selectedCategory, this.page);
+      const courses$ = this.dataService.getBestSellerCourseByCate(this.selectedCategory, this.page);
+      this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
     })
   }
 

@@ -3,7 +3,7 @@
   <div fxFlex="60" style="margin-top: 32px">
     <div>
       <ul class="flex-container">
-        <li class="flex-item" style="cursor: pointer" *ngFor="let course of purchasedCourses; let i = index">
+        <li class="flex-item" style="cursor: pointer" *ngFor="let course of purchasedCourses; let i = index" (click)="onClick(course)">
           <img style="width: 100%" src="{{ base_url+course.courseId.photo }}" alt="{{ course.courseId.title }}">
           <div style="margin: -8px 8px 0 8px">
             <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.courseId.title.substring(0, 28) }}</p></div>
