@@ -10,6 +10,7 @@ import {CheckoutComponent} from "./checkout/checkout.component";
 import {LearningComponent} from "./home/learning/learning.component";
 import {SearchComponent} from "./search/search.component";
 import {ProfileComponent} from "./home/profile/profile.component";
+import {AdminComponent} from "./admin/admin.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard]},
   { path: 'home/my-courses/learning', component: LearningComponent, canActivate: [AuthGuard]},
   { path: 'search', component: SearchComponent },
-  { path: 'user/profile', component: ProfileComponent, canActivate: [AuthGuard]}
+  { path: 'user/profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'admin', component: AdminComponent }
 ]
 
 @NgModule({

@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DataService} from "../../services/data.service";
+import {DataService} from "../services/data.service";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {UiService} from "../../services/ui.service";
+import {UiService} from "../services/ui.service";
 import {Observable} from "rxjs";
 import {Lecture} from "../models/lecture.model";
-import {LoadingService} from "../../services/loading.service";
+import {LoadingService} from "../services/loading.service";
 import {Chapter} from "../models/chapter.model";
 
 @Component({

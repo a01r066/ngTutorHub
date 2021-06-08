@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable, throwError} from "rxjs";
-import {Course} from "../app/models/course.model";
+import {Course} from "../models/course.model";
 import {catchError, map, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {LoadingService} from "./loading.service";
 import {MessagesService} from "./messages.service";
-import {Constants} from "../app/helpers/constants";
-import {Category} from "../app/models/category.model";
+import {Constants} from "../helpers/constants";
+import {Category} from "../models/category.model";
 
 @Injectable({
   providedIn: "root"

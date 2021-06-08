@@ -7,7 +7,7 @@ import {AngularFireAuth} from "@angular/fire/auth";
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import firebase from 'firebase';
 import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
-import {UiService} from "../../services/ui.service";
+import {UiService} from "../services/ui.service";
 import {Store} from "@ngrx/store";
 import * as fromApp from '../app.reducer';
 import {map, shareReplay} from "rxjs/operators";

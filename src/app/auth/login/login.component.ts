@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthService} from "../auth.service";
-import {UiService} from "../../../services/ui.service";
+import {UiService} from "../../services/ui.service";
 import {Store} from "@ngrx/store";
 import * as fromApp from '../../app.reducer';
 import {Observable} from "rxjs";

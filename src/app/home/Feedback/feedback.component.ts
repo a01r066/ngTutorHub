@@ -2,10 +2,10 @@ import {Component, ElementRef, Inject, OnInit, ViewChild} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {User} from "../../models/user.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DataService} from "../../../services/data.service";
+import {DataService} from "../../services/data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {LoadingService} from "../../../services/loading.service";
-import {MessagesService} from "../../../services/messages.service";
+import {LoadingService} from "../../services/loading.service";
+import {MessagesService} from "../../services/messages.service";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 

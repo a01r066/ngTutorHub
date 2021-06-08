@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {Course} from "../models/course.model";
-import {DataService} from "../../services/data.service";
+import {DataService} from "../services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UiService} from "../../services/ui.service";
+import {UiService} from "../services/ui.service";
 import {catchError, map} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
-import {LoadingService} from "../../services/loading.service";
-import {MessagesService} from "../../services/messages.service";
-import {DataStore} from "../../services/data.store";
+import {LoadingService} from "../services/loading.service";
+import {MessagesService} from "../services/messages.service";
+import {DataStore} from "../services/data.store";
 
 @Component({
   selector: 'app-search',

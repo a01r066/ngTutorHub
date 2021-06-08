@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../../../services/data.service";
+import {DataService} from "../../services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
-import {UiService} from "../../../services/ui.service";
+import {UiService} from "../../services/ui.service";
 import {Constants} from "../../helpers/constants";
 import {Observable} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
-import {LoadingService} from "../../../services/loading.service";
+import {LoadingService} from "../../services/loading.service";
 import {finalize, map} from "rxjs/operators";
 
 @Component({

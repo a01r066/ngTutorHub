@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Category} from "../models/category.model";
-import {DataService} from "../../services/data.service";
+import {DataService} from "../services/data.service";
 import {Observable, throwError} from "rxjs";
-import {UiService} from "../../services/ui.service";
-import {LoadingService} from "../../services/loading.service";
+import {UiService} from "../services/ui.service";
+import {LoadingService} from "../services/loading.service";
 import {catchError, map} from "rxjs/operators";
-import {MessagesService} from "../../services/messages.service";
-import {DataStore} from "../../services/data.store";
+import {MessagesService} from "../services/messages.service";
+import {DataStore} from "../services/data.store";
 
 @Component({
   selector: 'app-home',

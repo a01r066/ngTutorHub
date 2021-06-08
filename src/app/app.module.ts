@@ -32,8 +32,10 @@ import { appReducer} from "./app.reducer";
 import { LoadingComponent } from './shares/loading/loading.component';
 import {FeedbackComponent} from "./home/Feedback/feedback.component";
 import { MessageComponent } from './shares/message/message.component';
-import {LoadingService} from "../services/loading.service";
-import {MessagesService} from "../services/messages.service";
+import {LoadingService} from "./services/loading.service";
+import {MessagesService} from "./services/messages.service";
+import { AdminComponent } from './admin/admin.component';
+import {AdminModule} from "./admin/admin.module";
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import {MessagesService} from "../services/messages.service";
     ProfileComponent,
     LoadingComponent,
     FeedbackComponent,
-    MessageComponent
+    MessageComponent,
+    AdminComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -68,7 +71,8 @@ import {MessagesService} from "../services/messages.service";
     AuthModule,
     MaterialModule,
     FlexLayoutModule,
-    StoreModule.forRoot({ui: appReducer}) // allow map multiple reducer with key
+    StoreModule.forRoot({ui: appReducer}), // allow map multiple reducer with key
+    AdminModule
   ],
   providers: [
     DecimalPipe,

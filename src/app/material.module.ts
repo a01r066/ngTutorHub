@@ -49,7 +49,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatSliderModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   exports: [
     MatToolbarModule,

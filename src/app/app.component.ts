@@ -3,9 +3,7 @@ import {AuthService} from "./auth/auth.service";
 import {User} from "./models/user.model";
 import {Category} from "./models/category.model";
 import {Router} from "@angular/router";
-import {UiService} from "../services/ui.service";
-import {LoadingService} from "../services/loading.service";
-import {MessagesService} from "../services/messages.service";
+import {UiService} from "./services/ui.service";
 
 @Component({
   selector: 'app-root',

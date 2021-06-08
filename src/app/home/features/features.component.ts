@@ -1,15 +1,15 @@
 import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {DataService} from "../../../services/data.service";
+import {DataService} from "../../services/data.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {Observable, Subject, Subscription} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Category} from "../../models/category.model";
-import {UiService} from "../../../services/ui.service";
+import {UiService} from "../../services/ui.service";
 import {map} from "rxjs/operators";
-import {LoadingService} from "../../../services/loading.service";
-import {DataStore} from "../../../services/data.store";
+import {LoadingService} from "../../services/loading.service";
+import {DataStore} from "../../services/data.store";
 
 @Component({
   selector: 'app-features',

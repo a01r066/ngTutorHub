@@ -1,14 +1,14 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Course} from "../app/models/course.model";
-import {Category} from "../app/models/category.model";
-import {Lecture} from "../app/models/lecture.model";
-import {Chapter} from "../app/models/chapter.model";
-import {AuthService} from "../app/auth/auth.service";
-import {Constants} from "../app/helpers/constants";
+import {Course} from "../models/course.model";
+import {Category} from "../models/category.model";
+import {Lecture} from "../models/lecture.model";
+import {Chapter} from "../models/chapter.model";
+import {AuthService} from "../auth/auth.service";
+import {Constants} from "../helpers/constants";
 import {Observable} from "rxjs";
 import {map, shareReplay} from "rxjs/operators";
-import {User} from "../app/models/user.model";
+import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: "root"

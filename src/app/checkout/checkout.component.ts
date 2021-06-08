@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
-import {DataService} from "../../services/data.service";
+import {DataService} from "../services/data.service";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
 import {DecimalPipe} from "@angular/common";

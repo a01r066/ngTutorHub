@@ -2,14 +2,14 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outpu
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../models/user.model";
-import {DataService} from "../../../services/data.service";
+import {DataService} from "../../services/data.service";
 import {Category} from "../../models/category.model";
-import {UiService} from "../../../services/ui.service";
+import {UiService} from "../../services/ui.service";
 import {SlugifyPipe} from "../../helpers/slugify.pipe";
 import {Observable} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {FeedbackComponent} from "../../home/Feedback/feedback.component";
-import {DataStore} from "../../../services/data.store";
+import {DataStore} from "../../services/data.store";
 
 @Component({
   selector: 'app-header',
