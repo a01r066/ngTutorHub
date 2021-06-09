@@ -1,0 +1,43 @@
+<app-loading></app-loading>
+<div class="container">
+  <h3>Course Form</h3>
+  <app-message></app-message>
+  <form [formGroup]="ngForm" style="overflow: hidden;">
+    <mat-dialog-content>
+      <mat-form-field>
+        <input matInput
+               placeholder="Course title"
+               formControlName="title">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea #objectivesText matInput placeholder="Enter objectives"
+                  formControlName="objectives" required>
+        </textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput
+               placeholder="Tuition"
+               formControlName="tuition">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea #descText matInput placeholder="Enter description"
+                  formControlName="description" required>
+        </textarea>
+      </mat-form-field>
+      <div style="display: flex; justify-content: center; gap: 24px">
+        <span><mat-slide-toggle labelPosition="before" color="primary" formControlName="bestseller">isBestseller?</mat-slide-toggle></span>
+        <span><mat-slide-toggle labelPosition="before" color="primary" formControlName="isFree">isFree?</mat-slide-toggle></span>
+        <span><mat-slide-toggle labelPosition="before" color="primary" formControlName="isHidden">isHidden?</mat-slide-toggle></span>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+      <button mat-raised-button
+              (click)="onNoClick()">
+        Back
+      </button>
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">
+        Save
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

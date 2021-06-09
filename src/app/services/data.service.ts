@@ -43,6 +43,16 @@ export class DataService {
         shareReplay());
   }
 
+  updateCourse(courseId: any, formData: any): Observable<any>{
+    const url = `${Constants.base_url}/courses/${courseId}`;
+    return this.http.put(url, formData);
+  }
+
+  createCourse(formData: any): Observable<any>{
+    const url = `${Constants.base_url}/courses`;
+    return this.http.post(url, formData);
+  }
+
   // getCoursesBySearchText(searchText: string, limit: number): Observable<Course[]>{
   //   const url = `${Constants.base_url}/courses?q=${searchText}&limit=${limit}`;
   //   return this.http.get<Course[]>(url)

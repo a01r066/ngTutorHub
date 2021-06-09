@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, throwError} from "rxjs";
+import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
 import {Course} from "../models/course.model";
-import {catchError, map, tap} from "rxjs/operators";
+import {catchError, map, shareReplay, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {LoadingService} from "./loading.service";
 import {MessagesService} from "./messages.service";
@@ -64,6 +64,31 @@ export class DataStore {
         map(courses => courses
           .filter(course => course.title.toLowerCase().includes(searchText.toLowerCase()))));
   }
+
+  updateCourse(courseId: any, changes: Partial<Course>): Observable<any>{
+    // Find and update course in memory
+    const courses = this.coursesSub.getValue();
+    const index = courses.findIndex(course => course._id === courseId);
+
+    courses[index] = {
+      ...courses[index],
+      ...changes
+    }
+
+    this.coursesSub.next(courses);
+
+    // Update changes to the backend
+    const url = `${Constants.base_url}/courses/${courseId}`;
+    return this.http.put(url, changes)
+      .pipe(
+        catchError(err => {
+          const message = 'Update failed. Please check your internet connection';
+          this.messageService.showErrors(message);
+          return throwError(err);
+        }),
+        tap(courses => courses),
+        shareReplay());
+  }
   // End of course section
 
   // Category section
@@ -86,5 +111,38 @@ export class DataStore {
       .pipe(
         map(categories => categories
           .filter(category => category.isTop)));
+  }
+
+  updateCategory(categoryId: any, changes: Partial<Category>){
+    const categories = this.categoriesSub.getValue(); // get values from memory
+    const index = categories.findIndex(category => category._id === categoryId);
+
+    categories[index] = {
+      ...categories[index],
+      ...changes
+    };
+
+    this.categoriesSub.next(categories);
+
+    // update change to backend
+    const url = `${Constants.base_url}/categories/${categoryId}`;
+    return this.http.put(url, changes)
+      .pipe(
+        catchError(err => {
+          const message = 'Update failed. Please check your internet connection!';
+          this.messageService.showErrors(message);
+          return throwError(err);
+        }), shareReplay());
+  }
+
+  createCategory(formData: any): Observable<any>{
+    const url = `${Constants.base_url}/categories`;
+    return this.http.post(url, formData)
+      .pipe(
+        catchError(err => {
+          const message = 'Update failed. Please check your internet connection!';
+          this.messageService.showErrors(message);
+          return throwError(err);
+        }), shareReplay());
   }
 }

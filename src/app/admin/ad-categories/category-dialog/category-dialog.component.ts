@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DataService} from "../../../services/data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DialogData} from "../../../home/Feedback/feedback.component";
+import {DataStore} from "../../../services/data.store";
 
 @Component({
   selector: 'app-category-dialog',
@@ -16,6 +17,7 @@ export class CategoryDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CategoryDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private dataService: DataService,
+              private dataStore: DataStore,
               private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -28,11 +30,7 @@ export class CategoryDialogComponent implements OnInit {
     const isEdit = (this.data as any).isEdit;
     if(isEdit){
       const category = (this.data as any).category;
-      this.categoryForm.patchValue({
-        title: category.title,
-        isTop: category.isTop,
-        isHidden: category.isHidden
-      })
+      this.categoryForm.patchValue(category);
     }
   }
 
@@ -44,24 +42,24 @@ export class CategoryDialogComponent implements OnInit {
     if(this.categoryForm.valid){
       // console.log('data: '+ (this.data as any).isEdit);
       const isEdit = (this.data as any).isEdit;
+      const changes = this.categoryForm.value;
       if(isEdit){
-        this.dataService.updateCategory((this.data as any).category._id, this.categoryForm.value).subscribe(res => {
-          this.snackBar.open('Category updated success!', null!, {
-            duration: 3000
-          })
-        });
+        const categoryId = (this.data as any).category._id;
+        this.dataStore.updateCategory(categoryId, changes).subscribe();
+        this.dialogRef.close(changes);
       } else {
-        this.dataService.createCategory(this.categoryForm.value).subscribe(res => {
-          this.snackBar.open('Category added success!', null!, {
-            duration: 3000
-          })
-        });
+        // this.dataService.createCategory(this.categoryForm.value).subscribe(res => {
+        //   this.snackBar.open('Category added success!', null!, {
+        //     duration: 3000
+        //   })
+        // });
+        this.dataStore.createCategory(changes).subscribe();
+        this.dialogRef.close(changes);
       }
-      this.dialogRef.close();
     }
   }
 
   onChange(event: any) {
-    console.log(event.checked);
+    // console.log(event.checked);
   }
 }

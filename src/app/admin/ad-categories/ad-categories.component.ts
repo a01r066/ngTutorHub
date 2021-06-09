@@ -7,6 +7,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {CategoryDialogComponent} from "./category-dialog/category-dialog.component";
 import {DataService} from "../../services/data.service";
 import {Router} from "@angular/router";
+import {Observable, Subject} from "rxjs";
+import {filter, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-ad-categories',
@@ -16,7 +18,9 @@ import {Router} from "@angular/router";
 export class AdCategoriesComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['position', '_id', 'title', 'options'];
   categories: Category[] = [];
-  dataSource = new MatTableDataSource<Category>(this.categories);
+  dataSource = new MatTableDataSource<Category>(this.categories );
+
+  dataChanged = new Subject();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -26,34 +30,22 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.dataStore.categories$.subscribe(categories => {
-      this.categories = categories;
+    this.getCategories();
+    this.dataChanged.subscribe(() => {
+     this.getCategories();
     })
   }
 
   ngAfterViewInit() {
-    this.dataSource = new MatTableDataSource<Category>(this.categories);
+    // this.dataSource = new MatTableDataSource<Category>(this.categories);
     this.dataSource.paginator = this.paginator;
   }
 
-  edit(element: Category) {
-    const dialogRef = this.dialog.open(CategoryDialogComponent, {
-      width: '20vw',
-      data: { category: element, isEdit: true },
-      autoFocus: false
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.user = result;
-    });
-  }
-
-  delete(element: Category) {
-    // hide category instead of delete it
-    this.dataService.updateCategory(element._id, { "isHidden": true }).subscribe(res => {
-      console.log(res);
-    });
+  private getCategories() {
+    this.dataStore.categories$.subscribe(categories => {
+      this.categories = categories;
+      this.dataSource = new MatTableDataSource<Category>(this.categories );
+    })
   }
 
   create() {
@@ -63,14 +55,37 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
       autoFocus: false
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.user = result;
+    dialogRef.afterClosed()
+      .pipe(
+      filter(val => !!val),
+      tap(() => this.dataChanged.next())
+    )
+      .subscribe();
+  }
+
+  edit(element: Category) {
+    const dialogRef = this.dialog.open(CategoryDialogComponent, {
+      width: '20vw',
+      data: { category: element, isEdit: true },
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter(val => !!val),
+      tap(() => this.dataChanged.next())
+    )
+      .subscribe();
+  }
+
+  delete(element: Category) {
+    // hide category instead of delete it
+    this.dataService.updateCategory(element._id, { "isHidden": true }).subscribe(res => {
+      // console.log(res);
     });
   }
 
   showCourses(row: any) {
-    console.log('row: '+JSON.stringify(row));
+    // console.log('row: '+JSON.stringify(row));
     this.router.navigate(['admin', 'categories', (row as any)._id]);
   }
 }

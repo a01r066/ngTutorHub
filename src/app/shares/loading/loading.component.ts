@@ -9,7 +9,6 @@ import {LoadingService} from "../../services/loading.service";
 export class LoadingComponent implements OnInit {
 
   constructor(public loadingService: LoadingService) {
-
   }
 
   ngOnInit(): void {

@@ -29,9 +29,7 @@ import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
 import { ProfileComponent } from './home/profile/profile.component';
 import {StoreModule} from "@ngrx/store";
 import { appReducer} from "./app.reducer";
-import { LoadingComponent } from './shares/loading/loading.component';
 import {FeedbackComponent} from "./home/Feedback/feedback.component";
-import { MessageComponent } from './shares/message/message.component';
 import {LoadingService} from "./services/loading.service";
 import {MessagesService} from "./services/messages.service";
 import { AdminComponent } from './admin/admin.component';
@@ -57,9 +55,7 @@ import {AdminModule} from "./admin/admin.module";
     SearchComponent,
     SlugifyPipe,
     ProfileComponent,
-    LoadingComponent,
     FeedbackComponent,
-    MessageComponent,
     AdminComponent
   ],
   imports: [
