@@ -4,4 +4,5 @@ export interface Category {
   photo: string;
   isTop: boolean;
   slug: string;
+  isHidden: boolean;
 }

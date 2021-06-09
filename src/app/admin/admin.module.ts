@@ -6,6 +6,7 @@ import { AdChaptersComponent } from './ad-categories/ad-courses/ad-lectures/ad-c
 import {ShareModule} from "../share.module";
 import {AdminRoutingModule} from "./admin-routing.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CategoryDialogComponent } from './ad-categories/category-dialog/category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         AdLecturesComponent,
         AdChaptersComponent,
         DashboardComponent,
+        CategoryDialogComponent,
   ],
   imports: [
     ShareModule,

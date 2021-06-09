@@ -1,0 +1,25 @@
+<div class="container">
+  <!--<app-loading></app-loading>-->
+  <h3>Category Form</h3>
+  <!--<app-message></app-message>-->
+  <form [formGroup]="categoryForm" style="overflow: hidden;height: 140px">
+    <mat-dialog-content>
+      <mat-form-field>
+        <input matInput
+               placeholder="Category name"
+               formControlName="title">
+      </mat-form-field>
+      <mat-slide-toggle labelPosition="before" color="primary" formControlName="isTop" (change)="onChange($event)">isTop?</mat-slide-toggle>
+      <span style="float: right"><mat-slide-toggle labelPosition="before" color="primary" formControlName="isHidden" (change)="onChange($event)">isHidden?</mat-slide-toggle></span>
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+      <button mat-raised-button
+              (click)="onNoClick()">
+        Back
+      </button>
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="categoryForm.invalid">
+        Save
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

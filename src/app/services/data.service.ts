@@ -21,19 +21,19 @@ export class DataService {
   }
 
   // Course
-  getBestSellerCourseByCate(category: Category, page: number): Observable<Course[]>{
-    const url = `${Constants.base_url}/categories/${category._id}/courses?bestseller=true&page=${page}&limit=5`;
-    return this.http.get<Course[]>(url)
-      .pipe(
-        map(res => (res as any).data), shareReplay());
-  }
+  // getBestSellerCourseByCate(category: Category, page: number): Observable<Course[]>{
+  //   const url = `${Constants.base_url}/categories/${category._id}/courses?bestseller=true&page=${page}&limit=5`;
+  //   return this.http.get<Course[]>(url)
+  //     .pipe(
+  //       map(res => (res as any).data), shareReplay());
+  // }
 
-  getCoursesByCategoryId(categoryId: any): Observable<Course[]>{
-    const url = `${Constants.base_url}/categories/${categoryId}/courses`;
-    return this.http.get<Course[]>(url)
-      .pipe(
-        map(res => (res as any).data), shareReplay());
-  }
+  // getCoursesByCategoryId(categoryId: any): Observable<Course[]>{
+  //   const url = `${Constants.base_url}/categories/${categoryId}/courses`;
+  //   return this.http.get<Course[]>(url)
+  //     .pipe(
+  //       map(res => (res as any).data), shareReplay());
+  // }
 
   getCourseBySlug(slug: any): Observable<Course>{
     const url = `${Constants.base_url}/course/${slug}`;
@@ -43,15 +43,19 @@ export class DataService {
         shareReplay());
   }
 
-  getCoursesBySearchText(searchText: string, limit: number): Observable<Course[]>{
-    const url = `${Constants.base_url}/courses?q=${searchText}&limit=${limit}`;
-    return this.http.get<Course[]>(url)
-      .pipe(
-        map(res => (res as any).data),
-        shareReplay());
-  }
+  // getCoursesBySearchText(searchText: string, limit: number): Observable<Course[]>{
+  //   const url = `${Constants.base_url}/courses?q=${searchText}&limit=${limit}`;
+  //   return this.http.get<Course[]>(url)
+  //     .pipe(
+  //       map(res => (res as any).data),
+  //       shareReplay());
+  // }
 
   // Category
+  createCategory(formData: any): Observable<any>{
+    const url = `${Constants.base_url}/categories`;
+    return this.http.post(url, formData);
+  }
   // getTopCategories(): Observable<Category[]>{
   //   const url = `${Constants.base_url}/categories?limit=8`;
   //   return this.http.get<Category[]>(url)
@@ -60,11 +64,16 @@ export class DataService {
   //       shareReplay());
   // }
 
-  getCategories(): Observable<Category[]>{
-    const url = `${Constants.base_url}/categories`;
-    return this.http.get<Category>(url).
-    pipe(
-      map(res => (res as any).data), shareReplay());
+  // getCategories(): Observable<Category[]>{
+  //   const url = `${Constants.base_url}/categories`;
+  //   return this.http.get<Category>(url).
+  //   pipe(
+  //     map(res => (res as any).data), shareReplay());
+  // }
+
+  updateCategory(categoryId: any, formData: any): Observable<any>{
+    const url = `${Constants.base_url}/categories/${categoryId}`;
+    return this.http.put(url, formData);
   }
 
   getCategoryBySlug(slug: any): Observable<Category>{

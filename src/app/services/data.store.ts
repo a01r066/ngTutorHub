@@ -68,7 +68,7 @@ export class DataStore {
 
   // Category section
   private getAllCategories() {
-    const url = `${Constants.base_url}/categories`;
+    const url = `${Constants.base_url}/categories?isHidden=false`;
     const loadingCategories = this.http.get(url)
       .pipe(
         map(res => (res as any).data),

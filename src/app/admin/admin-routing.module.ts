@@ -3,11 +3,13 @@ import {RouterModule, Routes} from "@angular/router";
 import {AdCategoriesComponent} from "./ad-categories/ad-categories.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {AdminComponent} from "./admin.component";
+import {AdCoursesComponent} from "./ad-categories/ad-courses/ad-courses.component";
 
 const routes: Routes = [
   { path: 'admin', component: AdminComponent, children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'categories', component: AdCategoriesComponent }
+      { path: 'categories', component: AdCategoriesComponent },
+      { path: 'categories/:id', component: AdCoursesComponent }
     ] }
 ]
 
