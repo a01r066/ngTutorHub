@@ -8,6 +8,7 @@ import {map} from "rxjs/operators";
 import {Store} from "@ngrx/store";
 import * as fromApp from '../../app.reducer';
 import {Observable} from "rxjs";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-signup',
@@ -15,10 +16,11 @@ import {Observable} from "rxjs";
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  signupForm!: FormGroup;
+  ngForm!: FormGroup;
   isLoading$!: Observable<boolean>;
 
   constructor(private authService: AuthService,
+              private authStore: AuthStore,
               private router: Router,
               private snackBar: MatSnackBar,
               private uiService: UiService,
@@ -27,8 +29,8 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
 
-    this.signupForm = new FormGroup({
-      name: new FormControl('', {
+    this.ngForm = new FormGroup({
+      displayName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       email: new FormControl('', {
@@ -41,25 +43,29 @@ export class SignupComponent implements OnInit {
   }
 
   onRegister(){
-    this.authService.registerUser(this.signupForm.value).subscribe(res => {
-      this.store.dispatch({ type: 'STOP_LOADING' });
-      if((res as any).statusCode === 401){
-        this.snackBar.open(`${(res as any).message}`, null!, {
-          duration: 3000
-        });
-      } else {
-        const user = (res as any).data;
-
-        const token = (res as any).token;
-        this.authService.setCurrentUser(token, user.email);
-        this.router.navigate(['']);
-      }
-    }, error => {
-      this.store.dispatch({ type: 'STOP_LOADING' });
-      this.snackBar.open(`Register error: ${error.message}`, null!, {
-        duration: 3000
-      });
+    const formData = this.ngForm.value;
+    this.authStore.register(formData).subscribe(() => {
+      this.router.navigate(['']);
     });
+    // this.authService.registerUser(this.signupForm.value).subscribe(res => {
+    //   this.store.dispatch({ type: 'STOP_LOADING' });
+    //   if((res as any).statusCode === 401){
+    //     this.snackBar.open(`${(res as any).message}`, null!, {
+    //       duration: 3000
+    //     });
+    //   } else {
+    //     const user = (res as any).data;
+    //
+    //     const token = (res as any).token;
+    //     this.authService.setCurrentUser(token, user.email);
+    //     this.router.navigate(['']);
+    //   }
+    // }, error => {
+    //   this.store.dispatch({ type: 'STOP_LOADING' });
+    //   this.snackBar.open(`Register error: ${error.message}`, null!, {
+    //     duration: 3000
+    //   });
+    // });
   }
 
   onGmailFbRegister(type: any) {

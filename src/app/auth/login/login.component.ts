@@ -8,6 +8,7 @@ import {Store} from "@ngrx/store";
 import * as fromApp from '../../app.reducer';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,11 @@ import {map} from "rxjs/operators";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+  ngForm!: FormGroup;
   isLoading$!: Observable<boolean>;
 
   constructor(private authService: AuthService,
+              private authStore: AuthStore,
               private router: Router,
               private snackBar: MatSnackBar,
               private uiService: UiService,
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading)); // transform the data
 
-    this.loginForm = new FormGroup({
+    this.ngForm = new FormGroup({
       email: new FormControl('', {
         validators: [Validators.required, Validators.email]
       }),
@@ -38,19 +40,23 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(){
-    this.authService.loginUser(this.loginForm.value).subscribe(res => {
-      this.store.dispatch({ type: 'STOP_LOADING' });
-      const user = (res as any).data;
-
-      const token = (res as any).token;
-      this.authService.setCurrentUser(token, user.email);
+    const formData = this.ngForm.value;
+    this.authStore.login(formData).subscribe(() => {
       this.router.navigate(['']);
-    }, error => {
-      this.store.dispatch({ type: 'STOP_LOADING' });
-      this.snackBar.open(`Invalid credential. Please try again!`, null!, {
-        duration: 3000
-      })
     });
+    // this.authService.loginUser(this.loginForm.value).subscribe(res => {
+    //   this.store.dispatch({ type: 'STOP_LOADING' });
+    //   const user = (res as any).data;
+    //
+    //   const token = (res as any).token;
+    //   this.authService.setCurrentUser(token, user.email);
+    //   this.router.navigate(['']);
+    // }, error => {
+    //   this.store.dispatch({ type: 'STOP_LOADING' });
+    //   this.snackBar.open(`Invalid credential. Please try again!`, null!, {
+    //     duration: 3000
+    //   })
+    // });
   }
 
   onGmailFbRegister(type: any) {

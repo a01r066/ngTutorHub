@@ -15,10 +15,10 @@
 
       <div style="font-size: 1.25rem; color: darkslategrey; font-weight: 400;margin-top: 16px;">Register TutorHub Account!</div>
       <mat-divider style="background-color: lightgray; width: 160px; margin-top: 8px"></mat-divider>
-      <form [formGroup]="signupForm" (ngSubmit)="onRegister()" style="width: 320px" fxLayout="column">
+      <form [formGroup]="ngForm" (ngSubmit)="onRegister()" style="width: 320px" fxLayout="column">
         <mat-form-field appearance="standard">
           <mat-label>Full name</mat-label>
-          <input matInput placeholder="Full name" formControlName="name">
+          <input matInput placeholder="Full name" formControlName="displayName">
           <mat-error>name must be at least 3 characters</mat-error>
         </mat-form-field>
         <mat-form-field appearance="standard">
@@ -32,7 +32,7 @@
           <mat-error>Missing password.</mat-error>
         </mat-form-field>
         <div fxLayoutAlign="center center">
-          <button mat-raised-button color="primary" style="width: 96px; height: 40px; font-size: 1.1rem" [disabled]="signupForm.invalid" *ngIf="!(isLoading$ | async)">Sign up</button>
+          <button mat-raised-button color="primary" style="width: 96px; height: 40px; font-size: 1.1rem" [disabled]="ngForm.invalid" *ngIf="!(isLoading$ | async)">Sign up</button>
           <mat-spinner style="transform: scale(0.5)" *ngIf="(isLoading$ | async)"></mat-spinner>
         </div>
       </form>

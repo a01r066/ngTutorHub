@@ -10,6 +10,7 @@ import {Observable} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {FeedbackComponent} from "../../home/Feedback/feedback.component";
 import {DataStore} from "../../services/data.store";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private dataStore: DataStore,
+    public authStore: AuthStore,
     private uiService: UiService,
     private slugifyPipe: SlugifyPipe,
     public dialog: MatDialog
@@ -58,8 +60,8 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(){
-    this.authService.logout();
-    this.router.navigate(['']);
+    this.authStore.logout();
+    this.router.navigate(['login']);
   }
 
   onClickCart(){
