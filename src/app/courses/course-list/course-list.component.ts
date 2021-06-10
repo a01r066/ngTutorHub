@@ -1,13 +1,9 @@
-import {AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {DataService} from "../../services/data.service";
+import {Component, OnInit} from '@angular/core';
 import {UiService} from "../../services/ui.service";
 import {Category} from "../../models/category.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../models/course.model";
-import {Observable, Subject} from "rxjs";
-import {LoadingService} from "../../services/loading.service";
-import {finalize, map} from "rxjs/operators";
+import {Observable} from "rxjs";
 import {DataStore} from "../../services/data.store";
 
 @Component({
@@ -30,12 +26,10 @@ export class CourseListComponent implements OnInit {
   counter: any;
 
   constructor(
-    private dataService: DataService,
     private dataStore: DataStore,
     private uiService: UiService,
     private route: ActivatedRoute,
     private router: Router,
-    // private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -44,27 +38,19 @@ export class CourseListComponent implements OnInit {
     this.uiService.categorySub.subscribe(category => {
       this.selectedCategory = category;
       // Get courses
-      // this.getCoursesByCategory();
       this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
   }
 
   private getCategoryBySlug() {
     const slug = this.route.snapshot.params['id'];
-    this.dataService.getCategoryBySlug(slug).subscribe(category => {
+    this.dataStore.getCategoryBySlug(slug).subscribe(category => {
       this.selectedCategory = category;
 
       // Get courses
-      // this.getCoursesByCategory();
       this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
   }
-
-  // private getCoursesByCategory(){
-  //   const courses$ = this.dataService.getCoursesByCategoryId(this.selectedCategory._id)
-  //     .pipe(map(courses => courses));
-  //   this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$)
-  // }
 
   next() {
     if(this.isNext && !this.isLastPage){

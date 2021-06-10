@@ -6,6 +6,11 @@ import {HttpClient} from "@angular/common/http";
 import {LoadingService} from "./loading.service";
 import {MessagesService} from "./messages.service";
 import {catchError, map, shareReplay, tap} from "rxjs/operators";
+import firebase from 'firebase';
+import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
+import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
+import {AngularFireAuth} from "@angular/fire/auth";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 const AUTH_DATA = 'auth_data';
 
@@ -21,9 +26,12 @@ export class AuthStore {
 
   constructor(private http: HttpClient,
               private loadingService: LoadingService,
-              private messageService: MessagesService) {
+              private messageService: MessagesService,
+              private afAuth: AngularFireAuth,
+              private snackBar: MatSnackBar) {
     this.isLoggedIn$ = this.user$.pipe(map(user => !!user));
 
+    // Load user from local storage
     const userStr = localStorage.getItem(AUTH_DATA);
     if(userStr){
       this.subject.next(JSON.parse(userStr));
@@ -34,14 +42,18 @@ export class AuthStore {
     const url = `${Constants.base_url}/auth/register`;
     return this.http.post(url, formData)
       .pipe(
-        map(res => (res as any).data),
+        map(res => (res as any)),
         catchError(err => {
           const message = `Register failed. ${err.message}`;
-          this.messageService.showErrors(message);
+          // this.messageService.showErrors(message);
+          this.snackBar.open(message, null!, {
+            duration: 3000
+          })
           return throwError(err);
         }),
-        tap(user => {
-          this.subject.next(user);
+        tap(res => {
+          const user = (res as any).data;
+          this.subject.next(res);
           localStorage.setItem(AUTH_DATA, JSON.stringify(user));
         }),
         shareReplay());
@@ -53,8 +65,11 @@ export class AuthStore {
       .pipe(
         map(res => (res as any).data),
         catchError(err => {
-          const message = `Login failed. ${err.message}`;
-          this.messageService.showErrors(message);
+          const message = `Login failed. Invalid credential!`;
+          // this.messageService.showErrors(message);
+          this.snackBar.open(message, null!, {
+            duration: 3000
+          })
           return throwError(err);
         }),
         tap(user => {
@@ -62,6 +77,16 @@ export class AuthStore {
           localStorage.setItem(AUTH_DATA, JSON.stringify(user));
         }),
         shareReplay());
+  }
+
+  loginViaGmailFB(type: any){
+    let provider: any;
+    if(type === 'fb'){
+      provider = new FacebookAuthProvider();
+    } else if(type === 'google') {
+      provider = new GoogleAuthProvider();
+    }
+    return this.afAuth.signInWithPopup(provider);
   }
 
   logout(){

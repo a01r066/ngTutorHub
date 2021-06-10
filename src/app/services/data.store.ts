@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {Course} from "../models/course.model";
 import {catchError, map, shareReplay, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
@@ -7,6 +7,9 @@ import {LoadingService} from "./loading.service";
 import {MessagesService} from "./messages.service";
 import {Constants} from "../helpers/constants";
 import {Category} from "../models/category.model";
+import {Lecture} from "../models/lecture.model";
+import {Chapter} from "../models/chapter.model";
+import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: "root"
@@ -89,6 +92,41 @@ export class DataStore {
         tap(courses => courses),
         shareReplay());
   }
+
+  createCourse(formData: any): Observable<any>{
+    const url = `${Constants.base_url}/courses`;
+    return this.http.post(url, formData)
+      .pipe(
+        map(res => (res as any).data),
+        catchError(err => {
+          const message = 'Create failed. Please check your internet connection!';
+          this.messageService.showErrors(message);
+          return throwError(err);
+        }),
+        shareReplay());
+  }
+
+  getCourseBySlug(slug: any): Observable<Course>{
+    const url = `${Constants.base_url}/course/${slug}`;
+    return this.http.get<Course>(url)
+      .pipe(
+        map(res => (res as any).data),
+        shareReplay());
+  }
+
+  getLecturesByCourseId(courseId: any): Observable<Lecture[]>{
+    const url = `${Constants.base_url}/lectures/${courseId}`;
+    return this.http.get<Lecture[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
+  }
+
+  getChaptersByLectureId(lectureId: any): Observable<Chapter[]>{
+    const url = `${Constants.base_url}/lectures/${lectureId}/chapters`;
+    return this.http.get<Chapter[]>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
+  }
   // End of course section
 
   // Category section
@@ -144,5 +182,63 @@ export class DataStore {
           this.messageService.showErrors(message);
           return throwError(err);
         }), shareReplay());
+  }
+
+  getCategoryBySlug(slug: any): Observable<Category>{
+    const url = `${Constants.base_url}/categories/${slug}`;
+    return this.http.get<Category>(url)
+      .pipe(
+        map(res => (res as any).data), shareReplay());
+  }
+
+  // Cart
+  addToCart(userId: any, courseId: any): Observable<any>{
+    const url = `${Constants.base_url}/auth/addToCart`;
+    const data = {
+      "userId": userId,
+      "courseId": courseId
+    }
+    return this.http.put(url, data).pipe(shareReplay());
+  }
+
+  removeCartItem(courseId: any, userId: any): Observable<any>{
+    const url = `${Constants.base_url}/auth/removeCartItem`;
+    const data = {
+      "userId": userId,
+      "courseId": courseId
+    }
+    return this.http.put(url, data).pipe(shareReplay());
+  }
+
+  checkout(payment: any): Observable<any>{
+    const url = `${Constants.base_url}/payments`;
+    return this.http.post(url, payment).pipe(shareReplay());
+  }
+
+  // User
+  updateProfile(userId: string, changes: Partial<User>): Observable<any>{
+    const url = `${Constants.base_url}/auth/${userId}`;
+    return this.http.put(url, changes).pipe(
+      shareReplay()
+    );
+  }
+
+  updatePhotoProfile(userId: string, file: any): Observable<any>{
+    const formData = new FormData();
+    formData.append('file', file);
+    const url = `${Constants.base_url}/auth/${userId}/photo`;
+
+    return this.http.put(url, formData)
+      .pipe(shareReplay());
+  }
+
+  createFeedback(formData: any, uid: any): Observable<any>{
+    const data = {
+      "user": uid,
+      "subject": formData.subject,
+      "message": formData.message
+    }
+    const url = `${Constants.base_url}/feedbacks`;
+    return this.http.post(url, data);
   }
 }

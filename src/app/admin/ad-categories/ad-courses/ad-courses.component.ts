@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DataStore} from "../../../services/data.store";
 import {MatDialog} from "@angular/material/dialog";
-import {DataService} from "../../../services/data.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {Course} from "../../../models/course.model";
 import {ActivatedRoute} from "@angular/router";
 import {CourseDialogComponent} from "./course-dialog/course-dialog.component";
 import {Subject} from "rxjs";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-ad-courses',
@@ -26,7 +26,6 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   constructor(private dataStore: DataStore,
               public dialog: MatDialog,
-              private dataService: DataService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -78,9 +77,10 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   delete(element: Course) {
     // hide category instead of delete it
-    this.dataService.updateCategory(element._id, { "isHidden": true }).subscribe(res => {
-      // console.log(res);
-    });
+    const ngForm = new FormGroup({
+      isHidden: new FormControl(true)
+    })
+    this.dataStore.updateCourse(element._id, ngForm.value).subscribe();
   }
 
   showLectures(row: any) {

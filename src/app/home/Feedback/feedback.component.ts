@@ -2,12 +2,12 @@ import {Component, ElementRef, Inject, OnInit, ViewChild} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {User} from "../../models/user.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DataService} from "../../services/data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {LoadingService} from "../../services/loading.service";
 import {MessagesService} from "../../services/messages.service";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
+import {DataStore} from "../../services/data.store";
 
 export interface DialogData {
   user: User;
@@ -26,7 +26,7 @@ export class FeedbackComponent implements OnInit{
   constructor(
     public dialogRef: MatDialogRef<FeedbackComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private dataService: DataService,
+    private dataStore: DataStore,
     private snackBar: MatSnackBar,
     private loadingService: LoadingService,
     private messageService: MessagesService) {}
@@ -48,7 +48,7 @@ export class FeedbackComponent implements OnInit{
 
   send() {
     if(this.feedbackForm.valid){
-      const createFeedback$ = this.dataService.createFeedback(this.feedbackForm.value, this.data.user._id).pipe(catchError(err => {
+      const createFeedback$ = this.dataStore.createFeedback(this.feedbackForm.value, this.data.user._id).pipe(catchError(err => {
         const message = 'Feedback failed. Duplicated feedback!';
         this.messageService.showErrors(message);
         return throwError(err);

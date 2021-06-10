@@ -4,12 +4,9 @@ import {HttpClient} from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
 import {Constants} from "../helpers/constants";
 import {AngularFireAuth} from "@angular/fire/auth";
-import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import firebase from 'firebase';
+import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
 import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
-import {UiService} from "../services/ui.service";
-import {Store} from "@ngrx/store";
-import * as fromApp from '../app.reducer';
 import {map, shareReplay} from "rxjs/operators";
 
 @Injectable({
@@ -21,9 +18,7 @@ export class AuthService {
   authChanged = new Subject<boolean>();
 
   constructor(private http: HttpClient,
-              private afAuth: AngularFireAuth,
-              private uiService: UiService,
-              private store: Store<{ui: fromApp.State}>) {
+              private afAuth: AngularFireAuth) {
   }
 
   initAuthListener(){
@@ -75,7 +70,6 @@ export class AuthService {
 
   // Authentication
   registerUser(formData: any){
-    this.store.dispatch({ type: 'START_LOADING' });
     const data = {
       "displayName": formData.name,
       "email": formData.email,
@@ -101,7 +95,6 @@ export class AuthService {
   }
 
   loginUser(formData: any){
-    this.store.dispatch({ type: 'START_LOADING' });
     const data = {
       "email": formData.email,
       "password": formData.password
@@ -111,7 +104,6 @@ export class AuthService {
   }
 
   loginViaGmailFB(type: any){
-    this.store.dispatch({ type: 'START_LOADING' });
     let provider: any;
     if(type === 'fb'){
       provider = new FacebookAuthProvider();

@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
-import {DataService} from "../services/data.service";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
 import {DecimalPipe} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Constants} from "../helpers/constants";
+import {DataStore} from "../services/data.store";
 
 declare var paypal: any;
 
@@ -35,7 +35,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   paidFor = false;
 
   constructor(private authService: AuthService,
-              private dataService: DataService,
+              private dataStore: DataStore,
               private router: Router,
               private _decimalPipe: DecimalPipe,
               private snackBar: MatSnackBar) {
@@ -168,7 +168,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   checkout(payment: any){
-    this.dataService.checkout(payment).subscribe(res => {
+    this.dataStore.checkout(payment).subscribe(res => {
 
       this.authService.initAuthListener();
 

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DataService} from "../../services/data.service";
 import {AuthService} from "../../auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DataStore} from "../../services/data.store";
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   previewUrl!: any;
 
   constructor(
-    private dataService: DataService,
+    private dataStore: DataStore,
     private authService: AuthService,
     private snackBar: MatSnackBar
   ) { }
@@ -73,7 +73,7 @@ export class ProfileComponent implements OnInit {
     let changes = this.profileForm.value;
     changes.displayName = this.profileForm.controls.fName.value + ' ' + this.profileForm.controls.lName.value;
 
-    this.dataService.updateProfile(this.user._id, changes).subscribe(res => {
+    this.dataStore.updateProfile(this.user._id, changes).subscribe(res => {
       // Reload user
       this.authService.initAuthListener();
 
@@ -84,10 +84,9 @@ export class ProfileComponent implements OnInit {
   }
 
   savePhoto() {
-    this.dataService.updatePhotoProfile(this.user._id, this.fileData).subscribe(res => {
+    this.dataStore.updatePhotoProfile(this.user._id, this.fileData).subscribe(res => {
       // Reload photo
       // this.authService.initAuthListener();
-
       this.snackBar.open(`Your profile photo is updated!`, null!, {
         duration: 3000
       })

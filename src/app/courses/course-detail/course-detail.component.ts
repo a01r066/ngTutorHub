@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../../services/data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
@@ -11,8 +10,8 @@ import {Observable} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
-import {LoadingService} from "../../services/loading.service";
-import {finalize, map} from "rxjs/operators";
+import {map} from "rxjs/operators";
+import {DataStore} from "../../services/data.store";
 
 @Component({
   selector: 'app-course-detail',
@@ -22,11 +21,8 @@ import {finalize, map} from "rxjs/operators";
 
 export class CourseDetailComponent implements OnInit {
   course!: Course;
-  loadingLectures$!: Observable<Lecture[]>;
-  lectures: Lecture[] = [];
-
-  loadingChapters$!: Observable<Chapter[]>;
-  chapters: Chapter[] = [];
+  lectures$!: Observable<Lecture[]>;
+  chapters$!: Observable<Chapter[]>;
 
   objectives: any;
   videoUrl!: SafeResourceUrl;
@@ -38,27 +34,26 @@ export class CourseDetailComponent implements OnInit {
 
   panelOpenState = false;
 
-  constructor(private dataService: DataService,
+  constructor(
+              private dataStore: DataStore,
               private route: ActivatedRoute,
               private authService: AuthService,
               private router: Router,
               private sanitizer: DomSanitizer,
               private snackBar: MatSnackBar,
-              private uiService: UiService,
-              private loadingService: LoadingService) { }
+              private uiService: UiService) { }
 
   ngOnInit(): void {
     this.user = this.authService.user;
     const slug = this.route.snapshot.params['id'];
-    this.dataService.getCourseBySlug(slug).subscribe(course => {
+    this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
 
       this.checkCourseIsPurchased(course);
       if(!this.isPurchased){
         // get objectives
         this.objectives = this.course.objectives.substring(1).split('- ');
-        const lectures$ = this.dataService.getLecturesByCourseId(this.course._id);
-        this.loadingLectures$ = this.loadingService.showLoaderUntilCompleted(lectures$);
+        this.lectures$ = this.dataStore.getLecturesByCourseId(this.course._id);
       }
     });
   }
@@ -76,9 +71,8 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onClickLecture(lecture: any){
-    const chapters$ = this.dataService.getChaptersByLectureId(lecture._id)
+    this.chapters$ = this.dataStore.getChaptersByLectureId(lecture._id)
       .pipe(map(chapters => chapters));
-    this.loadingChapters$ = this.loadingService.showLoaderUntilCompleted(chapters$);
   }
 
   onClickChapter(chapter: any){
@@ -87,7 +81,7 @@ export class CourseDetailComponent implements OnInit {
 
   addToCart(course: any){
     if(this.user && !this.isPurchased){
-      this.dataService.addToCart(this.authService.user, course).subscribe(res => {
+      this.dataStore.addToCart(this.authService.user._id, course._id).subscribe(res => {
         this.authService.initAuthListener();
       });
       this.snackBar.open(`${course.title} added to cart!`, null!, {
@@ -100,7 +94,7 @@ export class CourseDetailComponent implements OnInit {
 
   buyNow(course: any) {
     if(this.user && !this.isPurchased){
-      this.dataService.addToCart(this.authService.user, course).subscribe(res => {
+      this.dataStore.addToCart(this.authService.user._id, course._id).subscribe(res => {
         this.authService.initAuthListener();
         this.router.navigate(['checkout']);
       });

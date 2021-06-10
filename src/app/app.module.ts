@@ -27,8 +27,6 @@ import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFireAnalyticsModule} from "@angular/fire/analytics";
 import { ProfileComponent } from './home/profile/profile.component';
-import {StoreModule} from "@ngrx/store";
-import { appReducer} from "./app.reducer";
 import {FeedbackComponent} from "./home/Feedback/feedback.component";
 import {LoadingService} from "./services/loading.service";
 import {MessagesService} from "./services/messages.service";
@@ -67,7 +65,6 @@ import {AdminModule} from "./admin/admin.module";
     AuthModule,
     MaterialModule,
     FlexLayoutModule,
-    StoreModule.forRoot({ui: appReducer}), // allow map multiple reducer with key
     AdminModule
   ],
   providers: [

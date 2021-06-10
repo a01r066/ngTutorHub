@@ -1,8 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DataService} from "../../../services/data.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {DialogData} from "../../../home/Feedback/feedback.component";
 import {DataStore} from "../../../services/data.store";
 
@@ -16,9 +14,7 @@ export class CategoryDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CategoryDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private dataService: DataService,
-              private dataStore: DataStore,
-              private snackBar: MatSnackBar) { }
+              private dataStore: DataStore) { }
 
   ngOnInit(): void {
     this.categoryForm = new FormGroup({
@@ -48,11 +44,6 @@ export class CategoryDialogComponent implements OnInit {
         this.dataStore.updateCategory(categoryId, changes).subscribe();
         this.dialogRef.close(changes);
       } else {
-        // this.dataService.createCategory(this.categoryForm.value).subscribe(res => {
-        //   this.snackBar.open('Category added success!', null!, {
-        //     duration: 3000
-        //   })
-        // });
         this.dataStore.createCategory(changes).subscribe();
         this.dialogRef.close(changes);
       }

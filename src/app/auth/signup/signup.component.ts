@@ -5,10 +5,9 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthService} from "../auth.service";
 import {UiService} from "../../services/ui.service";
 import {map} from "rxjs/operators";
-import {Store} from "@ngrx/store";
-import * as fromApp from '../../app.reducer';
 import {Observable} from "rxjs";
 import {AuthStore} from "../../services/auth.store";
+import {MessagesService} from "../../services/messages.service";
 
 @Component({
   selector: 'app-signup',
@@ -21,14 +20,11 @@ export class SignupComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private authStore: AuthStore,
+              private messageService: MessagesService,
               private router: Router,
-              private snackBar: MatSnackBar,
-              private uiService: UiService,
-              private store: Store<{ui: fromApp.State}>) { }
+              private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
-
     this.ngForm = new FormGroup({
       displayName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)]
@@ -44,45 +40,34 @@ export class SignupComponent implements OnInit {
 
   onRegister(){
     const formData = this.ngForm.value;
-    this.authStore.register(formData).subscribe(() => {
-      this.router.navigate(['']);
+    this.authStore.register(formData).subscribe((res) => {
+      if((res as any).success === false){
+        // this.messageService.showErrors(`${(res as any).message}`);
+        this.snackBar.open(`${(res as any).message}`, null!, {
+          duration: 3000
+        })
+      } else {
+        this.router.navigate(['']);
+      }
     });
-    // this.authService.registerUser(this.signupForm.value).subscribe(res => {
-    //   this.store.dispatch({ type: 'STOP_LOADING' });
-    //   if((res as any).statusCode === 401){
-    //     this.snackBar.open(`${(res as any).message}`, null!, {
-    //       duration: 3000
-    //     });
-    //   } else {
-    //     const user = (res as any).data;
-    //
-    //     const token = (res as any).token;
-    //     this.authService.setCurrentUser(token, user.email);
-    //     this.router.navigate(['']);
-    //   }
-    // }, error => {
-    //   this.store.dispatch({ type: 'STOP_LOADING' });
-    //   this.snackBar.open(`Register error: ${error.message}`, null!, {
-    //     duration: 3000
-    //   });
-    // });
   }
 
   onGmailFbRegister(type: any) {
-    this.authService.loginViaGmailFB(type).then(res => {
-      this.store.dispatch({ type: 'STOP_LOADING' });
-      const user = (res as any).user;
-
-      const token = (res as any).credential.accessToken;
-      this.authService.storeGmailFbUserData((res as any).user, token).subscribe(() => {
-        this.authService.setCurrentUser(token, user.email);
+    this.authStore.loginViaGmailFB(type).then(res => {
+      // Create use in the backend
+      const user = res.user;
+      // const token = (res as any).credential.accessToken;
+      const formData = {
+        "displayName": user!.displayName,
+        "email": user!.email,
+        "password": user!.uid,
+        "photoURL": user?.photoURL,
+        // "accessToken": token,
+        "isSocial": true
+      }
+      this.authStore.register(formData).subscribe(() => {
         this.router.navigate(['']);
-      });
-    }).catch(error => {
-      this.store.dispatch({ type: 'STOP_LOADING' });
-      this.snackBar.open(`Gmail sign up failed: ${error.message}`, null!, {
-        duration: 3000
-      });
+      })
     });
   }
 }

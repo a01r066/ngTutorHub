@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth/auth.service";
-import {DataService} from "../services/data.service";
-import {Course} from "../models/course.model";
 import {Router} from "@angular/router";
 import {User} from "../models/user.model";
 import {Constants} from "../helpers/constants";
+import {DataStore} from "../services/data.store";
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +22,7 @@ export class CartComponent implements OnInit {
   user!: User;
 
   constructor(private authService: AuthService,
-              private dataService: DataService,
+              private dataStore: DataStore,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -44,7 +43,7 @@ export class CartComponent implements OnInit {
   }
 
   removeCourse(index: any){
-    this.dataService.removeCartItem(this.courses[index].courseId._id).subscribe(res => {
+    this.dataStore.removeCartItem(this.courses[index].courseId._id, this.user._id).subscribe(res => {
       this.courses.splice(index, 1);
       this.getSummary();
     });

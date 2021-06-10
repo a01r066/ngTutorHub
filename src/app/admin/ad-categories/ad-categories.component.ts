@@ -5,10 +5,10 @@ import {Category} from "../../models/category.model";
 import {DataStore} from "../../services/data.store";
 import {MatDialog} from "@angular/material/dialog";
 import {CategoryDialogComponent} from "./category-dialog/category-dialog.component";
-import {DataService} from "../../services/data.service";
 import {Router} from "@angular/router";
-import {Observable, Subject} from "rxjs";
+import {Subject} from "rxjs";
 import {filter, tap} from "rxjs/operators";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-ad-categories',
@@ -26,7 +26,6 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
 
   constructor(private dataStore: DataStore,
               public dialog: MatDialog,
-              private dataService: DataService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -79,13 +78,13 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
 
   delete(element: Category) {
     // hide category instead of delete it
-    this.dataService.updateCategory(element._id, { "isHidden": true }).subscribe(res => {
-      // console.log(res);
-    });
+    const ngForm = new FormGroup({
+      isHidden: new FormControl(true)
+    })
+    this.dataStore.updateCategory(element._id, ngForm.value).subscribe();
   }
 
   showCourses(row: any) {
-    // console.log('row: '+JSON.stringify(row));
     this.router.navigate(['admin', 'categories', (row as any)._id]);
   }
 }

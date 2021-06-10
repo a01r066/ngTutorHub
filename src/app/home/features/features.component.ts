@@ -1,13 +1,11 @@
-import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {DataService} from "../../services/data.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
-import {Observable, Subject, Subscription} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../services/ui.service";
-import {map} from "rxjs/operators";
 import {LoadingService} from "../../services/loading.service";
 import {DataStore} from "../../services/data.store";
 
@@ -19,7 +17,6 @@ import {DataStore} from "../../services/data.store";
 export class FeaturesComponent implements OnInit {
   base_url = 'http://localhost:3000/uploads/courses/';
 
-  // loadingCourses$!: Observable<Course[]>;
   courses$!: Observable<Course[]>;
 
   page = 1;
@@ -38,7 +35,6 @@ export class FeaturesComponent implements OnInit {
   selectedCategory!: Category;
 
   constructor(private http: HttpClient,
-              private dataService: DataService,
               private router: Router,
               private authService: AuthService,
               private uiService: UiService,
@@ -68,8 +64,6 @@ export class FeaturesComponent implements OnInit {
   private getCoursesByCategory(){
     this.categories$.subscribe(categories => {
       this.selectedCategory = categories[this.selectedIndex];
-      // const courses$ = this.dataService.getBestSellerCourseByCate(this.selectedCategory, this.page);
-      // this.loadingCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
       this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.selectedCategory._id);
     })
   }
