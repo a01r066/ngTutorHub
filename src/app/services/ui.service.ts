@@ -13,5 +13,4 @@ export class UiService {
   searchTextSub = new Subject<string>();
   isPlayerSub = new Subject<boolean>();
   isCoursePurchased = new Subject<boolean>();
-  loadingStateChanged = new Subject<boolean>();
 }

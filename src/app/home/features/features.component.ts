@@ -1,14 +1,13 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Course} from "../../models/course.model";
-import {Category} from "../../models/category.model";
 import {UiService} from "../../services/ui.service";
-import {LoadingService} from "../../services/loading.service";
 import {DataStore} from "../../services/data.store";
 import {Constants} from "../../helpers/constants";
 import {AuthStore} from "../../services/auth.store";
+import {Category} from "../../models/category.model";
 
 @Component({
   selector: 'app-features',
@@ -32,23 +31,23 @@ export class FeaturesComponent implements OnInit {
   size: any;
   counter: any;
 
-  @Input() categories$!: Observable<Category[]>;
-  @Input() selectedIndex: number = 0;
-  selectedCategory!: Category;
+  categories: Category[] = [];
+
+  activeLink!: Category;
+  selectedIndex = 0;
 
   constructor(private http: HttpClient,
               private router: Router,
               private authStore: AuthStore,
               private uiService: UiService,
-              private loadingService: LoadingService,
               private dataStore: DataStore) {}
 
   ngOnInit(): void {
-    this.getCoursesByCategory();
-
-    this.uiService.tabSelectedIndexSub.subscribe(index => {
-      this.selectedIndex = index;
-      this.getCoursesByCategory();
+    this.dataStore.getTopCategories().subscribe(categories => {
+      this.categories = categories;
+      if(categories.length > 0){
+        this.courses$ = this.dataStore.getBestsellerCoursesByCategory(categories[this.selectedIndex]._id);
+      }
     })
 
     this.size = window.innerWidth;
@@ -63,11 +62,9 @@ export class FeaturesComponent implements OnInit {
     })
   }
 
-  private getCoursesByCategory(){
-    this.categories$.subscribe(categories => {
-      this.selectedCategory = categories[this.selectedIndex];
-      this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.selectedCategory._id);
-    })
+  onClickTab(index: any) {
+    this.selectedIndex = index;
+    this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);
   }
 
   @HostListener('window:resize', ['$event'])

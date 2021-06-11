@@ -105,4 +105,8 @@ export class HeaderComponent implements OnInit {
       // this.user = result;
     });
   }
+
+  home() {
+    this.router.navigate(['']);
+  }
 }

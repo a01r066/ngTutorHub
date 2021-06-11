@@ -1,6 +1,6 @@
 <mat-toolbar color="accent" *ngIf="!isPlayer">
   <div fxFill fxLayout="row" fxLayoutAlign="center center">
-    <h1 class="example-app-name" routerLink="" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600">TutorHub</h1>
+    <h1 class="example-app-name" (click)="home()" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600">TutorHub</h1>
     <button mat-button [matMenuTriggerFor]="menu">Categories</button>
     <div>
       <form action="#">

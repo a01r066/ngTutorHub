@@ -164,7 +164,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   checkout(payment: any){
     this.dataStore.checkout(payment).subscribe(res => {
 
-      // this.authService.initAuthListener();
+      this.authStore.initAuthListener();
 
       // Clear cart
       this.courses = this.user.cart;

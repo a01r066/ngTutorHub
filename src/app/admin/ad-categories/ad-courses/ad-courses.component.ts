@@ -4,7 +4,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {Course} from "../../../models/course.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CourseDialogComponent} from "./course-dialog/course-dialog.component";
 import {Subject} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -26,7 +26,8 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   constructor(private dataStore: DataStore,
               public dialog: MatDialog,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.getCourses();
@@ -84,6 +85,6 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
   }
 
   showLectures(row: any) {
-
+    this.router.navigate(['admin', 'courses', row._id]);
   }
 }

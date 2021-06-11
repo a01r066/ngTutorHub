@@ -35,29 +35,27 @@ export class CourseDetailComponent implements OnInit {
   panelOpenState = false;
 
   constructor(
-              private dataStore: DataStore,
-              private route: ActivatedRoute,
-              public authStore: AuthStore,
-              private router: Router,
-              private sanitizer: DomSanitizer,
-              private snackBar: MatSnackBar,
-              private uiService: UiService) { }
+    private dataStore: DataStore,
+    private route: ActivatedRoute,
+    public authStore: AuthStore,
+    private router: Router,
+    private sanitizer: DomSanitizer,
+    private snackBar: MatSnackBar,
+    private uiService: UiService) { }
 
   ngOnInit(): void {
-    this.authStore.user$.subscribe(user => {
-      this.user = user;
-    })
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
-
-      this.checkCourseIsPurchased(course);
-      if(!this.isPurchased){
-        // get objectives
-        this.objectives = this.course.objectives.substring(1).split('- ');
-        this.lectures$ = this.dataStore.getLecturesByCourseId(this.course._id);
-      }
     });
+
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
+
+      if(user){
+        this.checkCourseIsPurchased(this.course);
+      }
+    })
   }
 
   private checkCourseIsPurchased(course: any) {
@@ -68,6 +66,10 @@ export class CourseDetailComponent implements OnInit {
         this.isPurchased = true;
         this.uiService.isCoursePurchased.next(true);
         return
+      } else {
+        // get objectives
+        this.objectives = this.course.objectives.substring(1).split('- ');
+        this.lectures$ = this.dataStore.getLecturesByCourseId(this.course._id);
       }
     }
   }

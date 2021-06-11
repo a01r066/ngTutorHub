@@ -121,6 +121,16 @@ export class DataStore {
         map(res => (res as any).data), shareReplay());
   }
 
+  createLecture(courseId: any, formData: any): Observable<any>{
+    const url = `${Constants.base_url}/lectures`;
+    return this.http.post(url, formData).pipe(shareReplay());
+  }
+
+  updateLecture(lectureId: any, changes: Partial<Lecture>): Observable<any>{
+    const url = `${Constants.base_url}/lectures/${lectureId}`;
+    return this.http.put(url, changes).pipe(shareReplay());
+  }
+
   getChaptersByLectureId(lectureId: any): Observable<Chapter[]>{
     const url = `${Constants.base_url}/lectures/${lectureId}/chapters`;
     return this.http.get<Chapter[]>(url)

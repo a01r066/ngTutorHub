@@ -1,23 +1,10 @@
 <div fxFlex fxLayout="column">
-  <!--Tabs-->
-  <div fxFlex fxLayout="row">
-    <div fxFlex="15"></div>
-    <div fxFlex="70" fxLayoutAlign="center">
-      <nav mat-tab-nav-bar>
-        <a mat-tab-link *ngFor="let category of (categories$ | async) as categories; let i = index"
-           (click)="onClick(i)" [active]="activeLink == categories[i]">{{ category.title }}
-        </a>
-      </nav>
-      <div fxFlex="15"></div>
-    </div>
-  </div>
-
   <!--  Content-->
   <div fxFlex fxLayout="row">
     <div fxFlex="15"></div>
     <div fxFlex="70" fxlayoutAlign="center">
       <div style="width: 70vw">
-        <app-features [categories$]="categories$"></app-features>
+        <app-features></app-features>
         <app-top-categories></app-top-categories>
       </div>
     </div>
