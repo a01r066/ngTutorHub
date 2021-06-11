@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {AuthService} from "../auth.service";
 import {Observable} from "rxjs";
 import {AuthStore} from "../../services/auth.store";
 
@@ -15,7 +13,7 @@ export class LoginComponent implements OnInit {
   ngForm!: FormGroup;
   isLoading$!: Observable<boolean>;
 
-  constructor(private authService: AuthService,
+  constructor(
               private authStore: AuthStore,
               private router: Router) { }
 
@@ -48,10 +46,11 @@ export class LoginComponent implements OnInit {
         "email": user!.email,
         "password": user!.uid,
         "photoURL": user?.photoURL,
-        // "accessToken": token,
         "isSocial": true
       }
-      this.authStore.register(formData).subscribe(() => {
+      this.authStore.register(formData).subscribe((res) => {
+        const token = (res as any).token;
+        this.authStore.setCurrentUser(token);
         this.router.navigate(['']);
       })
     });

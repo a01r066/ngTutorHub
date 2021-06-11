@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../auth/auth.service";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
@@ -12,6 +11,7 @@ import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
 import {map} from "rxjs/operators";
 import {DataStore} from "../../services/data.store";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-course-detail',
@@ -37,14 +37,16 @@ export class CourseDetailComponent implements OnInit {
   constructor(
               private dataStore: DataStore,
               private route: ActivatedRoute,
-              private authService: AuthService,
+              public authStore: AuthStore,
               private router: Router,
               private sanitizer: DomSanitizer,
               private snackBar: MatSnackBar,
               private uiService: UiService) { }
 
   ngOnInit(): void {
-    this.user = this.authService.user;
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
+    })
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
@@ -81,8 +83,8 @@ export class CourseDetailComponent implements OnInit {
 
   addToCart(course: any){
     if(this.user && !this.isPurchased){
-      this.dataStore.addToCart(this.authService.user._id, course._id).subscribe(res => {
-        this.authService.initAuthListener();
+      this.dataStore.addToCart(this.user._id, course._id).subscribe(res => {
+        this.authStore.initAuthListener();
       });
       this.snackBar.open(`${course.title} added to cart!`, null!, {
         duration: 3000
@@ -94,8 +96,8 @@ export class CourseDetailComponent implements OnInit {
 
   buyNow(course: any) {
     if(this.user && !this.isPurchased){
-      this.dataStore.addToCart(this.authService.user._id, course._id).subscribe(res => {
-        this.authService.initAuthListener();
+      this.dataStore.addToCart(this.user._id, course._id).subscribe(res => {
+        this.authStore.initAuthListener();
         this.router.navigate(['checkout']);
       });
       this.snackBar.open(`${course.title} added to cart!`, null!, {

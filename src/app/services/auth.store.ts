@@ -12,7 +12,7 @@ import FacebookAuthProvider = firebase.auth.FacebookAuthProvider;
 import {AngularFireAuth} from "@angular/fire/auth";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
-const AUTH_DATA = 'auth_data';
+// const AUTH_DATA = 'auth_data';
 
 @Injectable({
   providedIn: "root"
@@ -32,11 +32,40 @@ export class AuthStore {
     this.isLoggedIn$ = this.user$.pipe(map(user => !!user));
 
     // Load user from local storage
-    const userStr = localStorage.getItem(AUTH_DATA);
-    if(userStr){
-      this.subject.next(JSON.parse(userStr));
-    }
+    // const userStr = localStorage.getItem(AUTH_DATA);
+    // this.subject.next(JSON.parse(userStr));
+    this.initAuthListener();
   }
+
+  initAuthListener(){
+    this.getCurrentUser();
+  }
+
+  getUser(){
+    return this.subject.getValue();
+  }
+
+  setCurrentUser(token: string){
+    localStorage.setItem('token', token);
+    this.getCurrentUser();
+  }
+
+  getCurrentUser(){
+    const token = localStorage.getItem('token');
+
+    const url = `${Constants.base_url}/auth/me`;
+    return this.http.get<User>(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+      .pipe(
+        map(res => {
+          const user = (res as any).data;
+          this.subject.next(user);
+        }),
+        shareReplay()).subscribe();
+  };
 
   register(formData: any): Observable<User> {
     const url = `${Constants.base_url}/auth/register`;
@@ -52,9 +81,11 @@ export class AuthStore {
           return throwError(err);
         }),
         tap(res => {
-          const user = (res as any).data;
-          this.subject.next(res);
-          localStorage.setItem(AUTH_DATA, JSON.stringify(user));
+          // const user = (res as any).data;
+          // this.subject.next(res);
+          // localStorage.setItem(AUTH_DATA, JSON.stringify(user));
+          const token = (res as any).token;
+          this.setCurrentUser(token);
         }),
         shareReplay());
   }
@@ -63,7 +94,7 @@ export class AuthStore {
     const url = `${Constants.base_url}/auth/login`;
     return this.http.post(url, formData)
       .pipe(
-        map(res => (res as any).data),
+        map(res => (res as any)),
         catchError(err => {
           const message = `Login failed. Invalid credential!`;
           // this.messageService.showErrors(message);
@@ -72,9 +103,11 @@ export class AuthStore {
           })
           return throwError(err);
         }),
-        tap(user => {
-          this.subject.next(user);
-          localStorage.setItem(AUTH_DATA, JSON.stringify(user));
+        tap(res => {
+          // this.subject.next(user);
+          // localStorage.setItem(AUTH_DATA, JSON.stringify(user));
+          const token = (res as any).token;
+          this.setCurrentUser(token);
         }),
         shareReplay());
   }
@@ -91,6 +124,7 @@ export class AuthStore {
 
   logout(){
     this.subject.next(null!);
-    localStorage.removeItem(AUTH_DATA);
+    // localStorage.removeItem(AUTH_DATA);
+    localStorage.removeItem('token');
   }
 }

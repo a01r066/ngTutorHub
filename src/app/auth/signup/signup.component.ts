@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {AuthService} from "../auth.service";
-import {UiService} from "../../services/ui.service";
-import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {AuthStore} from "../../services/auth.store";
 import {MessagesService} from "../../services/messages.service";
@@ -18,7 +15,7 @@ export class SignupComponent implements OnInit {
   ngForm!: FormGroup;
   isLoading$!: Observable<boolean>;
 
-  constructor(private authService: AuthService,
+  constructor(
               private authStore: AuthStore,
               private messageService: MessagesService,
               private router: Router,
@@ -42,11 +39,13 @@ export class SignupComponent implements OnInit {
     const formData = this.ngForm.value;
     this.authStore.register(formData).subscribe((res) => {
       if((res as any).success === false){
-        // this.messageService.showErrors(`${(res as any).message}`);
+        this.messageService.showErrors(`${(res as any).message}`);
         this.snackBar.open(`${(res as any).message}`, null!, {
           duration: 3000
         })
       } else {
+        // const token = (res as any).token;
+        // this.authStore.setCurrentUser(token);
         this.router.navigate(['']);
       }
     });
@@ -65,7 +64,9 @@ export class SignupComponent implements OnInit {
         // "accessToken": token,
         "isSocial": true
       }
-      this.authStore.register(formData).subscribe(() => {
+      this.authStore.register(formData).subscribe((res) => {
+        const token = (res as any).token;
+        this.authStore.setCurrentUser(token);
         this.router.navigate(['']);
       })
     });

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Course} from "../../models/course.model";
-import {AuthService} from "../../auth/auth.service";
 import {User} from "../../models/user.model";
 import {Constants} from "../../helpers/constants";
 import {Router} from "@angular/router";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-learning',
@@ -16,16 +16,13 @@ export class LearningComponent implements OnInit {
   purchasedCourses: any[] = [];
 
   constructor(
-    private authService: AuthService,
+    private authStore: AuthStore,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.user = this.authService.user;
-    this.getPurchasedCourses();
-
-    this.authService.authChanged.subscribe(isAuth => {
-      this.user = this.authService.user;
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
       this.getPurchasedCourses();
     })
   }

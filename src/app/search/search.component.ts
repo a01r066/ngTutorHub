@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {LoadingService} from "../services/loading.service";
 import {MessagesService} from "../services/messages.service";
 import {DataStore} from "../services/data.store";
+import {Constants} from "../helpers/constants";
 
 @Component({
   selector: 'app-search',
@@ -13,7 +14,8 @@ import {DataStore} from "../services/data.store";
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  base_url = 'http://18.117.94.38:3000/uploads/courses/';
+  // base_url = 'http://18.117.94.38:3000/uploads/courses/';
+  base_url = `${Constants.base_upload}/courses/`;
   courses$!: Observable<Course[]>;
   searchText!: string;
   limit = 5;

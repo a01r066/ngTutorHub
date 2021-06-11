@@ -8,7 +8,6 @@ import {AdminRoutingModule} from "./admin-routing.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoryDialogComponent } from './ad-categories/category-dialog/category-dialog.component';
 import { CourseDialogComponent } from './ad-categories/ad-courses/course-dialog/course-dialog.component';
-import {MessageComponent} from "../shares/message/message.component";
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import {MessageComponent} from "../shares/message/message.component";
         DashboardComponent,
         CategoryDialogComponent,
         CourseDialogComponent,
-    // MessageComponent
   ],
   imports: [
     ShareModule,
@@ -28,5 +26,4 @@ import {MessageComponent} from "../shares/message/message.component";
 })
 
 export class AdminModule {
-
 }

@@ -1,5 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {AuthService} from "../../auth/auth.service";
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {User} from "../../models/user.model";
 import {Category} from "../../models/category.model";
@@ -10,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {FeedbackComponent} from "../../home/Feedback/feedback.component";
 import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
+import {Constants} from "../../helpers/constants";
 
 @Component({
   selector: 'app-header',
@@ -17,8 +17,10 @@ import {AuthStore} from "../../services/auth.store";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/users';
-  photoURL!: any;
+  // base_url = 'http://localhost:3000/uploads/users';
+  base_url = `${Constants.base_upload}/users/`;
+
+  photoURL = Constants.user_placeholder;
 
   categories$!: Observable<Category[]>;
   user!: User;
@@ -27,7 +29,6 @@ export class HeaderComponent implements OnInit {
   @Input() isAuthenticated: boolean = false;
 
   constructor(
-    private authService: AuthService,
     private router: Router,
     private dataStore: DataStore,
     public authStore: AuthStore,
@@ -37,11 +38,13 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user = this.authService.user;
-    this.authService.authChanged.subscribe(isAuth => {
-      this.user = this.authService.user;
-      this.getPhoto();
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
+      if(user){
+        this.getPhotoURL(user);
+      }
     })
+
     this.uiService.isPlayerSub.subscribe(isPlayer => {
       this.isPlayer = isPlayer;
     })
@@ -50,12 +53,14 @@ export class HeaderComponent implements OnInit {
     this.categories$ = this.dataStore.categories$;
   }
 
-  getPhoto(){
-    if(!this.user.isSocial){
-      this.photoURL = `${this.base_url}/${this.user.photoURL}`;
-    } else {
-      this.photoURL = this.user.photoURL;
-    }
+  private getPhotoURL(user: User) {
+      if(user.isSocial){
+        this.photoURL = user.photoURL;
+      } else {
+        if(user.photoURL !== ''){
+          this.photoURL = this.base_url + user.photoURL;
+        }
+      }
   }
 
   logout(){

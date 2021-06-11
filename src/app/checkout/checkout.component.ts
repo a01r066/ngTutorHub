@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from "../auth/auth.service";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
 import {DecimalPipe} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Constants} from "../helpers/constants";
 import {DataStore} from "../services/data.store";
+import {AuthStore} from "../services/auth.store";
 
 declare var paypal: any;
 
@@ -34,7 +34,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   paidFor = false;
 
-  constructor(private authService: AuthService,
+  constructor(private authStore: AuthStore,
               private dataStore: DataStore,
               private router: Router,
               private _decimalPipe: DecimalPipe,
@@ -42,13 +42,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.user = this.authService.user;
-    if(this.user){
-      this.fetchCourses();
-    }
-
-    this.authService.authChanged.subscribe(isAuth => {
-      this.user = this.authService.user;
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
       this.fetchCourses();
     })
   }
@@ -58,7 +53,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   private fetchCourses() {
-    this.user = this.authService.user;
     if (this.user.cart.length > 0) {
       this.courses = this.user.cart;
 
@@ -170,7 +164,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   checkout(payment: any){
     this.dataStore.checkout(payment).subscribe(res => {
 
-      this.authService.initAuthListener();
+      // this.authService.initAuthListener();
 
       // Clear cart
       this.courses = this.user.cart;

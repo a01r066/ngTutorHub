@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {Lecture} from "../models/lecture.model";
 import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
+import {Constants} from "../helpers/constants";
 
 @Component({
   selector: 'app-player',
@@ -19,7 +20,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   chapters$!: Observable<Chapter[]>;
   unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
-  base_url = 'http://localhost:3000/uploads/courses';
+  // base_url = 'http://localhost:3000/uploads/courses';
+  base_url = `${Constants.base_upload}/courses/`;
 
   constructor(
               private dataStore: DataStore,

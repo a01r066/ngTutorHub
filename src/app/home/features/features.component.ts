@@ -1,13 +1,14 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {AuthService} from "../../auth/auth.service";
 import {Observable, Subject} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../services/ui.service";
 import {LoadingService} from "../../services/loading.service";
 import {DataStore} from "../../services/data.store";
+import {Constants} from "../../helpers/constants";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-features',
@@ -15,7 +16,8 @@ import {DataStore} from "../../services/data.store";
   styleUrls: ['./features.component.css']
 })
 export class FeaturesComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/courses/';
+  // base_url = 'http://localhost:3000/uploads/courses/';
+  base_url = `${Constants.base_upload}/courses/`;
 
   courses$!: Observable<Course[]>;
 
@@ -36,7 +38,7 @@ export class FeaturesComponent implements OnInit {
 
   constructor(private http: HttpClient,
               private router: Router,
-              private authService: AuthService,
+              private authStore: AuthStore,
               private uiService: UiService,
               private loadingService: LoadingService,
               private dataStore: DataStore) {}

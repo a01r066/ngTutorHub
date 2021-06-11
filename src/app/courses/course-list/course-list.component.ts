@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../models/course.model";
 import {Observable} from "rxjs";
 import {DataStore} from "../../services/data.store";
+import {Constants} from "../../helpers/constants";
 
 @Component({
   selector: 'app-course-list',
@@ -12,7 +13,8 @@ import {DataStore} from "../../services/data.store";
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/courses/';
+  // base_url = 'http://localhost:3000/uploads/courses/';
+  base_url = `${Constants.base_upload}/courses/`;
   selectedCategory!: Category;
   courses$!: Observable<Course[]>;
   page = 1;

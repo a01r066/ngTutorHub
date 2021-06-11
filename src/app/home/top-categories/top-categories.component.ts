@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Category} from "../../models/category.model";
 import {Observable} from "rxjs";
 import {DataStore} from "../../services/data.store";
+import {Constants} from "../../helpers/constants";
 
 @Component({
   selector: 'app-top-categories',
@@ -11,7 +12,9 @@ import {DataStore} from "../../services/data.store";
   styleUrls: ['./top-categories.component.css']
 })
 export class TopCategoriesComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/categories/';
+  // base_url = 'http://localhost:3000/uploads/categories/';
+  base_url = `${Constants.base_upload}/categories/`;
+
   categories$!: Observable<Category[]>;
 
   constructor(private http: HttpClient,

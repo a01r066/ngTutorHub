@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../auth/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../models/user.model";
 import {Constants} from "../helpers/constants";
 import {DataStore} from "../services/data.store";
+import {AuthStore} from "../services/auth.store";
 
 @Component({
   selector: 'app-cart',
@@ -21,19 +21,18 @@ export class CartComponent implements OnInit {
   percentageOff = 0;
   user!: User;
 
-  constructor(private authService: AuthService,
+  constructor(private authStore: AuthStore,
               private dataStore: DataStore,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.user = this.authService.user;
-    if(this.user){
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
       this.fetchCourses();
-    }
+    })
   }
 
   private fetchCourses() {
-    this.user = this.authService.user;
     if(this.user.cart.length > 0){
       this.courses = this.user.cart;
 

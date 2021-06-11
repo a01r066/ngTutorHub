@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DataStore} from "../../services/data.store";
+import {Constants} from "../../helpers/constants";
+import {AuthStore} from "../../services/auth.store";
 
 @Component({
   selector: 'app-profile',
@@ -10,7 +11,9 @@ import {DataStore} from "../../services/data.store";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  base_url = 'http://localhost:3000/uploads/users';
+  // base_url = 'http://localhost:3000/uploads/users';
+  base_url = `${Constants.base_upload}/users/`;
+
   links = ['Profile', 'Photo'];
   profileForm!: FormGroup;
   user!: any;
@@ -21,12 +24,13 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private dataStore: DataStore,
-    private authService: AuthService,
+    private authStore: AuthStore,
     private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.authService.authChanged.subscribe(isAuth => {
+    this.authStore.user$.subscribe(user => {
+      this.user = user;
       this.reloadData();
     })
 
@@ -44,7 +48,6 @@ export class ProfileComponent implements OnInit {
   }
 
   reloadData(){
-    this.user = this.authService.user;
     this.patchFormValues();
     this.getPhotoURL();
   }
@@ -75,7 +78,7 @@ export class ProfileComponent implements OnInit {
 
     this.dataStore.updateProfile(this.user._id, changes).subscribe(res => {
       // Reload user
-      this.authService.initAuthListener();
+      this.authStore.initAuthListener();
 
       this.snackBar.open(`Your profile info is updated!`, null!, {
         duration: 3000

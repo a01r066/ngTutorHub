@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "./auth/auth.service";
 import {User} from "./models/user.model";
 import {Category} from "./models/category.model";
 import {Router} from "@angular/router";
@@ -12,14 +11,12 @@ import {UiService} from "./services/ui.service";
 })
 export class AppComponent implements OnInit {
   user!: User;
-  constructor(private authService: AuthService,
+  constructor(
               private router: Router,
               private uiService: UiService
   ){}
 
   ngOnInit(): void {
-    this.authService.initAuthListener();
-
     this.uiService.categorySub.subscribe(category => {
       this.onClickMenu(category);
     })
