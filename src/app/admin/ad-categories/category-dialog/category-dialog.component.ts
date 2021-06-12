@@ -10,14 +10,14 @@ import {DataStore} from "../../../services/data.store";
   styleUrls: ['./category-dialog.component.css']
 })
 export class CategoryDialogComponent implements OnInit {
-  categoryForm!: FormGroup;
+  ngForm!: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<CategoryDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private dataStore: DataStore) { }
 
   ngOnInit(): void {
-    this.categoryForm = new FormGroup({
+    this.ngForm = new FormGroup({
       title: new FormControl('', {validators: [Validators.required]}),
       isTop: new FormControl(false),
       isHidden: new FormControl(false)
@@ -26,7 +26,7 @@ export class CategoryDialogComponent implements OnInit {
     const isEdit = (this.data as any).isEdit;
     if(isEdit){
       const category = (this.data as any).category;
-      this.categoryForm.patchValue(category);
+      this.ngForm.patchValue(category);
     }
   }
 
@@ -35,10 +35,10 @@ export class CategoryDialogComponent implements OnInit {
   }
 
   save() {
-    if(this.categoryForm.valid){
+    if(this.ngForm.valid){
       // console.log('data: '+ (this.data as any).isEdit);
       const isEdit = (this.data as any).isEdit;
-      const changes = this.categoryForm.value;
+      const changes = this.ngForm.value;
       if(isEdit){
         const categoryId = (this.data as any).category._id;
         this.dataStore.updateCategory(categoryId, changes).subscribe();

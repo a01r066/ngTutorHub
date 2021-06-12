@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CourseDialogComponent} from "./course-dialog/course-dialog.component";
 import {Subject} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
+import {UploadPhotoDialogComponent} from "./upload-photo-dialog/upload-photo-dialog.component";
 
 @Component({
   selector: 'app-ad-courses',
@@ -86,5 +87,18 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   showLectures(row: any) {
     this.router.navigate(['admin', 'courses', row._id]);
+  }
+
+  uploadPhoto(element: any) {
+    const dialogRef = this.dialog.open(UploadPhotoDialogComponent, {
+      width: '20vw',
+      data: { course: element._id},
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+      // this.dataChanged.next();
+    });
   }
 }

@@ -10,6 +10,8 @@ import { CategoryDialogComponent } from './ad-categories/category-dialog/categor
 import { CourseDialogComponent } from './ad-categories/ad-courses/course-dialog/course-dialog.component';
 import { LectureDialogComponent } from './ad-categories/ad-courses/ad-lectures/lecture-dialog/lecture-dialog.component';
 import { ChapterDialogComponent } from './ad-categories/ad-courses/ad-lectures/ad-chapters/chapter-dialog/chapter-dialog.component';
+import { UploadPhotoDialogComponent } from './ad-categories/ad-courses/upload-photo-dialog/upload-photo-dialog.component';
+import { UploadFileDialogComponent } from './ad-categories/ad-courses/ad-lectures/ad-chapters/upload-file-dialog/upload-file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { ChapterDialogComponent } from './ad-categories/ad-courses/ad-lectures/a
         CourseDialogComponent,
         LectureDialogComponent,
         ChapterDialogComponent,
+        UploadPhotoDialogComponent,
+        UploadFileDialogComponent
   ],
   imports: [
     ShareModule,

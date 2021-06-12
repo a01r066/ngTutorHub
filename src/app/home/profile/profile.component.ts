@@ -62,9 +62,9 @@ export class ProfileComponent implements OnInit {
 
   private patchFormValues() {
     this.profileForm.patchValue({
-      fName: this.user.fName,
-      lName: this.user.lName,
-      headLine: this.user.headLine
+      fName: this.user?.fName,
+      lName: this.user?.lName,
+      headLine: this.user?.headLine
     });
   }
 

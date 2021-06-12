@@ -1,7 +1,7 @@
 <!--<app-loading></app-loading>-->
 <h3>Category Form</h3>
 <!--<app-message></app-message>-->
-<form [formGroup]="categoryForm">
+<form [formGroup]="ngForm">
   <mat-dialog-content>
     <mat-form-field>
       <input matInput
@@ -16,7 +16,7 @@
             (click)="onNoClick()">
       Back
     </button>
-    <button mat-raised-button color="primary" (click)="save()" [disabled]="categoryForm.invalid">
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">
       Save
     </button>
   </mat-dialog-actions>

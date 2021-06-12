@@ -1,0 +1,10 @@
+<!--<app-loading></app-loading>-->
+<h3>FILE UPLOAD</h3>
+<!--<app-message></app-message>-->
+<form [formGroup]="ngForm">
+  <input type="file" style="cursor: pointer" (change)="fileProgress($event)" formControlName="file">
+  <div style="margin-top: 16px">
+    <span><button mat-raised-button (click)="onNoClick()">Back</button></span>
+    <span style="margin: 16px"><button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">Save</button></span>
+  </div>
+</form>

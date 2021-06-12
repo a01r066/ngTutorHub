@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Category} from "../../../../../models/category.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ChapterDialogComponent} from "./chapter-dialog/chapter-dialog.component";
+import {UploadFileDialogComponent} from "./upload-file-dialog/upload-file-dialog.component";
 
 @Component({
   selector: 'app-ad-chapters',
@@ -94,4 +95,21 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
     this.router.navigate(['admin', 'courses', row.course, 'chapters']);
   }
 
+  uploadFile(element: any) {
+    const dialogRef = this.dialog.open(UploadFileDialogComponent, {
+      width: '20vw',
+      data: { chapter: element._id},
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter(val => !!val),
+      tap(() => {
+        // this.dataChanged.next();
+      })
+    )
+      .subscribe((res) => {
+        // console.log("Response: "+ res);
+      });
+  }
 }

@@ -106,6 +106,23 @@ export class DataStore {
         shareReplay());
   }
 
+  uploadCoursePhoto(courseId: string, file: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/courses/${courseId}/photo`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.put(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(
+      catchError(err => {
+      return throwError(err);
+    }), shareReplay())
+  }
+
   getCourseBySlug(slug: any): Observable<Course>{
     const url = `${Constants.base_url}/course/${slug}`;
     return this.http.get<Course>(url)
@@ -161,6 +178,19 @@ export class DataStore {
         "Authorization": `Bearer ${token}`,
       }
     }).pipe(shareReplay());
+  }
+
+  chapterFileUpload(chapterId: any, file: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/chapters/${chapterId}/file`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.put(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay())
   }
   // End of course section
 
