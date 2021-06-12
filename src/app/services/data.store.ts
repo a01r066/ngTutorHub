@@ -121,9 +121,14 @@ export class DataStore {
         map(res => (res as any).data), shareReplay());
   }
 
-  createLecture(courseId: any, formData: any): Observable<any>{
+  createLecture(formData: any): Observable<any>{
+    const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/lectures`;
-    return this.http.post(url, formData).pipe(shareReplay());
+    return this.http.post(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
   }
 
   updateLecture(lectureId: any, changes: Partial<Lecture>): Observable<any>{
@@ -136,6 +141,26 @@ export class DataStore {
     return this.http.get<Chapter[]>(url)
       .pipe(
         map(res => (res as any).data), shareReplay());
+  }
+
+  createChapter(formData: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/chapters`;
+    return this.http.post(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
+  }
+
+  updateChapter(chapterId: any, changes: Partial<Chapter>){
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/chapters/${chapterId}`;
+    return this.http.put(url, changes, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
   }
   // End of course section
 
@@ -203,21 +228,31 @@ export class DataStore {
 
   // Cart
   addToCart(userId: any, courseId: any): Observable<any>{
+    const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/auth/addToCart`;
     const data = {
       "userId": userId,
       "courseId": courseId
     }
-    return this.http.put(url, data).pipe(shareReplay());
+    return this.http.put(url, data, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
   }
 
   removeCartItem(courseId: any, userId: any): Observable<any>{
+    const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/auth/removeCartItem`;
     const data = {
       "userId": userId,
       "courseId": courseId
     }
-    return this.http.put(url, data).pipe(shareReplay());
+    return this.http.put(url, data, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
   }
 
   checkout(payment: any): Observable<any>{

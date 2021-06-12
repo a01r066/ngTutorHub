@@ -12,7 +12,6 @@ import {AuthStore} from "../../services/auth.store";
 })
 export class LearningComponent implements OnInit {
   base_url = `${Constants.base_upload}/courses/`;
-  user!: User;
   purchasedCourses: any[] = [];
 
   constructor(
@@ -22,18 +21,18 @@ export class LearningComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStore.user$.subscribe(user => {
-      this.user = user;
-      this.getPurchasedCourses();
+      user.purchased_courses.forEach(course => {
+        this.purchasedCourses.push(course);
+      })
     })
   }
 
-  onClick(course: Course){
-    this.router.navigate(['course', course._id]);
+  onClick(course: any){
+    // console.log('course: '+ course.courseId.slug);
+    this.router.navigate(['course', course.courseId.slug, 'learn']);
   }
 
   private getPurchasedCourses() {
-    this.user.purchased_courses.forEach(course => {
-      this.purchasedCourses.push(course);
-    })
+
   }
 }

@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-toolbar>
+  <mat-toolbar color="accent">
     <div fxFill fxLayout="row" fxLayoutAlign="left center">
       <span fxFlex="5" routerLink="" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600">TutorHub</span>
       <span fxFlex="80" style="font-weight: 400; text-align: center">{{ course?.title }}</span>
@@ -45,7 +45,7 @@
           <mat-expansion-panel (opened)="panelOpenState = true"
                                (closed)="panelOpenState = false" *ngFor="let lecture of (lectures$ | async); let i = index">
             <mat-expansion-panel-header>
-              <mat-panel-title (click)="onClickLecture(lecture)">
+              <mat-panel-title (click)="onClickLecture(lecture)" style="font-weight: 500">
                 {{ lecture?.title }}
               </mat-panel-title>
             </mat-expansion-panel-header>

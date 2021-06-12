@@ -1,33 +1,33 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {DialogData} from "../../../../../home/Feedback/feedback.component";
-import {DataStore} from "../../../../../services/data.store";
+import {DialogData} from "../../../../../../home/Feedback/feedback.component";
+import {DataStore} from "../../../../../../services/data.store";
 
 @Component({
-  selector: 'app-lecture-dialog',
-  templateUrl: './lecture-dialog.component.html',
-  styleUrls: ['./lecture-dialog.component.css']
+  selector: 'app-chapter-dialog',
+  templateUrl: './chapter-dialog.component.html',
+  styleUrls: ['./chapter-dialog.component.css']
 })
-export class LectureDialogComponent implements OnInit {
+export class ChapterDialogComponent implements OnInit {
 
   ngForm!: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<LectureDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<ChapterDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private dataStore: DataStore) { }
 
   ngOnInit(): void {
     this.ngForm = new FormGroup({
       title: new FormControl('', {validators: [Validators.required]}),
+      format: new FormControl('', {validators: [Validators.required]}),
       index: new FormControl('', { validators: [Validators.required]})
-      // course: new FormControl()
     })
 
     const isEdit = (this.data as any).isEdit;
     if(isEdit){
-      const lecture = (this.data as any).lecture;
-      this.ngForm.patchValue(lecture);
+      const chapter = (this.data as any).chapter;
+      this.ngForm.patchValue(chapter);
     }
   }
 
@@ -37,16 +37,18 @@ export class LectureDialogComponent implements OnInit {
 
   save() {
     if(this.ngForm.valid){
-      // console.log('data: '+ (this.data as any).isEdit);
       const isEdit = (this.data as any).isEdit;
       const changes = this.ngForm.value;
       if(isEdit){
-        const lectureId = (this.data as any).lecture._id;
-        this.dataStore.updateLecture(lectureId, changes).subscribe();
+        const chapterId = (this.data as any).chapter._id;
+        console.log('ChapterId: '+chapterId);
+        this.dataStore.updateChapter(chapterId, changes).subscribe(res => {
+          console.log(JSON.stringify(res));
+        });
         this.dialogRef.close(changes);
       } else {
-        this.ngForm.value.course = (this.data as any).courseId;
-        this.dataStore.createLecture(changes).subscribe();
+        this.ngForm.value.lecture = (this.data as any).lectureId;
+        this.dataStore.createChapter(changes).subscribe();
         this.dialogRef.close(changes);
       }
     }
@@ -55,4 +57,5 @@ export class LectureDialogComponent implements OnInit {
   onChange(event: any) {
     // console.log(event.checked);
   }
+
 }

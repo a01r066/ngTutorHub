@@ -76,7 +76,7 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  delete(element: Course) {
+  delete(element: any) {
     // hide category instead of delete it
     const ngForm = new FormGroup({
       isHidden: new FormControl(true)

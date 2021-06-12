@@ -11,6 +11,7 @@ import {LearningComponent} from "./home/learning/learning.component";
 import {SearchComponent} from "./search/search.component";
 import {ProfileComponent} from "./home/profile/profile.component";
 import {AdminComponent} from "./admin/admin.component";
+import {PlayerComponent} from "./player/player.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: ':id', component: CourseListComponent },
     ]},
   { path: 'course/:id', component: CourseDetailComponent },
+  { path: 'course/:id/learn', component: PlayerComponent },
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard]},
   { path: 'home/my-courses/learning', component: LearningComponent, canActivate: [AuthGuard]},

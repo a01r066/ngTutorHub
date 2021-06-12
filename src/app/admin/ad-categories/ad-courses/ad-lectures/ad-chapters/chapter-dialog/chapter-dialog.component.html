@@ -1,0 +1,31 @@
+<!--<app-loading></app-loading>-->
+<h1 class="mat-card-title">Lecture Form</h1>
+<!--<app-message></app-message>-->
+<form [formGroup]="ngForm">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter name"
+             formControlName="title">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter format"
+             formControlName="format">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter index"
+             formControlName="index">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+    <button mat-raised-button
+            (click)="onNoClick()">
+      Back
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">
+      Send
+    </button>
+  </mat-dialog-actions>
+</form>

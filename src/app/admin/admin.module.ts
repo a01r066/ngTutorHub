@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoryDialogComponent } from './ad-categories/category-dialog/category-dialog.component';
 import { CourseDialogComponent } from './ad-categories/ad-courses/course-dialog/course-dialog.component';
 import { LectureDialogComponent } from './ad-categories/ad-courses/ad-lectures/lecture-dialog/lecture-dialog.component';
+import { ChapterDialogComponent } from './ad-categories/ad-courses/ad-lectures/ad-chapters/chapter-dialog/chapter-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { LectureDialogComponent } from './ad-categories/ad-courses/ad-lectures/l
         CategoryDialogComponent,
         CourseDialogComponent,
         LectureDialogComponent,
+        ChapterDialogComponent,
   ],
   imports: [
     ShareModule,

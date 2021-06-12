@@ -3,21 +3,23 @@
   <div fxFlex="70">
     <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px">All Development Courses</div>
     <div style="margin-top: -32px">
-      <ul class="flex-container">
-        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of (courses$ | async); let i = index" (click)="onClick(course)">
-          <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
-          <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
-            <div class="mat-title">{{ course.title }}</div>
-            <div style="font-size: 0.9rem; color: darkslategray">{{ course.description }}</div>
-            <div class="mat-card-subtitle">Brad Traversy</div>
-            <div style="font-style: italic; font-size: 0.9rem">22 Sections * 155 lectures</div>
-          </div>
-          <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
-            <div>${{ course.tuition | number }}</div>
-            <div style="text-decoration: line-through; color: red">${{ 99.99 }}</div>
-          </div>
-        </li>
-      </ul>
+      <ng-container *ngIf="(courses$ | async) as courses">
+        <ul class="flex-container">
+          <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of courses; let i = index" (click)="onClick(course)">
+            <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
+            <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
+              <div class="mat-title">{{ course.title }}</div>
+              <div style="font-size: 0.9rem; color: darkslategray">{{ course.description }}</div>
+              <div class="mat-card-subtitle">Brad Traversy</div>
+              <div style="font-style: italic; font-size: 0.9rem">22 Sections * 155 lectures</div>
+            </div>
+            <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
+              <div>${{ course.tuition | number }}</div>
+              <div style="text-decoration: line-through; color: red">${{ 99.99 }}</div>
+            </div>
+          </li>
+        </ul>
+      </ng-container>
     </div>
     <div>
       <mat-paginator [length]="100"

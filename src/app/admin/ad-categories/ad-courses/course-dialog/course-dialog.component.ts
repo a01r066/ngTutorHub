@@ -61,7 +61,7 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close(changes);
       } else {
         let formData = this.ngForm.value;
-        formData.user = this.user._id;
+        formData.user = this.user._id; // add user field to formData
         formData.category = (this.data as any).categoryId;
         this.dataStore.createCourse(formData).subscribe(() => {
           this.dialogRef.close();

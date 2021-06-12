@@ -7,20 +7,22 @@
 <!--    Top course section-->
     <div>
       <div>
-        <ul class="flex-container">
-          <li class="flex-item" style="cursor: pointer" *ngFor="let course of (courses$ | async) | slice:0:counter" (click)="onClick(course)">
-            <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-            <div style="margin: -8px 8px 0 8px">
-              <div fxLayout="column" fxLayoutGap="-10px">
-                <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.title.substring(0, 28) }}</p></div>
-                <!--              <div><p class="mat-card-subtitle">{{ course.user.name }}</p></div>-->
-                <div><p style="font-size: 0.9rem; font-weight: 400; color: darkslategray">{{ course.description.substring(0, 54) }}</p></div>
-                <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getCoursePrice(course) | number }}
-                  <span style="text-decoration: line-through; color: darkred; float: right; font-weight: 400">${{ course.tuition | number }}</span></div>
+        <ng-container *ngIf="(courses$ | async) as courses">
+          <ul class="flex-container">
+            <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | slice:0:counter" (click)="onClick(course)">
+              <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
+              <div style="margin: -8px 8px 0 8px">
+                <div fxLayout="column" fxLayoutGap="-10px">
+                  <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.title.substring(0, 28) }}</p></div>
+                  <!--              <div><p class="mat-card-subtitle">{{ course.user.name }}</p></div>-->
+                  <div><p style="font-size: 0.9rem; font-weight: 400; color: darkslategray">{{ course.description.substring(0, 54) }}</p></div>
+                  <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getCoursePrice(course) | number }}
+                    <span style="text-decoration: line-through; color: darkred; float: right; font-weight: 400">${{ course.tuition | number }}</span></div>
+                </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </ng-container>
       </div>
     </div>
 <!--    Course list section-->

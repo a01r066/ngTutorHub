@@ -79,19 +79,22 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
       filter(val => !!val),
       tap(() => this.dataChanged.next())
     )
-      .subscribe();
+      .subscribe((res) => {
+        console.log("Response: "+ res);
+
+      });
   }
 
-  delete(element: Category) {
+  delete(element: any) {
     // hide category instead of delete it
     const ngForm = new FormGroup({
       isHidden: new FormControl(true)
     })
-    this.dataStore.updateCategory(element._id, ngForm.value).subscribe();
+    this.dataStore.updateLecture(element._id, ngForm.value).subscribe();
   }
 
   showData(row: any) {
-    this.router.navigate(['admin', 'categories', (row as any)._id]);
+    this.router.navigate(['admin', 'courses', row._id, 'chapters']);
   }
 
 }
