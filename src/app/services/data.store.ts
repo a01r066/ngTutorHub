@@ -61,11 +61,20 @@ export class DataStore {
           .filter(course => course.bestseller)));
   }
 
+  // getBestsellerCoursesByCategory(categoryId: string, counter: number, page: number): Observable<any>{
+  //   const url = `${Constants.base_url}/courses?bestseller=true&category=${categoryId}&limit=${counter}&page=${page}`;
+  //   return this.http.get(url)
+  //     .pipe(
+  //       map(res => (res as any)),
+  //       shareReplay());
+  // }
+
   searchCourses(searchText: any): Observable<Course[]>{
     return this.courses$
       .pipe(
         map(courses => courses
-          .filter(course => course.title.toLowerCase().includes(searchText.toLowerCase()))));
+          .filter(course => course.title.toLowerCase().includes(searchText.toLowerCase()))),
+        shareReplay());
   }
 
   updateCourse(courseId: any, changes: Partial<Course>): Observable<any>{

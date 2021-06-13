@@ -1,13 +1,17 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit
+} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Course} from "../../models/course.model";
 import {UiService} from "../../services/ui.service";
 import {DataStore} from "../../services/data.store";
 import {Constants} from "../../helpers/constants";
 import {AuthStore} from "../../services/auth.store";
 import {Category} from "../../models/category.model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-features',
@@ -20,21 +24,19 @@ export class FeaturesComponent implements OnInit {
 
   courses$!: Observable<Course[]>;
 
-  page = 1;
   discount = 90;
-
-  isNext: any;
-  isPrevious: any;
-  lastPageSub = new Subject<number>();
-  isLastPage = false;
-
-  size: any;
-  counter: any;
+  counter!: number;
 
   categories: Category[] = [];
 
   activeLink!: Category;
   selectedIndex = 0;
+  page: number = 1;
+
+  // config: PaginationInstance = {
+  //   itemsPerPage: this.counter,
+  //   currentPage: 1
+  // };
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -43,48 +45,32 @@ export class FeaturesComponent implements OnInit {
               private dataStore: DataStore) {}
 
   ngOnInit(): void {
-    this.dataStore.getTopCategories().subscribe(categories => {
-      this.categories = categories;
-      if(categories.length > 0){
-        this.courses$ = this.dataStore.getBestsellerCoursesByCategory(categories[this.selectedIndex]._id);
-      }
-    })
-
-    this.size = window.innerWidth;
     this.getCounter();
 
-    this.lastPageSub.subscribe(counter => {
-      if(counter < 5){
-        this.isLastPage = true;
-      } else {
-        this.isLastPage = false;
-      }
+    this.dataStore.getTopCategories().subscribe(categories => {
+      this.categories = categories;
+      this.getCourses();
     })
+  }
+
+  private getCourses() {
+    if (this.categories.length > 0) {
+      this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);
+      // this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id || '', this.counter, this.page).subscribe(res => {
+      //   // console.log('res: ' + JSON.stringify(res));
+      //   this.courses = (res as any).data;
+      // });
+    }
   }
 
   onClickTab(index: any) {
     this.selectedIndex = index;
-    this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);
+    this.getCourses();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.size = window.innerWidth;
     this.getCounter();
-  }
-
-  next() {
-    if(this.isNext && !this.isLastPage){
-      this.page += 1;
-      // this.getCourses();
-    }
-  }
-
-  back() {
-    if(this.isPrevious){
-      this.page -= 1;
-      // this.getCourses();
-    }
   }
 
   onClick(course: any){
@@ -95,17 +81,27 @@ export class FeaturesComponent implements OnInit {
     return (course.tuition * (1 - this.discount/100));
   }
 
-  private getCounter() {
-    if(this.size > 1875){
+  getCounter() {
+    const size = window.innerWidth;
+
+    if(size > 1875){
       this.counter = 5;
-    } else if(this.size > 1500){
+    } else if(size > 1500){
       this.counter = 4;
-    } else if(this.size > 1135){
+    } else if(size > 1135){
       this.counter = 3;
-    } else if(this.size > 768) {
+    } else if(size > 768) {
       this.counter = 2;
     } else {
       this.counter = 1;
     }
+  }
+
+  back() {
+
+  }
+
+  next() {
+
   }
 }

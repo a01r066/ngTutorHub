@@ -4,7 +4,7 @@
   <div fxFlex="90">
     <div style="font-size: 1.5rem; color: darkslategrey; font-weight: 500; margin: 32px 0 0 16px">Top Categories</div>
     <div>
-      <ul class="flex-container">
+      <ul class="flex-container" fxLayoutAlign="center center">
         <li class="flex-item" style="cursor: pointer" *ngFor="let category of (categories$ | async); let i = index" (click)="onClick(category)">
           <img style="width: 100%" src="{{ base_url+category.photo }}" alt="{{ category.title }}">
           <div style="margin: -8px 8px 0 8px">

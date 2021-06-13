@@ -32,6 +32,7 @@ import {LoadingService} from "./services/loading.service";
 import {MessagesService} from "./services/messages.service";
 import { AdminComponent } from './admin/admin.component';
 import {AdminModule} from "./admin/admin.module";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {AdminModule} from "./admin/admin.module";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     ShareModule,
+    NgxPaginationModule,
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
