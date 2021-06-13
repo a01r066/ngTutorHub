@@ -22,7 +22,7 @@ export class UploadFileDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.ngForm = new FormGroup({
-      file: new FormControl('', {validators: [Validators.required]}),
+      file: new FormControl('', {validators: [Validators.required]})
     })
   }
 
@@ -32,8 +32,11 @@ export class UploadFileDialogComponent implements OnInit {
 
   save() {
     if(this.ngForm.valid){
-      const chapterId = (this.data as any).chapter;
-      this.dataStore.chapterFileUpload(chapterId, this.fileData).subscribe(res => {
+      const chapterId = (this.data as any).chapter._id;
+      this.ngForm.value.courseId = (this.data as any).course;
+      this.ngForm.value.lectureId = (this.data as any).lecture;
+
+      this.dataStore.chapterFileUpload(chapterId, this.ngForm.value, this.fileData).subscribe(res => {
         // Reload photo
         this.dialogRef.close();
         this.snackBar.open(`Chapter file uploaded!`, null!, {

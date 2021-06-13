@@ -13,7 +13,7 @@ const routes: Routes = [
       { path: 'categories', component: AdCategoriesComponent },
       { path: 'categories/:id', component: AdCoursesComponent },
       { path: 'courses/:id', component: AdLecturesComponent },
-      { path: 'courses/:id/chapters', component: AdChaptersComponent }
+      { path: 'courses/:courseId/:lectureId/chapters', component: AdChaptersComponent }
     ] }
 ]
 

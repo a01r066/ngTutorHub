@@ -24,6 +24,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
   dataChanged = new Subject();
   lectureId = '';
+  courseId = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -45,7 +46,8 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
   }
 
   private getData() {
-    this.lectureId = this.route.snapshot.params['id'];
+    this.courseId = this.route.snapshot.params['courseId'];
+    this.lectureId = this.route.snapshot.params['lectureId'];
     this.dataStore.getChaptersByLectureId(this.lectureId).subscribe(chapters => {
       this.chapters = chapters;
       this.dataSource = new MatTableDataSource<Chapter>(this.chapters );
@@ -98,7 +100,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
   uploadFile(element: any) {
     const dialogRef = this.dialog.open(UploadFileDialogComponent, {
       width: '20vw',
-      data: { chapter: element._id},
+      data: { chapter: element, course: this.courseId, lecture: this.lectureId },
       autoFocus: false
     });
 

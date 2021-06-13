@@ -20,7 +20,7 @@ export class ChapterDialogComponent implements OnInit {
   ngOnInit(): void {
     this.ngForm = new FormGroup({
       title: new FormControl('', {validators: [Validators.required]}),
-      format: new FormControl('', {validators: [Validators.required]}),
+      // format: new FormControl('', {validators: [Validators.required]}),
       index: new FormControl('', { validators: [Validators.required]})
     })
 

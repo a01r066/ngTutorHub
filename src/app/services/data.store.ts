@@ -106,23 +106,6 @@ export class DataStore {
         shareReplay());
   }
 
-  uploadCoursePhoto(courseId: string, file: any): Observable<any>{
-    const token = localStorage.getItem('token');
-    const url = `${Constants.base_url}/courses/${courseId}/photo`;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return this.http.put(url, formData, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      }
-    }).pipe(
-      catchError(err => {
-      return throwError(err);
-    }), shareReplay())
-  }
-
   getCourseBySlug(slug: any): Observable<Course>{
     const url = `${Constants.base_url}/course/${slug}`;
     return this.http.get<Course>(url)
@@ -180,13 +163,15 @@ export class DataStore {
     }).pipe(shareReplay());
   }
 
-  chapterFileUpload(chapterId: any, file: any): Observable<any>{
+  chapterFileUpload(chapterId: any, formValue: any, file: any): Observable<any>{
     const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/chapters/${chapterId}/file`;
 
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.put(url, formData, {
+    let frm = new FormData();
+    frm.append('courseId', formValue.courseId);
+    frm.append('lectureId', formValue.lectureId);
+    frm.append('file', file);
+    return this.http.put(url, frm, {
       headers: {
         "Authorization": `Bearer ${token}`,
       }
@@ -247,6 +232,23 @@ export class DataStore {
           this.messageService.showErrors(message);
           return throwError(err);
         }), shareReplay());
+  }
+
+  uploadPhoto(objName: string, objId: string, file: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/${objName}/${objId}/photo`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.put(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(
+      catchError(err => {
+        return throwError(err);
+      }), shareReplay())
   }
 
   getCategoryBySlug(slug: any): Observable<Category>{

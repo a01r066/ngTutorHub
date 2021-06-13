@@ -31,14 +31,25 @@ export class UploadPhotoDialogComponent implements OnInit {
 
   save() {
     if(this.ngForm.valid){
-      const courseId = (this.data as any).course;
-      this.dataStore.uploadCoursePhoto(courseId, this.fileData).subscribe(res => {
-        // Reload photo
-        this.dialogRef.close();
-        this.snackBar.open(`Course photo uploaded!`, null!, {
-          duration: 3000
-        })
-      });
+      const element = (this.data as any).element;
+      const src = (this.data as any).src;
+      if(src === 'category'){
+        this.dataStore.uploadPhoto('categories', element._id, this.fileData).subscribe(res => {
+          // Reload photo
+          this.dialogRef.close();
+          this.snackBar.open(`Category photo uploaded!`, null!, {
+            duration: 3000
+          })
+        });
+      } else {
+        this.dataStore.uploadPhoto('courses', element._id, this.fileData).subscribe(res => {
+          // Reload photo
+          this.dialogRef.close();
+          this.snackBar.open(`Course photo uploaded!`, null!, {
+            duration: 3000
+          })
+        });
+      }
     }
   }
 

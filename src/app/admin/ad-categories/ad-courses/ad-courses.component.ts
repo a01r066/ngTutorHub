@@ -92,7 +92,7 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
   uploadPhoto(element: any) {
     const dialogRef = this.dialog.open(UploadPhotoDialogComponent, {
       width: '20vw',
-      data: { course: element._id},
+      data: { element: element, src: 'course'},
       autoFocus: false
     });
 

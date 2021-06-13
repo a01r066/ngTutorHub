@@ -49,7 +49,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onClickChapter(chapter: any){
-    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.file}`;
+    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
     // this.getVideoDuration();
   }

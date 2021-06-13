@@ -6,13 +6,10 @@ import {MatPaginator} from "@angular/material/paginator";
 import {DataStore} from "../../../../services/data.store";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CategoryDialogComponent} from "../../category-dialog/category-dialog.component";
 import {filter, tap} from "rxjs/operators";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Lecture} from "../../../../models/lecture.model";
 import {LectureDialogComponent} from "./lecture-dialog/lecture-dialog.component";
-import {CourseDialogComponent} from "../course-dialog/course-dialog.component";
-import {UploadPhotoDialogComponent} from "../upload-photo-dialog/upload-photo-dialog.component";
 
 @Component({
   selector: 'app-ad-lectures',
@@ -96,6 +93,6 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
   }
 
   showData(row: any) {
-    this.router.navigate(['admin', 'courses', row._id, 'chapters']);
+    this.router.navigate(['admin', 'courses', this.courseId, row._id, 'chapters']);
   }
 }

@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {filter, tap} from "rxjs/operators";
 import {FormControl, FormGroup} from "@angular/forms";
+import {UploadPhotoDialogComponent} from "./ad-courses/upload-photo-dialog/upload-photo-dialog.component";
 
 @Component({
   selector: 'app-ad-categories',
@@ -86,5 +87,21 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
 
   showCourses(row: any) {
     this.router.navigate(['admin', 'categories', (row as any)._id]);
+  }
+
+  uploadPhoto(element: any) {
+    const dialogRef = this.dialog.open(UploadPhotoDialogComponent, {
+      width: '20vw',
+      data: { element: element, src: 'category' },
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter(val => !!val),
+      tap(() => {
+        // this.dataChanged.next();
+      })
+    )
+      .subscribe();
   }
 }
