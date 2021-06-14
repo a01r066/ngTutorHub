@@ -4,7 +4,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
 import {Constants} from "../../helpers/constants";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
@@ -19,11 +19,14 @@ import {AuthStore} from "../../services/auth.store";
 })
 
 export class CourseDetailComponent implements OnInit {
+  courseSubject = new Subject<Course>();
   course!: Course;
   lectures$!: Observable<Lecture[]>;
   chapters$!: Observable<Chapter[]>;
 
   objectives: any;
+
+  unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
 
   base_url = `${Constants.base_upload}/courses/`;
@@ -43,19 +46,33 @@ export class CourseDetailComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.authStore.user$.subscribe(user => {
-      this.user = user;
+    const slug = this.route.snapshot.params['id'];
+    this.dataStore.getCourseBySlug(slug).subscribe(course => {
+      // get objectives
+      this.courseSubject.next(course);
+      this.course = course;
+      this.objectives = course.objectives.substring(1).split('- ');
+      this.lectures$ = this.dataStore.getLecturesByCourseId(course._id);
+      this.getSampleLesson();
+    });
 
-      const slug = this.route.snapshot.params['id'];
-      this.dataStore.getCourseBySlug(slug).subscribe(course => {
-        // get objectives
-        this.course = course;
-        this.objectives = course.objectives.substring(1).split('- ');
-        this.lectures$ = this.dataStore.getLecturesByCourseId(course._id);
-
+    this.courseSubject.subscribe(course => {
+      this.authStore.user$.subscribe(user => {
+        this.user = user;
         if(user){
           this.checkCourseIsPurchased(course);
         }
+      })
+    })
+  }
+
+  private getSampleLesson() {
+    this.lectures$.subscribe(lectures => {
+      const firstLecture = lectures[0];
+      this.dataStore.getChaptersByLectureId(firstLecture._id).subscribe(lessons => {
+        const firstLesson = lessons[0];
+        this.unSafeUrl = `${this.base_url}/${this.course._id}/${firstLesson.lecture}/${firstLesson.file}`;
+        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
       });
     })
   }
@@ -77,7 +94,7 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onClickChapter(chapter: any){
-    this.router.navigate(['/login']);
+    // this.router.navigate(['/login']);
   }
 
   addToCart(course: any){

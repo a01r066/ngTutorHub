@@ -2,27 +2,36 @@
 <div fxLayout="row">
   <div fxFlex="15"></div>
   <div fxFlex="70">
-    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;" *ngIf="selectedCategory">{{ selectedCategory.title }}</div>
+    <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;" *ngIf="category">{{ category.title }}</div>
     <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin: -32px 0 32px 0">Courses to get you started</div>
 <!--    Top course section-->
-    <div>
-      <div>
-        <ng-container *ngIf="(courses$ | async) as courses">
-          <ul class="flex-container" fxLayoutAlign="center">
-            <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | slice:0:counter" (click)="onClick(course)">
-              <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-              <div style="margin: -8px 8px 0 8px">
-                <div fxLayout="column" fxLayoutGap="-10px">
-                  <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.title.substring(0, 28) }}</p></div>
-                  <!--              <div><p class="mat-card-subtitle">{{ course.user.name }}</p></div>-->
-                  <div><p style="font-size: 0.9rem; font-weight: 400; color: darkslategray">{{ course.description.substring(0, 50)+'...' }}</p></div>
-                  <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getCoursePrice(course) | number }}
-                    <span style="text-decoration: line-through; color: darkred; float: right; font-weight: 400">${{ course.tuition | number }}</span></div>
+    <div fxLayout="row" fxLayoutAlign="center center" style="height: 340px; margin-top: 16px">
+      <div fxFlex="5">
+        <!--      <div fxLayoutAlign="center center"><button mat-icon-button color="primary" style="transform: scale(1.5); background-color: #F1F1EE" (click)="back()"><mat-icon>arrow_back_ios</mat-icon></button></div>-->
+      </div>
+      <div fxFlex="90">
+        <div>
+          <ng-container *ngIf="(topCourses$ | async) as courses">
+            <ul class="flex-container" fxLayoutAlign="center center">
+              <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
+                <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
+                <div style="margin: -8px 8px 0 8px">
+                  <div fxLayout="column" fxLayoutGap="-10px">
+                    <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.title.substring(0, 28) }}</p></div>
+                    <!--              <div><p class="mat-card-subtitle">{{ course.user.name }}</p></div>-->
+                    <div><p style="font-size: 0.9rem; font-weight: 400; color: darkslategray">{{ course.description.substring(0, 50)+'...' }}</p></div>
+                    <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getCoursePrice(course) | number }}
+                      <span style="text-decoration: line-through; color: darkred; float: right; font-weight: 400">${{ course.tuition | number }}</span></div>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-        </ng-container>
+              </li>
+            </ul>
+          </ng-container>
+          <div fxLayoutAlign="center center"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
+        </div>
+      </div>
+      <div fxFlex="5" fxLayoutAlign="center center">
+        <!--      <div><button mat-icon-button color="primary" style="transform: scale(1.5); background-color: #F1F1EE" (click)="next()"><mat-icon>arrow_forward_ios</mat-icon></button></div>-->
       </div>
     </div>
 <!--    Course list section-->

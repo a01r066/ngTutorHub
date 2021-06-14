@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {UiService} from "../../services/ui.service";
 import {Category} from "../../models/category.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../models/course.model";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {DataStore} from "../../services/data.store";
 import {Constants} from "../../helpers/constants";
 
@@ -15,15 +15,13 @@ import {Constants} from "../../helpers/constants";
 export class CourseListComponent implements OnInit {
   // base_url = 'http://localhost:3000/uploads/courses/';
   base_url = `${Constants.base_upload}/courses/`;
-  selectedCategory!: Category;
+
+  category$!: Observable<Category>;
+  category!: Category;
+  topCourses$!: Observable<Course[]>;
   courses$!: Observable<Course[]>;
-  page = 1;
+  page: number = 1;
   discount = 90;
-
-  isNext: any;
-  isPrevious: any;
-  isLastPage = false;
-
   size: any;
   counter: any;
 
@@ -35,11 +33,13 @@ export class CourseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getCounter();
     this.getCategoryBySlug();
 
     this.uiService.categorySub.subscribe(category => {
-      this.selectedCategory = category;
+      this.category = category;
       // Get courses
+      this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
       this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
   }
@@ -47,22 +47,31 @@ export class CourseListComponent implements OnInit {
   private getCategoryBySlug() {
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCategoryBySlug(slug).subscribe(category => {
-      this.selectedCategory = category;
-
+      this.category = category;
       // Get courses
+      this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
       this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
   }
 
-  next() {
-    if(this.isNext && !this.isLastPage){
-      this.page += 1;
-    }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.getCounter();
   }
 
-  back() {
-    if(this.isPrevious){
-      this.page -= 1;
+  getCounter() {
+    const size = window.innerWidth;
+
+    if(size > 1875){
+      this.counter = 5;
+    } else if(size > 1500){
+      this.counter = 4;
+    } else if(size > 1135){
+      this.counter = 3;
+    } else if(size > 768) {
+      this.counter = 2;
+    } else {
+      this.counter = 1;
     }
   }
 
@@ -72,19 +81,5 @@ export class CourseListComponent implements OnInit {
 
   getCoursePrice(course: any){
     return (course.tuition * (1 - this.discount/100));
-  }
-
-  private getCounter() {
-    if(this.size > 1875){
-      this.counter = 5;
-    } else if(this.size > 1500){
-      this.counter = 4;
-    } else if(this.size > 1135){
-      this.counter = 3;
-    } else if(this.size > 768) {
-      this.counter = 2;
-    } else {
-      this.counter = 1;
-    }
   }
 }

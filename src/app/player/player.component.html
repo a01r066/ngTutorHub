@@ -17,10 +17,9 @@
   <div fxFlext fxLayout="row">
     <div fxFlex="75">
       <div fxLayout="column">
-        <div *ngIf="videoUrl">
-<!--          <iframe class="e2e-iframe-trusted-src" [src]="videoUrl" width="100%" height="640px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->
-<!--          <iframe [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen allow="autoplay;"></iframe>-->
-          <iframe id="video" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen></iframe>
+        <div *ngIf="videoUrl" style="background-color: #1E1E1C">
+<!--          <iframe id="video" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen></iframe>-->
+          <video [src]="videoUrl" width="100%" height="640px" controls></video>
         </div>
 <!--        <div>-->
 <!--          <mat-tab-group>-->
@@ -35,9 +34,9 @@
       <div>
         <mat-accordion>
           <mat-expansion-panel disabled>
-            <mat-expansion-panel-header style="background-color: #1E1E1C">
+            <mat-expansion-panel-header style="background-color: transparent">
               <mat-panel-title>
-                <p style="color: white; font-weight: 500">Course content</p>
+                <p style="color: black; font-weight: 500; font-size: 1.1rem">Course content</p>
               </mat-panel-title>
             </mat-expansion-panel-header>
             <p>This is the primary content of the panel.</p>

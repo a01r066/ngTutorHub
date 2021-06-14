@@ -19,7 +19,7 @@
                   <div fxFlex="15" style="margin: 16px 0 0 16px"><img mat-card-image src="{{ base_url+course.courseId.photo }}" alt="" width="100%"></div>
                   <div fxFlex="75" style="margin: -8px 0 0 16px">
                     <div class="mat-title">{{ course.title }}</div>
-                    <div class="mat-card-subtitle" style="color: darkslategray">{{ course.courseId.description }}</div>
+                    <div class="mat-card-subtitle" style="color: darkslategray">{{ course.courseId.description.substring(0, 224) }}</div>
                   </div>
                   <div fxFlex="10"><span style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number }}</span><br/><span style="text-decoration: line-through; color: gray; font-style: italic">${{ getPrice(course) }}</span></div>
                 </div>

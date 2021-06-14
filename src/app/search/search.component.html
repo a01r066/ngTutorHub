@@ -9,7 +9,7 @@
             <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
             <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
               <div class="mat-title">{{ course.title }}</div>
-              <div style="font-size: 0.9rem; color: darkslategray">{{ course.description }}</div>
+              <div style="font-size: 0.9rem; color: darkslategray">{{ course.description.substring(0, 256) }}</div>
               <div class="mat-card-subtitle">Brad Traversy</div>
               <div style="font-style: italic; font-size: 0.9rem">22 Sections * 155 lectures</div>
             </div>

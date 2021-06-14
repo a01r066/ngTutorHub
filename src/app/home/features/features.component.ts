@@ -53,6 +53,11 @@ export class FeaturesComponent implements OnInit {
     })
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.getCounter();
+  }
+
   private getCourses() {
     if (this.categories.length > 0) {
       this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);
@@ -66,11 +71,6 @@ export class FeaturesComponent implements OnInit {
   onClickTab(index: any) {
     this.selectedIndex = index;
     this.getCourses();
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.getCounter();
   }
 
   onClick(course: any){
@@ -95,13 +95,5 @@ export class FeaturesComponent implements OnInit {
     } else {
       this.counter = 1;
     }
-  }
-
-  back() {
-
-  }
-
-  next() {
-
   }
 }

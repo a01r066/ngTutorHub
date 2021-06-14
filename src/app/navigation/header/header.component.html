@@ -14,7 +14,9 @@
       </form>
     </div>
     <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="12px" style="margin-right: 8px">
-      <button mat-button *ngIf="authStore.isLoggedIn$ | async" [routerLink]="['admin']">Admin Panel</button>
+      <ng-container *ngIf="user?.role === 'admin'">
+        <button mat-button [routerLink]="['admin']">Admin Panel</button>
+      </ng-container>
       <button mat-icon-button color="primary" matBadge="{{ user?.cart.length || 0 }}" matBadgeSize="medium" matBadgePosition="before" matBadgeColor="warn" (click)="onClickCart()" *ngIf="authStore.isLoggedIn$"><mat-icon>shopping_cart</mat-icon></button>
       <button mat-button style="border: 1px solid #0F7C90; color: #0F7C90; font-weight: bold" [routerLink]="['/login']" *ngIf="!(authStore.isLoggedIn$ | async)">Login</button>
       <button mat-raised-button color="primary" [routerLink]="['/signup']" *ngIf="!(authStore.isLoggedIn$ | async)">Sign up</button>

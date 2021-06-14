@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {Course} from "../../models/course.model";
-import {User} from "../../models/user.model";
 import {Constants} from "../../helpers/constants";
 import {Router} from "@angular/router";
 import {AuthStore} from "../../services/auth.store";
@@ -28,11 +26,6 @@ export class LearningComponent implements OnInit {
   }
 
   onClick(course: any){
-    // console.log('course: '+ course.courseId.slug);
     this.router.navigate(['course', course.courseId.slug, 'learn']);
-  }
-
-  private getPurchasedCourses() {
-
   }
 }

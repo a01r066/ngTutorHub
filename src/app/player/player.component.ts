@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {UiService} from "../services/ui.service";
 import {Observable} from "rxjs";
 import {Lecture} from "../models/lecture.model";
 import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
 import {Constants} from "../helpers/constants";
+import {UiService} from "../services/ui.service";
 
 @Component({
   selector: 'app-player',
@@ -37,11 +37,23 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.course = course;
 
       this.lectures$ = this.dataStore.getLecturesByCourseId(this.course._id);
+      this.getSampleLesson();
     })
   }
 
   ngOnDestroy(): void {
     this.uiService.isPlayerSub.next(false);
+  }
+
+  private getSampleLesson() {
+    this.lectures$.subscribe(lectures => {
+      const firstLecture = lectures[0];
+      this.dataStore.getChaptersByLectureId(firstLecture._id).subscribe(lessons => {
+        const firstLesson = lessons[0];
+        this.unSafeUrl = `${this.base_url}/${this.course._id}/${firstLesson.lecture}/${firstLesson.file}`;
+        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
+      });
+    })
   }
 
   onClickLecture(lecture: any){
