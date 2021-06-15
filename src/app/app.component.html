@@ -2,6 +2,15 @@
   <app-header></app-header>
   <app-message></app-message>
   <app-loading></app-loading>
-  <router-outlet></router-outlet>
+  <div fxFlex fxLayout="column">
+    <!--  Content-->
+    <div fxFlex fxLayout="row">
+      <div fxFlex="15" style="background-color: #FBFBF8" class="leftBar"></div>
+      <div fxFlex="70">
+        <router-outlet></router-outlet>
+      </div>
+      <div fxFlex="15" style="background-color: #FBFBF8" class="rightBar"></div>
+    </div>
+  </div>
   <app-footer></app-footer>
 </div>

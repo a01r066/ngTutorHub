@@ -19,6 +19,7 @@ export class SearchComponent implements OnInit {
   courses$!: Observable<Course[]>;
   searchText!: string;
   limit = 5;
+  discount = 90;
 
   constructor(
               private router: Router,
@@ -41,5 +42,9 @@ export class SearchComponent implements OnInit {
 
   onClick(course: any){
     this.router.navigate(['/course', course.slug]);
+  }
+
+  getCoursePrice(course: any){
+    return (course.tuition * (1 - this.discount/100));
   }
 }

@@ -1,35 +1,17 @@
-<div fxLayout="column" style="overflow-x: hidden">
+<div fxLayout="column">
   <mat-toolbar-row *ngIf="course">
-    <div fxFlex fxLayout="row">
-      <div fxFlex="20"></div>
-      <div class="course-summary" fxFlex="40" style="color:white">
-        <div class="mat-display-1" style="margin-top: 48px; font-weight: 600">{{ course?.title }}</div>
-        <div class="mat-card-subtitle" style="font-size: 1rem; font-weight: 300; color: lightgray; width: 200px">{{ course.description.substring(0, 164) }}
-          <br><span *ngIf="course.description.length > 165">{{ course.description.substring(164, course.description.length)}}</span></div>
-        <div fxLayout="row" class="course-highlight" fxLayoutGap="16px">
-          <div><button mat-stroked-button color="accent" style="border: 1px solid #FFD740; width: 80px">Bestseller</button></div>
-          <div>4.8</div>
-          <div>
-            <span><mat-icon color="accent">start</mat-icon></span>
-            <span><mat-icon color="accent">start</mat-icon></span>
-            <span><mat-icon color="accent">start</mat-icon></span>
-            <span><mat-icon color="accent">start</mat-icon></span>
-            <span><mat-icon color="accent">start</mat-icon></span>
-          </div>
-          <!--            <div>(363,357 ratings) 1,290,367 students</div>-->
-        </div>
-        <div>Created by: Jose Portilia</div>
-        <div fxLayoutGap="16px" class="course-action">
-          <button mat-raised-button color="warn">Wishlist</button>
-          <button mat-raised-button color="accent">Share</button>
-        </div>
+    <div fxFlex fxLayout="column" style="margin: 0 16px 0 16px; color: white">
+      <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500">{{ course.title }}</textarea>
+      <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 1rem; color: lightgray;">{{ course.description }}</textarea>
+      <mat-label style="color: gray; font-size: 1rem; font-weight: 400; margin-top: 16px; font-style: italic">Instructor: <span style="color: #1DB954">Jose Portilia</span></mat-label>
+      <div fxLayoutGap="16px" class="course-action">
+        <button mat-icon-button color="warn" style="transform: scale(1.2)"><mat-icon>favorite_border</mat-icon></button>
+        <button mat-icon-button color="accent" style="transform: scale(1.2)"><mat-icon>share</mat-icon></button>
       </div>
-      <div fxFlex="20"></div>
     </div>
   </mat-toolbar-row>
   <div fxLayout="row">
-    <div fxFlex="20"></div>
-    <div fxFlex="40" fxLayoutGap="16px">
+    <div fxFlex="75" fxLayoutGap="16px">
       <div style="padding: 16px; font-weight: 500; font-size: 1.5rem">What you will learn:</div>
       <div style="margin-top: -16px">
         <mat-grid-list cols="2" rowHeight="64px">
@@ -37,7 +19,6 @@
             <div fxFlex fxLayoutAlign="left center"><span style="margin-left: 8px"><mat-icon>done</mat-icon></span><span style="margin: 0 8px 0 8px; font-size: 0.9rem">{{ item }}</span></div>
           </mat-grid-tile>
         </mat-grid-list>
-        <!--          <div style="margin-top: 16px"><button mat-button>Show more<mat-icon>expand_more</mat-icon></button></div>-->
       </div>
       <div class="mat-display-1" style="color: darkslategrey; font-weight: 500;">Course Content</div>
       <div>
@@ -68,12 +49,12 @@
         <textarea cdkTextareaAutosize readonly disabled class="mat-card-subtitle" style="color: darkslategray; background-color: transparent">{{ course?.description }}</textarea>
       </div>
     </div>
-    <div fxFlex="20" style="background-color: white; color: darkslategray; margin-top: 16px; border-radius: 4px" fxLayout="column">
-      <div style="background-color: #1E1E1C; width: 90%" fxLayoutAlign="center center">
+    <div fxFlex="25" style="background-color: white; color: darkslategray; margin: 16px; border-radius: 4px" fxLayout="column">
+      <div style="background-color: #1E1E1C; width: 100%;">
 <!--        <iframe class="e2e-iframe-trusted-src" [src]="videoUrl" width="100%" height="190px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="border-radius: 4px"></iframe>-->
         <video [src]="videoUrl" width="100%" height="190px" controls></video>
       </div>
-      <div style="margin: 32px">
+      <div>
         <div><span class="mat-display-1" style="font-weight: 600">${{ course?.tuition | number }}</span><span style="text-decoration: line-through; margin-left: 12px">$99.99</span><span style="margin-left: 12px">89% off</span></div>
         <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)" *ngIf="!(isPurchased$ | async)">Add to cart</button></div>
         <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="buyNow(course)" *ngIf="!(isPurchased$ | async)">Buy now</button></div>
@@ -95,6 +76,5 @@
         </div>
       </div>
     </div>
-    <div fxFlex="20"></div>
   </div>
 </div>

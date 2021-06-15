@@ -44,3 +44,41 @@
 .mat-input-element {
   color: darkslategray;
 }
+
+.flex-container {
+  /* We first create a flex layout context */
+  display: flex;
+
+  /* Then we define the flow direction
+     and if we allow the items to wrap
+   * Remember this is the same as:
+   * flex-direction: row;
+   * flex-wrap: wrap;
+   */
+  flex-flow: row wrap;
+
+  /* Then we define how is distributed the remaining space */
+  justify-content: normal;
+
+  padding: 0;
+  margin: 0 12px 0 12px;
+  list-style: none;
+}
+
+.course-flex-item {
+  width: 100vw;
+  height: 120px;
+  border-radius: 4px;
+  margin: 12px;
+  border: 1px solid lightgray;
+}
+
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}

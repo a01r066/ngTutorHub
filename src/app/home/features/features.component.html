@@ -4,7 +4,7 @@
     <div fxFlex="15"></div>
     <div fxFlex="70" fxLayoutAlign="center">
       <nav mat-tab-nav-bar>
-        <a mat-tab-link *ngFor="let category of categories; let i = index"
+        <a mat-tab-link *ngFor="let category of categories | slice:0:cateCounter; let i = index"
            (click)="onClickTab(i)" [active]="activeLink == categories[i]">{{ category.title }}
         </a>
       </nav>
@@ -21,13 +21,12 @@
           <ul class="flex-container" fxLayoutAlign="center center">
             <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
               <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-              <div style="margin: -8px 8px 0 8px">
-                <div fxLayout="column" fxLayoutGap="-10px">
-                  <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ course.title.substring(0, 28) }}</p></div>
-                  <!--              <div><p class="mat-card-subtitle">{{ course.user.name }}</p></div>-->
-                  <div><p style="font-size: 0.9rem; font-weight: 400; color: darkslategray">{{ course.description.substring(0, 50)+'...' }}</p></div>
+              <div>
+                <div fxLayout="column" fxLayoutGap="8px">
+                  <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
+                  <mat-label style="color: gray; font-size: 0.9rem">Instructor: Jose Portilia</mat-label>
                   <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getCoursePrice(course) | number }}
-                    <span style="text-decoration: line-through; color: darkred; float: right; font-weight: 400">${{ course.tuition | number }}</span></div>
+                    <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number }}</span></div>
                 </div>
               </div>
             </li>

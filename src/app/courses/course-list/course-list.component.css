@@ -25,7 +25,6 @@
   height: 272px;
   border-radius: 4px;
   margin: 12px;
-  border: 1px solid lightgray;
 }
 
 .course-flex-item {
@@ -57,4 +56,13 @@
 .mat-card-subtitle {
   color: gray;
   font-size: 0.8rem;
+}
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
 }

@@ -26,6 +26,7 @@ export class FeaturesComponent implements OnInit {
 
   discount = 90;
   counter!: number;
+  cateCounter!: number;
 
   categories: Category[] = [];
 
@@ -46,6 +47,7 @@ export class FeaturesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCounter();
+    this.getCateCounter();
 
     this.dataStore.getTopCategories().subscribe(categories => {
       this.categories = categories;
@@ -56,6 +58,7 @@ export class FeaturesComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.getCounter();
+    this.getCateCounter();
   }
 
   private getCourses() {
@@ -84,16 +87,38 @@ export class FeaturesComponent implements OnInit {
   getCounter() {
     const size = window.innerWidth;
 
-    if(size > 1875){
+    if(size > 1880){
       this.counter = 5;
-    } else if(size > 1500){
+    } else if(size > 1520){
       this.counter = 4;
-    } else if(size > 1135){
+    } else if(size > 1150){
       this.counter = 3;
-    } else if(size > 768) {
+    } else if(size > 788) {
       this.counter = 2;
     } else {
       this.counter = 1;
+    }
+  }
+
+  private getCateCounter() {
+    const size = window.innerWidth;
+    if(size > 1900){
+      this.cateCounter = 8;
+    } else
+    if(size > 1700){
+      this.cateCounter = 7;
+    } else
+    if(size > 1500){
+      this.cateCounter = 6;
+    } else
+    if(size > 1475){
+      this.cateCounter = 5;
+    } else if(size > 1150){
+      this.cateCounter = 4;
+    } else if(size > 788) {
+      this.cateCounter = 3;
+    } else {
+      this.cateCounter = 2;
     }
   }
 }

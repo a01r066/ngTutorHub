@@ -25,7 +25,7 @@
   height: 272px;
   border-radius: 4px;
   margin: 12px;
-  border: 1px solid lightgray;
+  /*border: 1px solid lightgray;*/
 }
 
 .mat-card {
@@ -54,4 +54,13 @@
 .mat-tab-link {
   color: #1E1E1C;
   font-weight: 500;
+}
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
 }
