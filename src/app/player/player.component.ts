@@ -30,7 +30,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
               private uiService: UiService) { }
 
   ngOnInit(): void {
-    this.uiService.isPlayerSub.next(true);
+    // this.uiService.isPlayerSub.next(true);
 
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {

@@ -217,4 +217,13 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       })
       .render(this.paypalElement.nativeElement);
   }
+
+  addToAdmin() {
+    const payment = {
+      "user": this.user._id,
+      "courses": this.coursesId,
+      "totalPrice": this.getValue(this.remainAmount)
+    }
+    this.checkout(payment);
+  }
 }

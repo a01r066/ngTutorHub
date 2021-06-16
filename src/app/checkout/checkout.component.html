@@ -37,6 +37,7 @@
             <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ remainAmount | number }}</span></div>
           </div>
         </div>
+        <div *ngIf="user.role === 'admin'" (click)="addToAdmin()"><button mat-raised-button>Add to Admin</button></div>
       </div>
     </div>
   </div>

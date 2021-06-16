@@ -1,9 +1,8 @@
 <div class="container">
-  <mat-toolbar color="accent">
+  <mat-toolbar style="background-color: #29303B; color: white">
     <div fxFill fxLayout="row" fxLayoutAlign="left center">
-      <span fxFlex="5" routerLink="" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600">TutorHub</span>
       <span fxFlex="80" style="font-weight: 400; text-align: center">{{ course?.title }}</span>
-      <span fxFlex="15" style="display: flex; justify-content: flex-end">
+      <span fxFlex="20" style="display: flex; justify-content: flex-end">
       <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>favorite</mat-icon>
     </button>
@@ -21,13 +20,14 @@
 <!--          <iframe id="video" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen></iframe>-->
           <video [src]="videoUrl" width="100%" height="640px" controls></video>
         </div>
-<!--        <div>-->
-<!--          <mat-tab-group>-->
-<!--            <mat-tab label="Overview"> Overview </mat-tab>-->
-<!--            <mat-tab label="Q&A"> Q&A </mat-tab>-->
-<!--          </mat-tab-group>-->
-<!--        </div>-->
-<!--        <div>Content</div>-->
+        <div>
+          <mat-tab-group>
+<!--            <mat-tab label="Search">Search</mat-tab>-->
+            <mat-tab label="Overview">
+              <app-course-overview [course]="course"></app-course-overview>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
       </div>
     </div>
     <div fxFlex="25">

@@ -33,6 +33,7 @@ import {MessagesService} from "./services/messages.service";
 import { AdminComponent } from './admin/admin.component';
 import {AdminModule} from "./admin/admin.module";
 import {NgxPaginationModule} from "ngx-pagination";
+import { CourseOverviewComponent } from './courses/course-detail/course-overview/course-overview.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     SlugifyPipe,
     ProfileComponent,
     FeedbackComponent,
-    AdminComponent
+    AdminComponent,
+    CourseOverviewComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

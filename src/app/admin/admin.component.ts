@@ -7,14 +7,15 @@ import {Router} from "@angular/router";
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  links = ['Categories']
+  links = ['Categories', 'Coupons']
+  icons = ['menu', 'redeem'];
   constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  showInfo(link: any) {
-
+  showInfo(index: any) {
+    this.router.navigate(['admin', this.links[index].toLowerCase()]);
   }
 
   dashboard() {

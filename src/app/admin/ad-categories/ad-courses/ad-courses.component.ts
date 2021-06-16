@@ -53,7 +53,7 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   edit(element: Course) {
     const dialogRef = this.dialog.open(CourseDialogComponent, {
-      width: '35vw',
+      width: '40vw',
       data: { course: element, isEdit: true },
       autoFocus: false
     });
@@ -66,7 +66,7 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   create() {
     const dialogRef = this.dialog.open(CourseDialogComponent, {
-      width: '35vw',
+      width: '40vw',
       data: {categoryId: this.categoryId, isEdit: false},
       autoFocus: false
     });
@@ -91,7 +91,7 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   uploadPhoto(element: any) {
     const dialogRef = this.dialog.open(UploadPhotoDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: { element: element, src: 'course'},
       autoFocus: false
     });

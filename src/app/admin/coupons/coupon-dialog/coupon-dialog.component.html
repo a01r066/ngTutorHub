@@ -1,0 +1,37 @@
+<!--<app-loading></app-loading>-->
+<h1 class="mat-card-title">Coupon Form</h1>
+<!--<app-message></app-message>-->
+<form [formGroup]="ngForm">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter code"
+             formControlName="code">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter description"
+             formControlName="description">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="Enter discount"
+             formControlName="discount">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="expire">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+    <button mat-raised-button
+            (click)="onNoClick()">
+      Back
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">
+      Send
+    </button>
+  </mat-dialog-actions>
+</form>

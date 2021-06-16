@@ -12,6 +12,8 @@ import { LectureDialogComponent } from './ad-categories/ad-courses/ad-lectures/l
 import { ChapterDialogComponent } from './ad-categories/ad-courses/ad-lectures/ad-chapters/chapter-dialog/chapter-dialog.component';
 import { UploadPhotoDialogComponent } from './ad-categories/ad-courses/upload-photo-dialog/upload-photo-dialog.component';
 import { UploadFileDialogComponent } from './ad-categories/ad-courses/ad-lectures/ad-chapters/upload-file-dialog/upload-file-dialog.component';
+import { CouponsComponent } from './coupons/coupons.component';
+import { CouponDialogComponent } from './coupons/coupon-dialog/coupon-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { UploadFileDialogComponent } from './ad-categories/ad-courses/ad-lecture
         LectureDialogComponent,
         ChapterDialogComponent,
         UploadPhotoDialogComponent,
-        UploadFileDialogComponent
+        UploadFileDialogComponent,
+        CouponsComponent,
+        CouponDialogComponent
   ],
   imports: [
     ShareModule,

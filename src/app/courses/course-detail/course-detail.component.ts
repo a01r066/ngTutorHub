@@ -37,6 +37,8 @@ export class CourseDetailComponent implements OnInit {
 
   panelOpenState = false;
 
+  seeMore = false;
+
   constructor(
     private dataStore: DataStore,
     private route: ActivatedRoute,
@@ -64,6 +66,10 @@ export class CourseDetailComponent implements OnInit {
         }
       })
     })
+  }
+
+  toggle(){
+    this.seeMore = !this.seeMore;
   }
 
   private getSampleLesson() {

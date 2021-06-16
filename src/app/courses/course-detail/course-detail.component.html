@@ -2,15 +2,15 @@
   <mat-toolbar-row *ngIf="course">
     <div fxFlex fxLayout="column" style="margin: 0 16px 0 16px; color: white">
       <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500">{{ course.title }}</textarea>
-      <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 1rem; color: lightgray;">{{ course.description }}</textarea>
-      <mat-label style="color: gray; font-size: 1rem; font-weight: 400; margin-top: 16px; font-style: italic">Instructor: <span style="color: #1DB954">Jose Portilia</span></mat-label>
+      <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: lightgray;">{{ course.description }}</textarea>
+      <mat-label style="color: gray; font-size: 0.9rem; font-weight: 500; margin-top: 16px; font-style: italic;">Instructor: <span style="color: #1DB954">Jose Portilia</span></mat-label>
       <div fxLayoutGap="16px" class="course-action">
         <button mat-icon-button color="warn" style="transform: scale(1.2)"><mat-icon>favorite_border</mat-icon></button>
         <button mat-icon-button color="accent" style="transform: scale(1.2)"><mat-icon>share</mat-icon></button>
       </div>
     </div>
   </mat-toolbar-row>
-  <div fxLayout="row">
+  <div fxLayout="row" style="margin: 16px">
     <div fxFlex="75" fxLayoutGap="16px">
       <div style="padding: 16px; font-weight: 500; font-size: 1.5rem">What you will learn:</div>
       <div style="margin-top: -16px">
@@ -22,7 +22,7 @@
       </div>
       <div class="mat-display-1" style="color: darkslategrey; font-weight: 500;">Course Content</div>
       <div>
-        <mat-accordion>
+        <mat-accordion style="padding: 16px">
           <mat-expansion-panel disabled>
             <mat-expansion-panel-header style="background-color: #B0BEC5">
               <mat-panel-title>
@@ -44,10 +44,15 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <div class="mat-card-title" style="font-weight: 500; margin-top: 16px; color: darkslategray">Description</div>
-      <div style="margin: 16px;">
-        <textarea cdkTextareaAutosize readonly disabled class="mat-card-subtitle" style="color: darkslategray; background-color: transparent">{{ course?.description }}</textarea>
-      </div>
+      <h3 class="mat-card-title" style="color: darkslategray;">Description</h3>
+      <ng-container *ngIf="!seeMore; else seeLess">
+        <textarea class="mat-card-subtitle" readonly disabled rows="6" style="color: #2F302F; font-weight: lighter; font-size: 0.9rem; background-color: transparent; padding-top: 16px">{{ course?.description }}</textarea>
+        <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_more</mat-icon> See more</button>
+      </ng-container>
+      <ng-template #seeLess>
+        <textarea *ngIf="seeMore" class="mat-card-subtitle" cdkTextareaAutosize readonly disabled style="color: #2F302F; font-weight: lighter; font-size: 0.9rem; background-color: transparent; padding-top: 16px">{{ course?.description }}</textarea>
+        <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_less</mat-icon> See less</button>
+      </ng-template>
     </div>
     <div fxFlex="25" style="background-color: white; color: darkslategray; margin: 16px; border-radius: 4px" fxLayout="column">
       <div style="background-color: #1E1E1C; width: 100%;">

@@ -50,7 +50,7 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
 
   create() {
     const dialogRef = this.dialog.open(CategoryDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: {isEdit: false },
       autoFocus: false
     });
@@ -58,23 +58,28 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed()
       .pipe(
       filter(val => !!val),
-      tap(() => this.dataChanged.next())
+      tap(() => {
+        this.dataChanged.next();
+        this.dataStore.showSnackBar('Category created!');
+      })
     )
       .subscribe();
   }
 
   edit(element: Category) {
     const dialogRef = this.dialog.open(CategoryDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: { category: element, isEdit: true },
       autoFocus: false
     });
 
     dialogRef.afterClosed().pipe(
       filter(val => !!val),
-      tap(() => this.dataChanged.next())
+      tap(() => {
+        this.dataChanged.next();
+        this.dataStore.showSnackBar('Category updated!');
+      })
     )
-      .subscribe();
   }
 
   delete(element: any) {
@@ -91,7 +96,7 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
 
   uploadPhoto(element: any) {
     const dialogRef = this.dialog.open(UploadPhotoDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: { element: element, src: 'category' },
       autoFocus: false
     });

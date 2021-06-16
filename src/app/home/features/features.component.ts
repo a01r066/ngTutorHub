@@ -30,7 +30,6 @@ export class FeaturesComponent implements OnInit {
 
   categories: Category[] = [];
 
-  activeLink!: Category;
   selectedIndex = 0;
   page: number = 1;
 
@@ -71,8 +70,8 @@ export class FeaturesComponent implements OnInit {
     }
   }
 
-  onClickTab(index: any) {
-    this.selectedIndex = index;
+  onClickTab(event: any) {
+    this.selectedIndex = event.index;
     this.getCourses();
   }
 

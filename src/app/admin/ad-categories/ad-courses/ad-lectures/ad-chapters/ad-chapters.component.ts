@@ -56,7 +56,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
   create() {
     const dialogRef = this.dialog.open(ChapterDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: {lectureId: this.lectureId, isEdit: false },
       autoFocus: false
     });
@@ -71,7 +71,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
   edit(element: Category) {
     const dialogRef = this.dialog.open(ChapterDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: { chapter: element, isEdit: true },
       autoFocus: false
     });
@@ -99,7 +99,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
   uploadFile(element: any) {
     const dialogRef = this.dialog.open(UploadFileDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: { chapter: element, course: this.courseId, lecture: this.lectureId },
       autoFocus: false
     });

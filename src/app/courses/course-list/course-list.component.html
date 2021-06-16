@@ -1,12 +1,9 @@
-<div>
-  <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px;" *ngIf="category">{{ category.title }}</div>
-  <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin: -32px 0 32px 0">Courses to get you started</div>
+<div style="margin: 16px">
+  <div style="color: darkslategrey; font-weight: 500; margin-top: 16px; font-size: 2.25rem" *ngIf="category">{{ category.title }}</div>
+  <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin-top: 16px">Courses to get you started</div>
   <!--    Top course section-->
   <div fxLayout="row" fxLayoutAlign="center center" style="height: 340px; margin-top: 16px">
-    <div fxFlex="5">
-      <!--      <div fxLayoutAlign="center center"><button mat-icon-button color="primary" style="transform: scale(1.5); background-color: #F1F1EE" (click)="back()"><mat-icon>arrow_back_ios</mat-icon></button></div>-->
-    </div>
-    <div fxFlex="90">
+    <div>
       <div>
         <ng-container *ngIf="(topCourses$ | async) as courses">
           <ul class="flex-container" fxLayoutAlign="center center">
@@ -26,13 +23,10 @@
         <div fxLayoutAlign="center center"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
       </div>
     </div>
-    <div fxFlex="5" fxLayoutAlign="center center">
-      <!--      <div><button mat-icon-button color="primary" style="transform: scale(1.5); background-color: #F1F1EE" (click)="next()"><mat-icon>arrow_forward_ios</mat-icon></button></div>-->
-    </div>
   </div>
   <!--    Course list section-->
-  <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px">All Development Courses</div>
-  <div style="margin-top: -32px">
+  <div style="color: darkslategrey; font-weight: 500; margin-top: 32px; font-size: 2.25rem">All Development Courses</div>
+  <div style="margin-top: 16px">
     <ul class="flex-container">
       <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of (courses$ | async); let i = index" (click)="onClick(course)">
         <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>

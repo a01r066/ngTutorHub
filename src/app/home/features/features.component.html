@@ -3,11 +3,14 @@
   <div fxFlex fxLayout="row">
     <div fxFlex="15"></div>
     <div fxFlex="70" fxLayoutAlign="center">
-      <nav mat-tab-nav-bar>
-        <a mat-tab-link *ngFor="let category of categories | slice:0:cateCounter; let i = index"
-           (click)="onClickTab(i)" [active]="activeLink == categories[i]">{{ category.title }}
-        </a>
-      </nav>
+      <mat-tab-group (selectedTabChange)="onClickTab($event)">
+        <mat-tab *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
+      </mat-tab-group>
+<!--      <nav mat-tab-nav-bar>-->
+<!--        <a mat-tab-link *ngFor="let category of categories | slice:0:cateCounter; let i = index"-->
+<!--           (click)="onClickTab(i)">{{ category.title }}-->
+<!--        </a>-->
+<!--      </nav>-->
       <div fxFlex="15"></div>
     </div>
   </div>

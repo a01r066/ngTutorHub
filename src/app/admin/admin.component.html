@@ -3,14 +3,20 @@
     <div style="display: flex; justify-content: center; margin-top: 16px"><button mat-button color="primary" style="font-size: 1.25rem; font-weight: 500" (click)="home()">
       <span><mat-icon style="transform: scale(1.25)">home</mat-icon></span>
       TutorHub</button></div>
-    <mat-nav-list>
-      <mat-list-item *ngFor="let link of links" style="color: white">
-        <a matLine [routerLink]="['categories']">
-          <button mat-icon-button (click)="showInfo(link)">
-          <mat-icon color="accent">list</mat-icon>
-        </button> {{ link }}</a>
+    <mat-list>
+      <mat-list-item *ngFor="let link of links; let i = index" style="color: lightgray; cursor: pointer" (click)="showInfo(i)">
+        <mat-icon matListIcon>{{icons[i]}}</mat-icon>
+        <h3 matLine> {{link}} </h3>
       </mat-list-item>
-    </mat-nav-list>
+    </mat-list>
+<!--    <mat-nav-list>-->
+<!--      <mat-list-item *ngFor="let link of links" style="color: white">-->
+<!--        <a matLine [routerLink]="['categories']">-->
+<!--          <button mat-icon-button (click)="showInfo(link)">-->
+<!--          <mat-icon color="accent">list</mat-icon>-->
+<!--        </button> {{ link }}</a>-->
+<!--      </mat-list-item>-->
+<!--    </mat-nav-list>-->
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar>

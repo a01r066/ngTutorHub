@@ -10,6 +10,8 @@ import {Category} from "../models/category.model";
 import {Lecture} from "../models/lecture.model";
 import {Chapter} from "../models/chapter.model";
 import {User} from "../models/user.model";
+import {Coupon} from "../models/coupon.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: "root"
@@ -26,10 +28,17 @@ export class DataStore {
 
   constructor(private http: HttpClient,
               private loadingService: LoadingService,
-              private messageService: MessagesService) {
+              private messageService: MessagesService,
+              private snackBar: MatSnackBar) {
 
     this.getAllCourses();
     this.getAllCategories();
+  }
+
+  showSnackBar(message: any){
+    this.snackBar.open(message, null!, {
+      duration: 3000
+    })
   }
 
   // Course section
@@ -326,5 +335,35 @@ export class DataStore {
     }
     const url = `${Constants.base_url}/feedbacks`;
     return this.http.post(url, data);
+  }
+
+  // Coupons
+  getCoupons(): Observable<Coupon[]>{
+    const url = `${Constants.base_url}/coupons`;
+    return this.http.get(url)
+      .pipe(map(res => (res as any).data),
+        shareReplay());
+  }
+
+  createCoupon(formData: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/coupons`;
+    return this.http.post(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .pipe(shareReplay());
+  }
+
+  updateCoupon(couponId: string, changes: Partial<Coupon>): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/coupons/${couponId}`;
+    return this.http.put(url, changes, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .pipe(shareReplay());
   }
 }
