@@ -3,7 +3,7 @@
     <div fxFlex fxLayout="column" style="margin: 0 16px 0 16px; color: white">
       <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500">{{ course.title }}</textarea>
       <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: lightgray;">{{ course.description }}</textarea>
-      <mat-label style="color: gray; font-size: 0.9rem; font-weight: 500; margin-top: 16px; font-style: italic;">Instructor: <span style="color: #1DB954">Jose Portilia</span></mat-label>
+      <mat-label style="color: gray; font-size: 0.9rem; font-weight: 500; margin-top: 16px; font-style: italic;">Instructor: <span style="color: #1DB954">{{ course.instructor }}</span></mat-label>
       <div fxLayoutGap="16px" class="course-action">
         <button mat-icon-button color="warn" style="transform: scale(1.2)"><mat-icon>favorite_border</mat-icon></button>
         <button mat-icon-button color="accent" style="transform: scale(1.2)"><mat-icon>share</mat-icon></button>
@@ -26,7 +26,7 @@
           <mat-expansion-panel disabled>
             <mat-expansion-panel-header style="background-color: #B0BEC5">
               <mat-panel-title>
-                <p style="color: #2F302F; font-weight: 500">{{ 5 }} sections • {{ 10 }} lectures • 4h 37m total length</p>
+                <p style="color: #2F302F; font-weight: 500">? sections • ? lectures • ?h ?m total length</p>
               </mat-panel-title>
             </mat-expansion-panel-header>
 <!--            <p>This is the primary content of the panel.</p>-->
@@ -69,13 +69,13 @@
         <div>
           <mat-list role="list">
             <mat-list-item role="listitem" style="color: black">
-              <mat-icon>description</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ 5 }} Sections</span>
+              <mat-icon>description</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">? Sections</span>
             </mat-list-item>
             <mat-list-item role="listitem" style="color: black">
-              <mat-icon>smart_display</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ 10 }} chapters</span>
+              <mat-icon>smart_display</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">? chapters</span>
             </mat-list-item>
             <mat-list-item role="listitem" style="color: black">
-              <mat-icon>code</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">19 coding exercises</span>
+              <mat-icon>code</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">? coding exercises</span>
             </mat-list-item>
           </mat-list>
         </div>

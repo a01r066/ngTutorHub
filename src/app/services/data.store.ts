@@ -161,6 +161,13 @@ export class DataStore {
         map(res => (res as any).data), shareReplay());
   }
 
+  getLectureById(lectureId: any): Observable<Lecture>{
+    const url = `${Constants.base_url}/lecture/${lectureId}`;
+    return this.http.get(url)
+      .pipe(map(res => (res as any).data)
+      ,shareReplay());
+  }
+
   createChapter(formData: any): Observable<any>{
     const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/chapters`;

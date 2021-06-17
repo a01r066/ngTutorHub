@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="mat-card-title" style="margin: 24px">LECTURES
-    <span style="float: right;"><button mat-flat-button color="primary" (click)="create()"><mat-icon>add</mat-icon> CREATE LECTURE</button></span></div>
+  <div class="mat-card-title" style="margin: 24px">{{ lecture?.title }}
+    <span style="float: right;"><button mat-flat-button color="primary" (click)="create()"><mat-icon>add</mat-icon> CREATE CHAPTER</button></span></div>
   <div class="mat-elevation-z8" style="margin: 24px">
     <table mat-table [dataSource]="dataSource">
 

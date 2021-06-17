@@ -11,6 +11,7 @@ import {Category} from "../../../../../models/category.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ChapterDialogComponent} from "./chapter-dialog/chapter-dialog.component";
 import {UploadFileDialogComponent} from "./upload-file-dialog/upload-file-dialog.component";
+import {Lecture} from "../../../../../models/lecture.model";
 
 @Component({
   selector: 'app-ad-chapters',
@@ -25,6 +26,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
   dataChanged = new Subject();
   lectureId = '';
   courseId = '';
+  lecture!: Lecture;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -37,6 +39,10 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
     this.getData();
     this.dataChanged.subscribe(() => {
       this.getData();
+    })
+
+    this.dataStore.getLectureById(this.lectureId).subscribe(lecture => {
+      this.lecture = lecture;
     })
   }
 

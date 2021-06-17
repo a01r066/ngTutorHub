@@ -49,7 +49,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.uiService.isPlayer = false;
+    this.uiService.isPlayerSub.next(false);
   }
 
   private getSampleLesson() {

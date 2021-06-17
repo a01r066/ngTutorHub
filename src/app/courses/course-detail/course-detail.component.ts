@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../../models/user.model";
 import {Constants} from "../../helpers/constants";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
@@ -11,6 +10,7 @@ import {Chapter} from "../../models/chapter.model";
 import {map} from "rxjs/operators";
 import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
+import {UiService} from "../../services/ui.service";
 
 @Component({
   selector: 'app-course-detail',
@@ -46,7 +46,7 @@ export class CourseDetailComponent implements OnInit {
     public authStore: AuthStore,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private snackBar: MatSnackBar) { }
+    private uiService: UiService) { }
 
   ngOnInit(): void {
     const slug = this.route.snapshot.params['id'];
@@ -117,9 +117,7 @@ export class CourseDetailComponent implements OnInit {
     this.dataStore.addToCart(this.user._id, course._id).subscribe(res => {
       this.authStore.initAuthListener();
     });
-    this.snackBar.open(`${course.title} added to cart!`, null!, {
-      duration: 3000
-    })
+    this.dataStore.showSnackBar(`${course.title} added to cart!`);
   }
 
   buyNow(course: any) {
@@ -127,9 +125,7 @@ export class CourseDetailComponent implements OnInit {
       this.authStore.initAuthListener();
       this.router.navigate(['checkout']);
     });
-    this.snackBar.open(`${course.title} added to cart!`, null!, {
-      duration: 3000
-    })
+    this.dataStore.showSnackBar(`${course.title} added to cart!`);
   }
 
   goToCourse(course: Course) {

@@ -18,8 +18,8 @@ export class SearchComponent implements OnInit {
   base_url = `${Constants.base_upload}/courses/`;
   courses$!: Observable<Course[]>;
   searchText!: string;
-  limit = 5;
   discount = 90;
+  page: number = 1;
 
   constructor(
               private router: Router,
@@ -40,11 +40,13 @@ export class SearchComponent implements OnInit {
       );
   }
 
-  onClick(course: any){
-    this.router.navigate(['/course', course.slug]);
+  getSalePrice(course: any) {
+    const tuition = course.tuition;
+    const discount = course.coupon.discount;
+    return (tuition * (1 - discount/100));
   }
 
-  getCoursePrice(course: any){
-    return (course.tuition * (1 - this.discount/100));
+  onClick(course: any){
+    this.router.navigate(['/course', course.slug]);
   }
 }

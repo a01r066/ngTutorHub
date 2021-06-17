@@ -3,28 +3,21 @@
   <div style="margin-top: -32px">
     <ng-container *ngIf="(courses$ | async) as courses">
       <ul class="flex-container">
-        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of (courses$ | async); let i = index" (click)="onClick(course)">
+        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: 5, currentPage: page }" (click)="onClick(course)">
           <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
           <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
-            <!--          <div class="mat-title">{{ course.title }}</div>-->
-            <!--          <div style="font-size: 0.9rem; color: darkslategray">{{ course.description.substring(0, 256)+'...' }}</div>-->
             <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
             <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
-            <div class="mat-card-subtitle">Brad Traversy</div>
-            <div style="font-style: italic; font-size: 0.9rem">22 Sections * 155 lectures</div>
+            <div class="mat-card-subtitle">Instructor: {{ course.instructor }}</div>
+            <div style="font-style: italic; font-size: 0.9rem">? Sections * ? lectures</div>
           </div>
           <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
-            <div>${{ course.tuition | number }}</div>
-            <div style="text-decoration: line-through; color: red">${{ 99.99 }}</div>
+            <div>${{ getSalePrice(course) | number: '1.0-2' }}</div>
+            <div style="text-decoration: line-through; color: red">${{ course.tuition | number: '1.0-2' }}</div>
           </div>
         </li>
       </ul>
+      <div fxLayoutAlign="center center" *ngIf="courses.length > 5"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
     </ng-container>
-  </div>
-  <div>
-    <mat-paginator [length]="100"
-                   [pageSize]="10"
-                   [pageSizeOptions]="[5, 10, 25, 100]">
-    </mat-paginator>
   </div>
 </div>

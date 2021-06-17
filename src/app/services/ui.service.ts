@@ -7,8 +7,8 @@ import {Category} from "../models/category.model";
 })
 
 export class UiService {
-  isPlayer = false;
   categorySub = new Subject<Category>();
   searchTextSub = new Subject<string>();
   isPlayerSub = new Subject<boolean>();
+  isSideBarSub = new Subject<boolean>();
 }
