@@ -60,6 +60,12 @@ export class FeaturesComponent implements OnInit {
     this.getCateCounter();
   }
 
+  getSalePrice(course: any) {
+    const tuition = course.tuition;
+    const discount = course.coupon.discount;
+    return (tuition * (1 - discount/100));
+  }
+
   private getCourses() {
     if (this.categories.length > 0) {
       this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);

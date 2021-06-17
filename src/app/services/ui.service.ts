@@ -7,10 +7,8 @@ import {Category} from "../models/category.model";
 })
 
 export class UiService {
-  tabSelectedIndexSub = new Subject<number>();
+  isPlayer = false;
   categorySub = new Subject<Category>();
-  categoriesSub = new Subject<Category[]>();
   searchTextSub = new Subject<string>();
   isPlayerSub = new Subject<boolean>();
-  isCoursePurchased = new Subject<boolean>();
 }

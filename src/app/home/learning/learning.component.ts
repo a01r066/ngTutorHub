@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Constants} from "../../helpers/constants";
 import {Router} from "@angular/router";
 import {AuthStore} from "../../services/auth.store";
+import {UiService} from "../../services/ui.service";
 
 @Component({
   selector: 'app-learning',
@@ -14,11 +15,13 @@ export class LearningComponent implements OnInit {
 
   constructor(
     private authStore: AuthStore,
-    private router: Router
+    private router: Router,
+    private uiService: UiService
   ) { }
 
   ngOnInit(): void {
     this.authStore.user$.subscribe(user => {
+      this.purchasedCourses = [];
       user.purchased_courses.forEach(course => {
         this.purchasedCourses.push(course);
       })
@@ -26,6 +29,7 @@ export class LearningComponent implements OnInit {
   }
 
   onClick(course: any){
+    this.uiService.isPlayerSub.next(true);
     this.router.navigate(['course', course.courseId.slug, 'learn']);
   }
 }

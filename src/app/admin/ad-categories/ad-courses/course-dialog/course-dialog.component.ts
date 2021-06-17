@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../../../home/Feedback/feedback.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -21,6 +21,9 @@ export class CourseDialogComponent implements OnInit {
   ngForm!: FormGroup;
   user!: User;
   coupons: Coupon[] = [];
+  @ViewChild('coupon') couponRef!: ElementRef;
+  currentCoupon!: Coupon;
+  isEdit = false
 
   constructor(public dialogRef: MatDialogRef<CourseDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -29,6 +32,7 @@ export class CourseDialogComponent implements OnInit {
               private authStore: AuthStore) { }
 
   ngOnInit(): void {
+    this.isEdit = (this.data as any).isEdit;
     this.ngForm = new FormGroup({
       title: new FormControl('', {validators: [Validators.required, Validators.maxLength(64)]}),
       objectives: new FormControl('', { validators: [Validators.required]}),
@@ -37,12 +41,12 @@ export class CourseDialogComponent implements OnInit {
       tuition: new FormControl('', {validators: [Validators.required]}),
       isFree: new FormControl(false),
       isHidden: new FormControl(false),
-      coupon: new FormControl()
+      coupon: new FormControl('60cb280400cdcf361c32d4f4')
     })
 
-    const isEdit = (this.data as any).isEdit;
-    if(isEdit){
+    if(this.isEdit){
       const course = (this.data as any).course;
+      this.currentCoupon = course.coupon;
       this.ngForm.patchValue(course);
     }
 
@@ -61,8 +65,7 @@ export class CourseDialogComponent implements OnInit {
 
   save() {
     if(this.ngForm.valid){
-      const isEdit = (this.data as any).isEdit;
-      if(isEdit){
+      if(this.isEdit){
         const courseId = (this.data as any).course._id;
         const changes = this.ngForm.value;
         this.dataStore.updateCourse(courseId, changes).subscribe();

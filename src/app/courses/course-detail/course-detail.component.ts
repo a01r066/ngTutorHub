@@ -54,6 +54,9 @@ export class CourseDetailComponent implements OnInit {
       // get objectives
       this.courseSubject.next(course);
       this.course = course;
+
+      this.getSalePrice(course);
+
       this.objectives = course.objectives.substring(1).split('- ');
       this.lectures$ = this.dataStore.getLecturesByCourseId(course._id);
       this.getSampleLesson();
@@ -67,6 +70,12 @@ export class CourseDetailComponent implements OnInit {
         }
       })
     })
+  }
+
+  getSalePrice(course: any) {
+    const tuition = course.tuition;
+    const discount = course.coupon.discount;
+    return (tuition * (1 - discount/100));
   }
 
   toggle(){

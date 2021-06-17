@@ -4,13 +4,15 @@
   <app-loading></app-loading>
   <div fxFlex fxLayout="column">
     <!--  Content-->
-    <div fxFlex fxLayout="row">
-      <div fxFlex="15" style="background-color: #FBFBF8" class="leftBar"></div>
-      <div fxFlex="70">
-        <router-outlet></router-outlet>
+    <ng-container>
+      <div fxFlex fxLayout="row">
+        <div *ngIf="!isPlayer" fxFlex="15" style="background-color: #FBFBF8" class="leftBar"></div>
+        <div fxFlex="{{ !isPlayer ? 70 : 100 }}">
+          <router-outlet></router-outlet>
+        </div>
+        <div *ngIf="!isPlayer" fxFlex="15" style="background-color: #FBFBF8" class="rightBar"></div>
       </div>
-      <div fxFlex="15" style="background-color: #FBFBF8" class="rightBar"></div>
-    </div>
+    </ng-container>
   </div>
   <app-footer></app-footer>
 </div>

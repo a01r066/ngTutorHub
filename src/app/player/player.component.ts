@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {AfterViewInit, Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Observable} from "rxjs";
 import {Lecture} from "../models/lecture.model";
@@ -7,6 +7,7 @@ import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
 import {Constants} from "../helpers/constants";
 import {UiService} from "../services/ui.service";
+import {delay} from "rxjs/operators";
 
 @Component({
   selector: 'app-player',
@@ -27,11 +28,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
               private dataStore: DataStore,
               private route: ActivatedRoute,
               private sanitizer: DomSanitizer,
-              private uiService: UiService) { }
+              private uiService: UiService,
+              private router: Router) { }
 
   ngOnInit(): void {
-    // this.uiService.isPlayerSub.next(true);
-
+    this.uiService.isPlayerSub.next(true);
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
@@ -41,8 +42,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy(): void {
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    // console.log('Back button pressed');
     this.uiService.isPlayerSub.next(false);
+  }
+
+  ngOnDestroy(): void {
+    this.uiService.isPlayer = false;
   }
 
   private getSampleLesson() {
@@ -86,4 +93,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
 //       // 12 seconds
 //     });
 //   }
+  home() {
+    this.uiService.isPlayerSub.next(false);
+    this.router.navigate(['home', 'my-courses', 'learning']);
+  }
 }

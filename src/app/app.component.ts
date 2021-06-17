@@ -11,12 +11,16 @@ import {UiService} from "./services/ui.service";
 })
 export class AppComponent implements OnInit {
   user!: User;
+  isPlayer = false;
   constructor(
               private router: Router,
               private uiService: UiService
   ){}
 
   ngOnInit(): void {
+    this.uiService.isPlayerSub.subscribe(isPlayer => {
+      this.isPlayer = isPlayer;
+    })
     this.uiService.categorySub.subscribe(category => {
       this.onClickMenu(category);
     })

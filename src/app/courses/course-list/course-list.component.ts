@@ -3,7 +3,7 @@ import {UiService} from "../../services/ui.service";
 import {Category} from "../../models/category.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../models/course.model";
-import {BehaviorSubject, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {DataStore} from "../../services/data.store";
 import {Constants} from "../../helpers/constants";
 
@@ -16,11 +16,11 @@ export class CourseListComponent implements OnInit {
   // base_url = 'http://localhost:3000/uploads/courses/';
   base_url = `${Constants.base_upload}/courses/`;
 
-  category$!: Observable<Category>;
   category!: Category;
   topCourses$!: Observable<Course[]>;
   courses$!: Observable<Course[]>;
   page: number = 1;
+  fPage: number = 1;
   discount = 90;
   size: any;
   counter: any;
@@ -42,6 +42,12 @@ export class CourseListComponent implements OnInit {
       this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
       this.courses$ = this.dataStore.getCoursesByCategory(category._id);
     })
+  }
+
+  getSalePrice(course: any) {
+    const tuition = course.tuition;
+    const discount = course.coupon.discount;
+    return (tuition * (1 - discount/100));
   }
 
   private getCategoryBySlug() {
@@ -77,9 +83,5 @@ export class CourseListComponent implements OnInit {
 
   onClick(course: any){
     this.router.navigate(['/course', course.slug]);
-  }
-
-  getCoursePrice(course: any){
-    return (course.tuition * (1 - this.discount/100));
   }
 }

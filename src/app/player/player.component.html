@@ -1,7 +1,10 @@
 <div class="container">
   <mat-toolbar style="background-color: #29303B; color: white">
     <div fxFill fxLayout="row" fxLayoutAlign="left center">
+      <span><button mat-icon-button (click)="home()" style="transform: scale(1.5)"><mat-icon>home</mat-icon></button></span>
+
       <span fxFlex="80" style="font-weight: 400; text-align: center">{{ course?.title }}</span>
+
       <span fxFlex="20" style="display: flex; justify-content: flex-end">
       <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>favorite</mat-icon>
@@ -12,7 +15,6 @@
     </span>
     </div>
   </mat-toolbar>
-
   <div fxFlext fxLayout="row">
     <div fxFlex="75">
       <div fxLayout="column">

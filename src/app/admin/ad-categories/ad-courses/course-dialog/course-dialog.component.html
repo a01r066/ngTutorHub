@@ -25,7 +25,7 @@
         </textarea>
       </mat-form-field>
         <mat-form-field>
-          <mat-select placeholder="Select coupon"
+          <mat-select placeholder="{{ isEdit ? currentCoupon.code : 'Enter code'}}"
                       formControlName="coupon">
             <mat-option *ngFor="let coupon of coupons" [value]="coupon._id">
               {{ coupon.code }}
