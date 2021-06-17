@@ -24,6 +24,14 @@
                   formControlName="description" required>
         </textarea>
       </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Select coupon"
+                      formControlName="coupon">
+            <mat-option *ngFor="let coupon of coupons" [value]="coupon._id">
+              {{ coupon.code }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       <div style="display: flex; justify-content: center; gap: 24px">
         <span><mat-slide-toggle labelPosition="before" color="primary" formControlName="bestseller">isBestseller?</mat-slide-toggle></span>
         <span><mat-slide-toggle labelPosition="before" color="primary" formControlName="isFree">isFree?</mat-slide-toggle></span>

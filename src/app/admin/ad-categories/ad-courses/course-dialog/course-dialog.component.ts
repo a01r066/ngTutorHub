@@ -8,6 +8,8 @@ import {LoadingService} from "../../../../services/loading.service";
 import {DataStore} from "../../../../services/data.store";
 import {AuthStore} from "../../../../services/auth.store";
 import {User} from "../../../../models/user.model";
+import {Observable} from "rxjs";
+import {Coupon} from "../../../../models/coupon.model";
 
 @Component({
   selector: 'app-course-dialog',
@@ -18,6 +20,7 @@ import {User} from "../../../../models/user.model";
 export class CourseDialogComponent implements OnInit {
   ngForm!: FormGroup;
   user!: User;
+  coupons: Coupon[] = [];
 
   constructor(public dialogRef: MatDialogRef<CourseDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -33,7 +36,8 @@ export class CourseDialogComponent implements OnInit {
       bestseller: new FormControl(false),
       tuition: new FormControl('', {validators: [Validators.required]}),
       isFree: new FormControl(false),
-      isHidden: new FormControl(false)
+      isHidden: new FormControl(false),
+      coupon: new FormControl()
     })
 
     const isEdit = (this.data as any).isEdit;
@@ -45,6 +49,10 @@ export class CourseDialogComponent implements OnInit {
     this.authStore.user$.subscribe(user => {
       this.user = user;
     })
+
+    this.dataStore.getCoupons().subscribe(coupons => {
+      this.coupons = coupons;
+    });
   }
 
   onNoClick() {

@@ -14,8 +14,10 @@
               <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.courseId.description }}</textarea>
             </div>
             <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
-              <div style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number }}</div>
-              <div style="text-decoration: line-through; color: gray; font-style: italic">${{ getPrice(course) }}</div>
+              <div style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number: '1.0-2' }}</div>
+              <div>
+                <span style="text-decoration: line-through; color: gray; font-style: italic">${{ course.courseId.tuition | number: '1.0-2'  }}</span>
+              </div>
             </div>
             <div fxFlex="10" fxLayoutAlign="center center"><button mat-icon-button (click)="removeCourse(i)"><mat-icon>delete</mat-icon></button></div>
           </li>
@@ -25,9 +27,9 @@
     <div fxFlex="30" style="color: black; border-radius: 6px">
       <div style="margin: 16px">
         <div class="mat-title">Total</div>
-        <div class="mat-display-1" style="font-weight: 500; color: darkslategray; margin-bottom: 4px">$ {{ remainAmount | number }}</div>
-        <div style="text-decoration: line-through; color: darkgray">$ {{ originalPrice | number }}</div>
-        <div style="color: #2F302F; margin-bottom: 16px">{{ percentageOff }}% off</div>
+        <div class="mat-display-1" style="font-weight: 500; color: darkslategray; margin-bottom: 4px">$ {{ salePrice | number: '1.0-1' }}</div>
+        <div style="text-decoration: line-through; color: darkgray">$ {{ totalPrice | number: '1.0-1' }}</div>
+        <div style="color: #2F302F; margin-bottom: 16px">{{ getPercentageOff() | number: '1.0-1' }}% off</div>
         <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="checkoutCart()">Checkout</button></div>
       </div>
     </div>

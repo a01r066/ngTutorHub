@@ -38,6 +38,7 @@ export class CourseDetailComponent implements OnInit {
   panelOpenState = false;
 
   seeMore = false;
+  discount: number = 0;
 
   constructor(
     private dataStore: DataStore,

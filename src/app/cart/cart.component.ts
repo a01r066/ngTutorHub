@@ -13,12 +13,9 @@ import {AuthStore} from "../services/auth.store";
 export class CartComponent implements OnInit {
   courses: any;
   base_url = `${Constants.base_upload}/courses/`;
+  totalPrice = 0;
+  salePrice = 0;
 
-  originalPrice = 0;
-  discountedAmount = 0;
-  remainAmount = 0;
-  discount = 90;
-  percentageOff = 0;
   user!: User;
 
   constructor(private authStore: AuthStore,
@@ -37,14 +34,14 @@ export class CartComponent implements OnInit {
       this.courses = this.user.cart;
 
       // Get summary
-      this.getSummary();
+      this.getSalePrice();
     }
   }
 
   removeCourse(index: any){
     this.dataStore.removeCartItem(this.courses[index].courseId._id, this.user._id).subscribe(res => {
       this.courses.splice(index, 1);
-      this.getSummary();
+      this.getSalePrice();
     });
   }
 
@@ -52,28 +49,26 @@ export class CartComponent implements OnInit {
     this.router.navigate(['checkout']);
   }
 
-  private getSummary() {
-    this.originalPrice = 0;
-    this.discountedAmount = 0;
-    this.remainAmount = 0;
-    this.percentageOff = 0;
+  getDiscountedPrice(course: any){
+    const tuition = course.courseId.tuition;
+    const discount = course.courseId.coupon.discount;
+    return (tuition * (1 - discount/100));
+  }
+
+  getSalePrice() {
+    this.salePrice = 0;
+    this.totalPrice = 0;
 
     for(let course of this.courses){
-      this.calculate(course);
+      const tuition = course.courseId.tuition;
+      this.totalPrice += tuition;
+      const discount = course.courseId.coupon.discount;
+      const sale = tuition * (1 - discount/100);
+      this.salePrice += sale;
     }
   }
 
-  private calculate(course: any){
-    this.originalPrice += course.courseId.tuition;
-    this.remainAmount = this.originalPrice * (1 - this.discount/100);
-    this.percentageOff = (1 - (this.remainAmount/this.originalPrice))*100;
-  }
-
-  getDiscountedPrice(course: any){
-    return (course.courseId.tuition * (1 - this.discount/100));
-  }
-
-  getPrice(course: any){
-    return course.courseId.tuition;
+  getPercentageOff() {
+    return (1 - (this.salePrice/this.totalPrice))*100;
   }
 }

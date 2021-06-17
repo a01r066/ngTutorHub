@@ -19,8 +19,7 @@
                   <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.courseId.description }}</textarea>
                 </div>
                 <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
-                  <div style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number }}</div>
-                  <div style="text-decoration: line-through; color: gray; font-style: italic">${{ getPrice(course) }}</div>
+                  <div style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number: '1.0-2' }}</div>
                 </div>
               </li>
             </ul>
@@ -31,10 +30,10 @@
         <div style="margin: 16px; background-color: white; padding: 16px; border: 1px solid lightgray; border-radius: 4px">
           <div style="font-size: 1.5rem; font-weight: 500; color: black; margin: 16px 0 16px 0">Summary</div>
           <div fxLayout="column" fxLayoutGap="8px">
-            <div>Original price <span style="float: right">$ {{ originalPrice | number }}</span></div>
-            <div>Discount <span style="float: right">$ -{{ discountedAmount | number }}</span></div>
+            <div>Original price <span style="float: right">$ {{  totalPrice | number: '1.0-2' }}</span></div>
+            <div>Discount <span style="float: right">$ -{{ priceDiscounted | number: '1.0-2' }}</span></div>
             <mat-divider></mat-divider>
-            <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ remainAmount | number }}</span></div>
+            <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ salePrice | number: '1.0-2' }}</span></div>
           </div>
         </div>
         <div *ngIf="user.role === 'admin'" (click)="addToAdmin()"><button mat-raised-button>Add to Admin</button></div>

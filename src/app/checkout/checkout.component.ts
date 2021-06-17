@@ -20,14 +20,13 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   coursesId: any[] = [];
   base_url = `${Constants.base_upload}/courses/`;
 
-  originalPrice = 0;
-  discountedAmount = 0;
-  remainAmount = 0;
-  discount = 90;
-  percentageOff = 0;
   user!: User;
   items: any[] = [];
   purchase_units!: any;
+
+  totalPrice = 0;
+  salePrice = 0;
+  priceDiscounted = 0;
 
   // Paypal
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
@@ -57,17 +56,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.courses = this.user.cart;
 
       // Get cost summary
-      this.getSummary();
+      this.getSalePrice();
+      this.getPurchaseUnits();
     }
-  }
-
-  private getSummary() {
-    for(let course of this.courses){
-      this.calculate(course);
-      this.coursesId.push({ "courseId": course.courseId._id});
-    }
-
-    this.getPurchaseUnits();
   }
 
   getValue(value: number): number {
@@ -86,11 +77,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         "soft_descriptor": "HighFashions",
         "amount": {
           "currency_code": "USD",
-          "value": this.getValue(this.remainAmount),
+          "value": this.getValue(this.salePrice),
           "breakdown": {
             "item_total": {
               "currency_code": "USD",
-              "value": this.getValue(this.remainAmount)
+              "value": this.getValue(this.salePrice)
             },
             "shipping": {
               "currency_code": "USD",
@@ -146,21 +137,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       }]
   }
 
-  private calculate(course: any){
-    this.originalPrice += course.courseId.tuition;
-    this.discountedAmount = this.originalPrice * this.discount/100;
-    this.remainAmount = this.originalPrice * (1 - this.discount/100);
-    this.percentageOff = (1 - (this.remainAmount/this.originalPrice))*100;
-  }
-
-  getDiscountedPrice(course: any){
-    return (course.courseId.tuition * (1 - this.discount/100));
-  }
-
-  getPrice(course: any){
-    return course.courseId.tuition;
-  }
-
   checkout(payment: any){
     this.dataStore.checkout(payment).subscribe(res => {
 
@@ -168,7 +144,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
       // Clear cart
       this.courses = this.user.cart;
-      this.getSummary();
+      // this.getSummary();
+      this.getSalePrice();
       if((res as any).success === true){
         this.router.navigate(['home/my-courses/learning']);
       } else {
@@ -204,7 +181,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
           const payment = {
             "user": this.user._id,
             "courses": this.coursesId,
-            "totalPrice": this.getValue(this.remainAmount)
+            "totalPrice": this.getValue(this.salePrice)
           }
           this.checkout(payment);
         },
@@ -222,8 +199,36 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     const payment = {
       "user": this.user._id,
       "courses": this.coursesId,
-      "totalPrice": this.getValue(this.remainAmount)
+      "totalPrice": this.getValue(this.salePrice)
     }
     this.checkout(payment);
+  }
+
+  getDiscountedPrice(course: any){
+    const tuition = course.courseId.tuition;
+    const discount = course.courseId.coupon.discount;
+    return (tuition * (1 - discount/100));
+  }
+
+  getSalePrice() {
+    this.salePrice = 0;
+    this.totalPrice = 0;
+    this.priceDiscounted = 0;
+
+    for(let course of this.courses){
+      const tuition = course.courseId.tuition;
+      this.totalPrice += tuition;
+      const discount = course.courseId.coupon.discount;
+      const sale = tuition * (1 - discount/100);
+      this.salePrice += sale;
+
+      this.coursesId.push({ "courseId": course.courseId._id});
+    }
+
+    this.getPriceDiscounted();
+  }
+
+  getPriceDiscounted() {
+    this.priceDiscounted = this.totalPrice - this.salePrice;
   }
 }
