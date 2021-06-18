@@ -11,3 +11,13 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+
+@media screen and (max-width: 800px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+.avoid-clicks {
+  pointer-events: none;
+}

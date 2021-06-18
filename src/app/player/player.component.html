@@ -18,9 +18,9 @@
   <div fxFlext fxLayout="row">
     <div fxFlex="75">
       <div fxLayout="column">
-        <div *ngIf="videoUrl" style="background-color: #1E1E1C">
-<!--          <iframe id="video" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen></iframe>-->
-          <video [src]="videoUrl" width="100%" height="640px" controls></video>
+        <div *ngIf="videoUrl">
+          <iframe *ngIf="!isVideo" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
+          <video *ngIf="isVideo" [src]="videoUrl" width="100%" height="640px" style=" background-color: #1E1E1C" controls></video>
         </div>
         <div>
           <mat-tab-group>
@@ -50,7 +50,7 @@
                 {{ lecture?.title }}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div *ngFor="let chapter of (chapters$ | async); let i = index">
+            <div *ngFor="let chapter of chapters">
               <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter?.title }} <span style="float: right" *ngIf="chapter.duration > 0">{{ chapter.duration | number }} min</span></p></div>
             </div>
           </mat-expansion-panel>

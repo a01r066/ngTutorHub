@@ -188,6 +188,16 @@ export class DataStore {
     }).pipe(shareReplay());
   }
 
+  deleteChapter(chapterId: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/chapters/${chapterId}`;
+    return this.http.delete(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
+  }
+
   chapterFileUpload(chapterId: any, formValue: any, file: any): Observable<any>{
     const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/chapters/${chapterId}/file`;

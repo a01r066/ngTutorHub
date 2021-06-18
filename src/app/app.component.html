@@ -1,4 +1,4 @@
-<div class="example-container">
+<div class="example-container {{ isDisable ? 'avoid-clicks' : '' }}">
   <app-header></app-header>
   <app-message></app-message>
   <app-loading></app-loading>
@@ -6,11 +6,11 @@
     <!--  Content-->
     <ng-container>
       <div fxFlex fxLayout="row">
-        <div *ngIf="!isPlayer" fxFlex="15" style="background-color: #FBFBF8" class="leftBar"></div>
-        <div fxFlex="{{ !isPlayer ? 70 : 100 }}">
+        <div class="sidebar" fxFlex="10" *ngIf="!isPlayer" fxLayoutAlign="center" style="background-color: transparent"></div>
+        <div fxFlex="{{ !isPlayer ? 80 : 100 }}">
           <router-outlet></router-outlet>
         </div>
-        <div *ngIf="!isPlayer" fxFlex="15" style="background-color: #FBFBF8" class="rightBar"></div>
+        <div class="sidebar" fxFlex="10" *ngIf="!isPlayer" style="background-color: transparent"></div>
       </div>
     </ng-container>
   </div>

@@ -34,6 +34,7 @@ import { AdminComponent } from './admin/admin.component';
 import {AdminModule} from "./admin/admin.module";
 import {NgxPaginationModule} from "ngx-pagination";
 import { CourseOverviewComponent } from './courses/course-detail/course-overview/course-overview.component';
+import { HomeDialogComponent } from './home/home-dialog/home-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { CourseOverviewComponent } from './courses/course-detail/course-overview
     ProfileComponent,
     FeedbackComponent,
     AdminComponent,
-    CourseOverviewComponent
+    CourseOverviewComponent,
+    HomeDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

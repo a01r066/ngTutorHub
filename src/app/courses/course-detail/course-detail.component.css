@@ -1,6 +1,6 @@
 .mat-toolbar-row {
   height: 30vh;
-  background-color: #162A2D;
+  background-color: #29303B;
 }
 
 div {
@@ -16,24 +16,8 @@ div.course-summary {
   margin: 16px 0 16px 0;
 }
 
-.course-action {
-  margin: 16px 0 0 0;
-}
-
 * { margin: 0; padding: 0; }
 body { padding-top: 50px; }
-
-h1 { text-align: center; font-size: 16px; }
-.rwd-line { display: block; }
-
-@media screen and (min-width: 1496px){
-  .rwd-line { display: inline; }
-}
-
-/* Back to article bar */
-.back { background-color: #111; color: #fefefe; text-align: center; padding: 0.5em 0; position: absolute; bottom: 0; left: 0; width: 100%; }
-.back a { color: #888; text-decoration: none; }
-.back a:hover, .back a:focus { color: #eee; }
 
 .mat-raised-button {
   width: 96px;
@@ -81,6 +65,19 @@ textarea {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: white;
   width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.objTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: black;
+  font-size: 0.9rem;
+  font-weight: 300;
+  width: 100%;
+  margin-left: 8px;
   resize: none;
   border: none;
   background-color: transparent;

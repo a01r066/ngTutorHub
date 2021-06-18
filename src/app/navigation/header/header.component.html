@@ -1,8 +1,8 @@
 <mat-toolbar color="accent" *ngIf="!isPlayer">
   <div fxFill fxLayout="row" fxLayoutAlign="center center">
-    <h1 class="example-app-name" (click)="home()" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600">TutorHub</h1>
-    <button mat-button [matMenuTriggerFor]="menu">Categories</button>
-    <div class="searchBar">
+    <h1 class="example-app-name" (click)="home()" style="cursor: pointer; color: #673AB7; font-size: 1.5rem; font-weight: 600; margin-right: 8px">TutorHub</h1>
+    <button mat-icon-button [matMenuTriggerFor]="menu" color="primary" style="font-weight: 600;"><mat-icon>menu</mat-icon></button>
+    <div class="searchBar" style="margin-left: 8px">
       <form action="#">
         <input matInput placeholder="search for anything" class="search-input" #searchText (keydown.enter)="processSearch(searchText.value)">
         <button mat-icon-button class="close" *ngIf="searchText.value !== ''" (click)="clearText()">

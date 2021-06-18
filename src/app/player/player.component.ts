@@ -18,11 +18,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
   panelOpenState = false;
   course: any;
   lectures$!: Observable<Lecture[]>;
-  chapters$!: Observable<Chapter[]>;
+  chapters: Chapter[] = [];
   unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
   // base_url = 'http://localhost:3000/uploads/courses';
   base_url = `${Constants.base_upload}/courses/`;
+  isVideo: boolean = true;
 
   constructor(
               private dataStore: DataStore,
@@ -55,21 +56,31 @@ export class PlayerComponent implements OnInit, OnDestroy {
   private getSampleLesson() {
     this.lectures$.subscribe(lectures => {
       const firstLecture = lectures[0];
-      this.dataStore.getChaptersByLectureId(firstLecture._id).subscribe(lessons => {
-        const firstLesson = lessons[0];
-        this.unSafeUrl = `${this.base_url}/${this.course._id}/${firstLesson.lecture}/${firstLesson.file}`;
+      this.dataStore.getChaptersByLectureId(firstLecture._id).subscribe(chapters => {
+        this.chapters = chapters.sort((c1, c2) => {
+          return parseInt(c1.index) - parseInt(c2.index);
+        })
+        const chapter = this.chapters[0];
+        this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
         this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
+        this.isVideoChecker(this.unSafeUrl);
       });
     })
   }
 
   onClickLecture(lecture: any){
-    this.chapters$ = this.dataStore.getChaptersByLectureId(lecture._id);
+    this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
+      this.chapters = chapters.sort((c1, c2) => {
+        return parseInt(c1.index) - parseInt(c2.index);
+      })
+    });
   }
 
   onClickChapter(chapter: any){
     this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
+    this.isVideoChecker(this.unSafeUrl);
+
     // this.getVideoDuration();
   }
 
@@ -93,8 +104,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
 //       // 12 seconds
 //     });
 //   }
+
   home() {
     this.uiService.isPlayerSub.next(false);
     this.router.navigate(['home', 'my-courses', 'learning']);
+  }
+
+  private isVideoChecker(videoUrl: string) {
+    const ext = videoUrl.substring(videoUrl.length-3, videoUrl.length);
+    this.isVideo = ext === 'mp4';
   }
 }

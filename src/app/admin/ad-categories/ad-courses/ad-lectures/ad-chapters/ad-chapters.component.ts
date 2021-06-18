@@ -93,10 +93,10 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
   delete(element: any) {
     // hide category instead of delete it
-    const ngForm = new FormGroup({
-      isHidden: new FormControl(true)
-    })
-    this.dataStore.updateChapter(element._id, ngForm.value).subscribe();
+    this.dataStore.deleteChapter(element._id).subscribe(() => {
+      this.dataStore.showSnackBar('Chapter deleted!');
+      this.dataChanged.next();
+    });
   }
 
   showData(row: any) {

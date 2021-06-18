@@ -1,48 +1,53 @@
 <div fxLayout="column">
-  <mat-toolbar-row *ngIf="course">
+  <mat-toolbar-row *ngIf="course" style="border-radius: 4px">
     <div fxFlex fxLayout="column" style="margin: 0 16px 0 16px; color: white">
-      <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500">{{ course.title }}</textarea>
+      <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500; margin-top: 16px">{{ course.title }}</textarea>
       <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: lightgray;">{{ course.description }}</textarea>
       <mat-label style="color: gray; font-size: 0.9rem; font-weight: 500; margin-top: 16px; font-style: italic;">Instructor: <span style="color: #1DB954">{{ course.instructor }}</span></mat-label>
-      <div fxLayoutGap="16px" class="course-action">
+      <div *ngIf="width === 0" style="margin-top: 16px">
+        <div><span style="font-size: 1.5rem; font-weight: 500">${{ getSalePrice(course) | number: '1.0-2' }}</span><span style="text-decoration: line-through; margin-left: 12px; color: lightgray">${{ course.tuition | number: '1.0-2'}}</span><span style="margin-left: 12px">{{ course.coupon.discount | number }}% off</span>
+          <span style="float: right; margin-right: 16px"><button mat-button (click)="addToCart(course)"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button></span>
+        </div>
+      </div>
+      <div fxLayoutGap="16px">
         <button mat-icon-button color="warn" style="transform: scale(1.2)"><mat-icon>favorite_border</mat-icon></button>
         <button mat-icon-button color="accent" style="transform: scale(1.2)"><mat-icon>share</mat-icon></button>
       </div>
     </div>
   </mat-toolbar-row>
   <div fxLayout="row" style="margin: 16px">
-    <div fxFlex="75" fxLayoutGap="16px">
-      <div style="padding: 16px; font-weight: 500; font-size: 1.5rem">What you will learn:</div>
-      <div style="margin-top: -16px">
-        <mat-grid-list cols="2" rowHeight="64px">
-          <mat-grid-tile *ngFor="let item of objectives">
-            <div fxFlex fxLayoutAlign="left center"><span style="margin-left: 8px"><mat-icon>done</mat-icon></span><span style="margin: 0 8px 0 8px; font-size: 0.9rem">{{ item }}</span></div>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </div>
-      <div class="mat-display-1" style="color: darkslategrey; font-weight: 500;">Course Content</div>
-      <div>
-        <mat-accordion style="padding: 16px">
-          <mat-expansion-panel disabled>
-            <mat-expansion-panel-header style="background-color: #B0BEC5">
-              <mat-panel-title>
-                <p style="color: #2F302F; font-weight: 500">? sections • ? lectures • ?h ?m total length</p>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-<!--            <p>This is the primary content of the panel.</p>-->
-          </mat-expansion-panel>
-          <mat-expansion-panel (opened)="panelOpenState = true"
-                               (closed)="panelOpenState = false" *ngFor="let lecture of (lectures$ | async); let i = index">
-            <mat-expansion-panel-header>
-              <mat-panel-title (click)="onClickLecture(lecture)" style="font-weight: 500">
-                {{ lecture.title }}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngFor="let chapter of (chapters$ | async); let i = index">
-              <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter.title }}</p></div>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+    <div fxFlex="{{ width === 0 ? 100 : 75 }}">
+      <div style="font-weight: 500; font-size: 1.5rem">What you will learn:</div>
+      <mat-grid-list cols="2" rowHeight="52px">
+        <mat-grid-tile *ngFor="let item of objectives">
+          <mat-icon style="color: gray">done</mat-icon><textarea class="objTextArea" rows="2" readonly disabled>{{ item }}</textarea>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <div style="margin-top: 16px">
+        <div style="font-weight: 500; font-size: 1.5rem;">Course Content</div>
+        <div style="margin-top: -16px">
+          <mat-accordion style="padding: 16px">
+            <mat-expansion-panel disabled>
+              <mat-expansion-panel-header style="background-color: #B0BEC5">
+                <mat-panel-title>
+                  <p style="color: #2F302F; font-weight: 500">? sections • ? lectures • ?h ?m total length</p>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <!--            <p>This is the primary content of the panel.</p>-->
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false" *ngFor="let lecture of (lectures$ | async); let i = index">
+              <mat-expansion-panel-header>
+                <mat-panel-title (click)="onClickLecture(lecture)" style="font-weight: 500">
+                  {{ lecture.title }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngFor="let chapter of chapters">
+                <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter.title }}</p></div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
       </div>
       <h3 class="mat-card-title" style="color: darkslategray;">Description</h3>
       <ng-container *ngIf="!seeMore; else seeLess">
@@ -54,16 +59,15 @@
         <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_less</mat-icon> See less</button>
       </ng-template>
     </div>
-    <div fxFlex="25" style="background-color: white; color: darkslategray; margin: 16px; border-radius: 4px" fxLayout="column">
-      <div style="background-color: #1E1E1C; width: 100%;">
-<!--        <iframe class="e2e-iframe-trusted-src" [src]="videoUrl" width="100%" height="190px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="border-radius: 4px"></iframe>-->
+    <div *ngIf="width > 0" fxFlex="{{ width }}" style="background-color: white; color: darkslategray; margin: 16px; border-radius: 4px" fxLayout="column">
+      <div style="background-color: #1E1E1C; width: 100%; border-radius: 4px">
         <video [src]="videoUrl" width="100%" height="190px" controls></video>
       </div>
-      <div>
+      <div *ngIf="course">
         <div><span class="mat-display-1" style="font-weight: 600">${{ getSalePrice(course) | number: '1.0-2' }}</span><span style="text-decoration: line-through; margin-left: 12px">${{ course.tuition | number: '1.0-2'}}</span><span style="margin-left: 12px">{{ course.coupon.discount | number }}% off</span></div>
         <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)" *ngIf="!(isPurchased$ | async)">Add to cart</button></div>
         <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="buyNow(course)" *ngIf="!(isPurchased$ | async)">Buy now</button></div>
-        <div><label *ngIf="isPurchased$ | async">You purchased this course on: 01/01/2021</label></div>
+        <div><label *ngIf="isPurchased$ | async">You purchased this course on: mm/dd/yyyy</label></div>
         <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="goToCourse(course)" *ngIf="isPurchased$ | async">Go to course</button></div>
         <div><p>This course includes: </p></div>
         <div>
