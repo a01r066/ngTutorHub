@@ -69,6 +69,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onClickLecture(lecture: any){
+    this.chapters = [];
     this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
       this.chapters = chapters.sort((c1, c2) => {
         return parseInt(c1.index) - parseInt(c2.index);

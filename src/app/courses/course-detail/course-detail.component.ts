@@ -7,10 +7,8 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
-import {map} from "rxjs/operators";
 import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
-import {UiService} from "../../services/ui.service";
 
 @Component({
   selector: 'app-course-detail',
@@ -42,6 +40,8 @@ export class CourseDetailComponent implements OnInit {
   discount: number = 0;
   width: number = 25;
 
+  isWishlist = false;
+
   constructor(
     private dataStore: DataStore,
     private route: ActivatedRoute,
@@ -69,6 +69,7 @@ export class CourseDetailComponent implements OnInit {
         this.user = user;
         if(user){
           this.checkCourseIsPurchased(course);
+          this.checkIsWishlist(course);
         }
       })
     })
@@ -124,15 +125,12 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onClickLecture(lecture: any){
+    this.chapters = [];
     this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
       this.chapters = chapters.sort((c1, c2) => {
         return parseInt(c1.index) - parseInt(c2.index);
       })
     });
-}
-
-  onClickChapter(chapter: any){
-    // this.router.navigate(['/login']);
   }
 
   addToCart(course: any){
@@ -160,5 +158,23 @@ export class CourseDetailComponent implements OnInit {
 
   goToCourse(course: Course) {
     this.router.navigate(['course', course.slug, 'learn']);
+  }
+
+  addToWishlist(course: Course) {
+    this.isWishlist = !this.isWishlist;
+    this.dataStore.updateWishlist(this.user._id, course._id).subscribe(() => {
+      this.authStore.initAuthListener();
+    });
+  }
+
+  private checkIsWishlist(course: any) {
+    const wishlist = (this.user.wishlist) as any;
+    for(let item of wishlist){
+      // console.log(item.courseId._id);
+      if(item.courseId._id === course._id){
+        this.isWishlist = true;
+        return;
+      }
+    }
   }
 }

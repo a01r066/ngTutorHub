@@ -10,8 +10,11 @@
         </div>
       </div>
       <div fxLayoutGap="16px">
-        <button mat-icon-button color="warn" style="transform: scale(1.2)"><mat-icon>favorite_border</mat-icon></button>
-        <button mat-icon-button color="accent" style="transform: scale(1.2)"><mat-icon>share</mat-icon></button>
+        <button mat-icon-button color="warn" style="transform: scale(1.2)" (click)="addToWishlist(course)">
+          <mat-icon *ngIf="!isWishlist">favorite_border</mat-icon>
+          <mat-icon *ngIf="isWishlist" color="accent">favorite</mat-icon>
+        </button>
+        <button mat-icon-button style="transform: scale(1.2)" color="accent"><mat-icon>share</mat-icon></button>
       </div>
     </div>
   </mat-toolbar-row>
@@ -20,7 +23,7 @@
       <div style="font-weight: 500; font-size: 1.5rem">What you will learn:</div>
       <mat-grid-list cols="2" rowHeight="52px">
         <mat-grid-tile *ngFor="let item of objectives">
-          <mat-icon style="color: gray">done</mat-icon><textarea class="objTextArea" rows="2" readonly disabled>{{ item }}</textarea>
+          <mat-icon>done</mat-icon><textarea class="objTextArea" rows="2" readonly disabled>{{ item }}</textarea>
         </mat-grid-tile>
       </mat-grid-list>
       <div style="margin-top: 16px">
@@ -43,7 +46,7 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div *ngFor="let chapter of chapters">
-                <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter.title }}</p></div>
+                <div style="cursor: pointer;"><p>{{ chapter.title }}</p></div>
               </div>
             </mat-expansion-panel>
           </mat-accordion>
@@ -51,11 +54,11 @@
       </div>
       <h3 class="mat-card-title" style="color: darkslategray;">Description</h3>
       <ng-container *ngIf="!seeMore; else seeLess">
-        <textarea class="mat-card-subtitle" readonly disabled rows="6" style="color: #2F302F; font-weight: lighter; font-size: 0.9rem; background-color: transparent; padding-top: 16px">{{ course?.description }}</textarea>
+        <textarea readonly disabled rows="6" style="padding-top: 16px" class="objTextArea">{{ course?.description }}</textarea>
         <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_more</mat-icon> See more</button>
       </ng-container>
       <ng-template #seeLess>
-        <textarea *ngIf="seeMore" class="mat-card-subtitle" cdkTextareaAutosize readonly disabled style="color: #2F302F; font-weight: lighter; font-size: 0.9rem; background-color: transparent; padding-top: 16px">{{ course?.description }}</textarea>
+        <textarea *ngIf="seeMore" class="objTextArea" cdkTextareaAutosize readonly disabled style="padding-top: 16px">{{ course?.description }}</textarea>
         <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_less</mat-icon> See less</button>
       </ng-template>
     </div>

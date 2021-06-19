@@ -1,14 +1,14 @@
 <div style="overflow: hidden; margin: 16px">
   <h2 style="color: darkslategray">About this course</h2>
-  <h4 style="color: #2F302F; font-weight: lighter">Course slogan!</h4>
+  <h4 style="color: #2F302F; font-weight: lighter">...</h4>
   <mat-divider></mat-divider>
   <h3 style="color: darkslategray">Description</h3>
   <ng-container *ngIf="!seeMore; else seeLess">
-    <textarea class="mat-card-subtitle" readonly disabled rows="6" style="color: #2F302F; font-weight: lighter; font-size: 0.9rem; background-color: transparent;">{{ course?.description }}</textarea>
+    <textarea class="objTextArea" readonly disabled rows="6">{{ course?.description }}</textarea>
     <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_more</mat-icon> See more</button>
   </ng-container>
   <ng-template #seeLess>
-    <textarea *ngIf="seeMore" class="mat-card-subtitle" cdkTextareaAutosize readonly disabled style="color: #2F302F; font-weight: lighter; font-size: 0.9rem; background-color: transparent;">{{ course?.description }}</textarea>
+    <textarea *ngIf="seeMore" class="objTextArea" cdkTextareaAutosize readonly disabled>{{ course?.description }}</textarea>
     <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_less</mat-icon> See less</button>
   </ng-template>
 </div>

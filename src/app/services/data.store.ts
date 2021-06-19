@@ -383,4 +383,18 @@ export class DataStore {
     })
       .pipe(shareReplay());
   }
+
+  updateWishlist(userId: any, courseId: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/auth/updateWishlist`;
+    const data = {
+      "userId": userId,
+      "courseId": courseId
+    }
+    return this.http.put(url, data, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
+  }
 }
