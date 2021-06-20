@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Observable} from "rxjs";
@@ -7,7 +7,7 @@ import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
 import {Constants} from "../helpers/constants";
 import {UiService} from "../services/ui.service";
-import {delay} from "rxjs/operators";
+import {Course} from "../models/course.model";
 
 @Component({
   selector: 'app-player',
@@ -15,15 +15,18 @@ import {delay} from "rxjs/operators";
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit, OnDestroy {
-  panelOpenState = false;
   course: any;
-  lectures$!: Observable<Lecture[]>;
-  chapters: Chapter[] = [];
+
+  lecture!: Lecture;
+  chapter!: Chapter;
+  chaptersArray: any[] = [];
+  selected: number = -1;
+
   unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
-  // base_url = 'http://localhost:3000/uploads/courses';
   base_url = `${Constants.base_upload}/courses/`;
-  isVideo: boolean = true;
+
+
 
   constructor(
               private dataStore: DataStore,
@@ -37,9 +40,32 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
+      this.getChaptersArray(course);
+    })
+  }
 
-      this.lectures$ = this.dataStore.getLecturesByCourseId(this.course._id);
-      this.getSampleLesson();
+  private getChaptersArray(course: Course) {
+    this.dataStore.getLecturesByCourseId(course._id).subscribe(lectures => {
+      lectures.forEach(lecture => {
+        this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
+          chapters.sort((c1, c2) => {
+            return c1.index - c2.index;
+          })
+
+          this.chaptersArray.push({
+            index: lecture.index,
+            title: lecture.title,
+            chapters: chapters
+          })
+          this.chaptersArray = this.chaptersArray.sort((c1, c2) => {
+            return c1.index - c2.index;
+          })
+
+          // Set default lesson
+          this.chapter = this.chaptersArray[0].chapters[0]
+          this.getDefaultLesson(this.chapter);
+        })
+      })
     })
   }
 
@@ -53,35 +79,22 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.uiService.isPlayerSub.next(false);
   }
 
-  private getSampleLesson() {
-    this.lectures$.subscribe(lectures => {
-      const firstLecture = lectures[0];
-      this.dataStore.getChaptersByLectureId(firstLecture._id).subscribe(chapters => {
-        this.chapters = chapters.sort((c1, c2) => {
-          return parseInt(c1.index) - parseInt(c2.index);
-        })
-        const chapter = this.chapters[0];
-        this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
-        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-        this.isVideoChecker(this.unSafeUrl);
-      });
-    })
-  }
-
-  onClickLecture(lecture: any){
-    this.chapters = [];
-    this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
-      this.chapters = chapters.sort((c1, c2) => {
-        return parseInt(c1.index) - parseInt(c2.index);
-      })
-    });
-  }
-
-  onClickChapter(chapter: any){
+  private getDefaultLesson(chapter: Chapter) {
     this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-    this.isVideoChecker(this.unSafeUrl);
+  }
 
+  getFileExt(chapter: Chapter) {
+    const filePath = chapter.file;
+    return filePath.substring(filePath.length-3, filePath.length);
+  }
+
+  onClickChapter(chapter: any, index: number){
+    this.chapter = chapter;
+    this.selected = index;
+
+    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
     // this.getVideoDuration();
   }
 
@@ -109,10 +122,5 @@ export class PlayerComponent implements OnInit, OnDestroy {
   home() {
     this.uiService.isPlayerSub.next(false);
     this.router.navigate(['home', 'my-courses', 'learning']);
-  }
-
-  private isVideoChecker(videoUrl: string) {
-    const ext = videoUrl.substring(videoUrl.length-3, videoUrl.length);
-    this.isVideo = ext === 'mp4';
   }
 }

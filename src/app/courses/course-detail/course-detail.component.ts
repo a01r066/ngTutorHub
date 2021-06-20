@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {User} from "../../models/user.model";
 import {Constants} from "../../helpers/constants";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {Course} from "../../models/course.model";
 import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
@@ -17,24 +17,21 @@ import {AuthStore} from "../../services/auth.store";
 })
 
 export class CourseDetailComponent implements OnInit {
-  courseSubject = new Subject<Course>();
-  course!: Course;
-  lectures$!: Observable<Lecture[]>;
-  // chapters$!: Observable<Chapter[]>;
-  chapters: Chapter[] = [];
+  course: any;
+  lecture!: Lecture;
+  chapter!: Chapter;
+  chaptersArray: any[] = [];
+  selected: number = -1;
 
   objectives: any;
 
   unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
-
   base_url = `${Constants.base_upload}/courses/`;
 
   private subject = new BehaviorSubject<boolean>(false);
   isPurchased$: Observable<boolean> = this.subject.asObservable();
   user!: User;
-
-  panelOpenState = false;
 
   seeMore = false;
   discount: number = 0;
@@ -53,18 +50,12 @@ export class CourseDetailComponent implements OnInit {
     this.getWidth();
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
-      // get objectives
-      this.courseSubject.next(course);
       this.course = course;
-
       this.getSalePrice(course);
-
       this.objectives = course.objectives.substring(1).split('- ');
-      this.lectures$ = this.dataStore.getLecturesByCourseId(course._id);
-      this.getSampleLesson();
-    });
 
-    this.courseSubject.subscribe(course => {
+      this.getChaptersArray(course);
+
       this.authStore.user$.subscribe(user => {
         this.user = user;
         if(user){
@@ -72,7 +63,37 @@ export class CourseDetailComponent implements OnInit {
           this.checkIsWishlist(course);
         }
       })
+    });
+  }
+
+  private getChaptersArray(course: Course) {
+    this.dataStore.getLecturesByCourseId(course._id).subscribe(lectures => {
+      lectures.forEach(lecture => {
+        this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
+          chapters.sort((c1, c2) => {
+            return c1.index - c2.index;
+          })
+
+          this.chaptersArray.push({
+            index: lecture.index,
+            title: lecture.title,
+            chapters: chapters
+          })
+          this.chaptersArray = this.chaptersArray.sort((c1, c2) => {
+            return c1.index - c2.index;
+          })
+
+          // Set default lesson
+          this.chapter = this.chaptersArray[0].chapters[0]
+          this.getDefaultLesson(this.chapter);
+        })
+      })
     })
+  }
+
+  private getDefaultLesson(chapter: Chapter) {
+    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -99,20 +120,6 @@ export class CourseDetailComponent implements OnInit {
     this.seeMore = !this.seeMore;
   }
 
-  private getSampleLesson() {
-    this.lectures$.subscribe(lectures => {
-      const firstLecture = lectures[0];
-      this.dataStore.getChaptersByLectureId(firstLecture._id).subscribe(chapters => {
-        this.chapters = chapters.sort((c1, c2) => {
-          return parseInt(c1.index) - parseInt(c2.index);
-        })
-        const firstChapter = chapters[0];
-        this.unSafeUrl = `${this.base_url}/${this.course._id}/${firstChapter.lecture}/${firstChapter.file}`;
-        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-      });
-    })
-  }
-
   private checkCourseIsPurchased(course: any) {
     const purchasedCourses = this.user.purchased_courses;
     for(let res of purchasedCourses){
@@ -124,13 +131,18 @@ export class CourseDetailComponent implements OnInit {
     }
   }
 
-  onClickLecture(lecture: any){
-    this.chapters = [];
-    this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
-      this.chapters = chapters.sort((c1, c2) => {
-        return parseInt(c1.index) - parseInt(c2.index);
-      })
-    });
+  onClickChapter(chapter: any, index: number){
+    this.chapter = chapter;
+    this.selected = index;
+
+    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
+    // this.getVideoDuration();
+  }
+
+  getFileExt(chapter: Chapter) {
+    const filePath = chapter.file;
+    return filePath.substring(filePath.length-3, filePath.length);
   }
 
   addToCart(course: any){
@@ -170,7 +182,6 @@ export class CourseDetailComponent implements OnInit {
   private checkIsWishlist(course: any) {
     const wishlist = (this.user.wishlist) as any;
     for(let item of wishlist){
-      // console.log(item.courseId._id);
       if(item.courseId._id === course._id){
         this.isWishlist = true;
         return;

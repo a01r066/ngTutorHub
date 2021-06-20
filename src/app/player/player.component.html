@@ -18,10 +18,10 @@
   <div fxFlext fxLayout="row">
     <div fxFlex="75">
       <div fxLayout="column">
-        <div *ngIf="videoUrl">
-          <iframe *ngIf="!isVideo" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
-          <video *ngIf="isVideo" [src]="videoUrl" width="100%" height="640px" style=" background-color: #1E1E1C" controls></video>
-        </div>
+        <ng-container *ngIf="chapter">
+          <iframe *ngIf="getFileExt(chapter) !== 'mp4'" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
+          <video *ngIf="getFileExt(chapter) === 'mp4'" [src]="videoUrl" width="100%" height="640px" style=" background-color: #1E1E1C" controls></video>
+        </ng-container>
         <div>
           <mat-tab-group>
 <!--            <mat-tab label="Search">Search</mat-tab>-->
@@ -43,16 +43,23 @@
             </mat-expansion-panel-header>
             <p>This is the primary content of the panel.</p>
           </mat-expansion-panel>
-          <mat-expansion-panel (opened)="panelOpenState = true"
-                               (closed)="panelOpenState = false" *ngFor="let lecture of (lectures$ | async); let i = index">
+          <mat-expansion-panel *ngFor="let lecture of chaptersArray; let i = index">
             <mat-expansion-panel-header>
-              <mat-panel-title (click)="onClickLecture(lecture)" style="font-weight: 500">
-                {{ lecture?.title }}
+              <mat-panel-title style="font-weight: 500">
+                {{ lecture.title }}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div *ngFor="let chapter of chapters">
-              <div style="cursor: pointer;" (click)="onClickChapter(chapter)"><p>{{ chapter?.title }} <span style="float: right" *ngIf="chapter.duration > 0">{{ chapter.duration | number }} min</span></p></div>
-            </div>
+            <ng-template matExpansionPanelContent *ngIf="lecture.chapters">
+              <mat-nav-list>
+                <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of lecture.chapters; let idx = index" (click)="onClickChapter(chapter, idx)" [class.active]="selected == idx">{{ chapter.title }}
+                  <span style="float: right" *ngIf="chapter">
+                  <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0" >{{ chapter.duration | number }} min</ng-container>
+                  <ng-container *ngIf="getFileExt(chapter) === 'zip'"><button mat-icon-button style="color: gray"><mat-icon>attach_file</mat-icon></button></ng-container>
+                  <ng-container *ngIf="getFileExt(chapter) === 'tml' || getFileExt(chapter) === 'pdf'"><button mat-icon-button style="color:gray"><mat-icon>description</mat-icon></button></ng-container>
+                </span>
+                </mat-list-item>
+              </mat-nav-list>
+            </ng-template>
           </mat-expansion-panel>
         </mat-accordion>
       </div>

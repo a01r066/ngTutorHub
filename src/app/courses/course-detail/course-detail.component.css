@@ -83,3 +83,8 @@ textarea {
   background-color: transparent;
   overflow: hidden;
 }
+
+.mat-list-item {
+  font-size: 0.9rem;
+  color: black;
+}

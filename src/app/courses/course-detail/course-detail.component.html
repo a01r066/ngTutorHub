@@ -27,27 +27,33 @@
         </mat-grid-tile>
       </mat-grid-list>
       <div style="margin-top: 16px">
-        <div style="font-weight: 500; font-size: 1.5rem;">Course Content</div>
-        <div style="margin-top: -16px">
-          <mat-accordion style="padding: 16px">
+        <div>
+          <mat-accordion multi>
             <mat-expansion-panel disabled>
-              <mat-expansion-panel-header style="background-color: #B0BEC5">
+              <mat-expansion-panel-header style="background-color: transparent">
                 <mat-panel-title>
-                  <p style="color: #2F302F; font-weight: 500">? sections • ? lectures • ?h ?m total length</p>
+                  <p style="color: black; font-weight: 500; font-size: 1.25rem">Course content</p>
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <!--            <p>This is the primary content of the panel.</p>-->
+              <p>This is the primary content of the panel.</p>
             </mat-expansion-panel>
-            <mat-expansion-panel (opened)="panelOpenState = true"
-                                 (closed)="panelOpenState = false" *ngFor="let lecture of (lectures$ | async); let i = index">
+            <mat-expansion-panel *ngFor="let lecture of chaptersArray; let i = index">
               <mat-expansion-panel-header>
-                <mat-panel-title (click)="onClickLecture(lecture)" style="font-weight: 500">
+                <mat-panel-title style="font-weight: 500">
                   {{ lecture.title }}
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <div *ngFor="let chapter of chapters">
-                <div style="cursor: pointer;"><p>{{ chapter.title }}</p></div>
-              </div>
+              <ng-template matExpansionPanelContent *ngIf="lecture.chapters">
+                <mat-nav-list>
+                  <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of lecture.chapters; let idx = index" [class.active]="selected == idx">{{ chapter.title }}
+                    <span style="float: right" *ngIf="chapter">
+                  <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0" >{{ chapter.duration | number }} min</ng-container>
+                  <ng-container *ngIf="getFileExt(chapter) === 'zip'"><button mat-icon-button style="color: gray"><mat-icon>attach_file</mat-icon></button></ng-container>
+                  <ng-container *ngIf="getFileExt(chapter) === 'tml' || getFileExt(chapter) === 'pdf'"><button mat-icon-button style="color:gray"><mat-icon>description</mat-icon></button></ng-container>
+                </span>
+                  </mat-list-item>
+                </mat-nav-list>
+              </ng-template>
             </mat-expansion-panel>
           </mat-accordion>
         </div>

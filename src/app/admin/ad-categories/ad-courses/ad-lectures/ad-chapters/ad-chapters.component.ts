@@ -54,10 +54,10 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
   private getData() {
     this.courseId = this.route.snapshot.params['courseId'];
     this.lectureId = this.route.snapshot.params['lectureId'];
-    this.dataStore.getChaptersByLectureId(this.lectureId).subscribe(chapters => {
-      this.chapters = chapters;
-      this.dataSource = new MatTableDataSource<Chapter>(this.chapters );
-    })
+    // this.dataStore.getChaptersByLectureId(this.lectureId).subscribe(chapters => {
+    //   this.chapters = chapters;
+    //   this.dataSource = new MatTableDataSource<Chapter>(this.chapters );
+    // })
   }
 
   create() {

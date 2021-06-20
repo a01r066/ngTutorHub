@@ -5,5 +5,5 @@ export interface Chapter {
   file: string;
   duration: number;
   lecture: string;
-  index: string;
+  index: number;
 }

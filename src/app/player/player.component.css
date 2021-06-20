@@ -1,3 +1,13 @@
 .mat-form-field + .mat-form-field {
   margin-left: 8px;
 }
+
+.mat-list-item.active{
+  color: #22069B;
+  background-color: #E6F2F5;
+}
+
+.mat-list-item {
+  font-size: 0.9rem;
+  color: black;
+}
