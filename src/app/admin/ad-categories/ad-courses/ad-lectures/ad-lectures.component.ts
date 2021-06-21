@@ -54,7 +54,7 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
 
   create() {
     const dialogRef = this.dialog.open(LectureDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: {courseId: this.courseId, isEdit: false },
       autoFocus: false
     });
@@ -69,7 +69,7 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
 
   edit(element: Category) {
     const dialogRef = this.dialog.open(LectureDialogComponent, {
-      width: '20vw',
+      width: '40vw',
       data: { lecture: element, isEdit: true },
       autoFocus: false
     });

@@ -21,7 +21,6 @@ export class LectureDialogComponent implements OnInit {
     this.ngForm = new FormGroup({
       title: new FormControl('', {validators: [Validators.required]}),
       index: new FormControl('', { validators: [Validators.required]})
-      // course: new FormControl()
     })
 
     const isEdit = (this.data as any).isEdit;
@@ -37,7 +36,6 @@ export class LectureDialogComponent implements OnInit {
 
   save() {
     if(this.ngForm.valid){
-      // console.log('data: '+ (this.data as any).isEdit);
       const isEdit = (this.data as any).isEdit;
       const changes = this.ngForm.value;
       if(isEdit){

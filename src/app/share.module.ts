@@ -5,7 +5,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {MaterialModule} from "./material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MessageComponent} from "./shares/message/message.component";
-import {Message} from "@angular/compiler/src/i18n/i18n_ast";
 import {LoadingComponent} from "./shares/loading/loading.component";
 
 @NgModule({

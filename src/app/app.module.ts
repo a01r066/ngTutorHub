@@ -35,6 +35,7 @@ import {AdminModule} from "./admin/admin.module";
 import {NgxPaginationModule} from "ngx-pagination";
 import { CourseOverviewComponent } from './courses/course-detail/course-overview/course-overview.component';
 import { HomeDialogComponent } from './home/home-dialog/home-dialog.component';
+import {FacebookModule} from "ngx-facebook";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { HomeDialogComponent } from './home/home-dialog/home-dialog.component';
     FeedbackComponent,
     AdminComponent,
     CourseOverviewComponent,
-    HomeDialogComponent
+    HomeDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -71,7 +72,8 @@ import { HomeDialogComponent } from './home/home-dialog/home-dialog.component';
     AuthModule,
     MaterialModule,
     FlexLayoutModule,
-    AdminModule
+    AdminModule,
+    FacebookModule.forRoot()
   ],
   providers: [
     DecimalPipe,

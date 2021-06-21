@@ -14,7 +14,8 @@
           <mat-icon *ngIf="!isWishlist">favorite_border</mat-icon>
           <mat-icon *ngIf="isWishlist" color="accent">favorite</mat-icon>
         </button>
-        <button mat-icon-button style="transform: scale(1.2)" color="accent"><mat-icon>share</mat-icon></button>
+<!--        <div class="fb-share-button" [attr.data-href]="shareUrl" data-width="200" data-type="button_count"></div>-->
+        <span><button mat-icon-button style="transform: scale(1.2)" color="accent" (click)="share()"><mat-icon>share</mat-icon></button></span>
       </div>
     </div>
   </mat-toolbar-row>

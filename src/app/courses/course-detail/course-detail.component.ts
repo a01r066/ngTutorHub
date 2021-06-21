@@ -9,6 +9,8 @@ import {Lecture} from "../../models/lecture.model";
 import {Chapter} from "../../models/chapter.model";
 import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
+import {MatDialog} from "@angular/material/dialog";
+import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
 
 @Component({
   selector: 'app-course-detail',
@@ -38,18 +40,31 @@ export class CourseDetailComponent implements OnInit {
   width: number = 25;
 
   isWishlist = false;
+  shareUrl: string = 'https://api.tutorhub.info:3000/share/';
 
   constructor(
     private dataStore: DataStore,
     private route: ActivatedRoute,
     public authStore: AuthStore,
     private router: Router,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    public dialog: MatDialog,
+    private fb: FacebookService) {
+    const initParams: InitParams = {
+      appId: '468210474239699',
+      xfbml: true,
+      version: 'v2.8'
+    };
+
+    fb.init(initParams).then();
+  }
 
   ngOnInit(): void {
     this.getWidth();
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
+      this.shareUrl += course._id;
+
       this.course = course;
       this.getSalePrice(course);
       this.objectives = course.objectives.substring(1).split('- ');
@@ -187,5 +202,17 @@ export class CourseDetailComponent implements OnInit {
         return;
       }
     }
+  }
+
+  share() {
+    const newURL = `https://tutorhub.info/course/${this.course.slug}`;
+    const params: UIParams = {
+      href: this.shareUrl,
+      method: 'share'
+    };
+
+    this.fb.ui(params)
+      .then((res: UIResponse) => console.log(res))
+      .catch((e: any) => console.error(e));
   }
 }
