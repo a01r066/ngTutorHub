@@ -11,6 +11,9 @@ import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
 import {MatDialog} from "@angular/material/dialog";
 import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
+import {CategoryDialogComponent} from "../../admin/ad-categories/category-dialog/category-dialog.component";
+import {PlayerDialogComponent} from "../../player/player-dialog/player-dialog.component";
+import {filter, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-course-detail',
@@ -22,6 +25,9 @@ export class CourseDetailComponent implements OnInit {
   course: any;
   lecture!: Lecture;
   chapter!: Chapter;
+  chapterCounter: number = 0;
+  downloadableCounter: number = 0;
+
   chaptersArray: any[] = [];
   selected: number = -1;
 
@@ -41,6 +47,8 @@ export class CourseDetailComponent implements OnInit {
 
   isWishlist = false;
   shareUrl: string = 'https://api.tutorhub.info:3000/share/';
+
+  play: any;
 
   constructor(
     private dataStore: DataStore,
@@ -101,6 +109,10 @@ export class CourseDetailComponent implements OnInit {
           // Set default lesson
           this.chapter = this.chaptersArray[0].chapters[0]
           this.getDefaultLesson(this.chapter);
+
+          // Get summary
+          this.getSummary(this.chaptersArray);
+          this.play = 'play_circle_outline';
         })
       })
     })
@@ -144,15 +156,6 @@ export class CourseDetailComponent implements OnInit {
         return
       }
     }
-  }
-
-  onClickChapter(chapter: any, index: number){
-    this.chapter = chapter;
-    this.selected = index;
-
-    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-    // this.getVideoDuration();
   }
 
   getFileExt(chapter: Chapter) {
@@ -205,7 +208,6 @@ export class CourseDetailComponent implements OnInit {
   }
 
   share() {
-    const newURL = `https://tutorhub.info/course/${this.course.slug}`;
     const params: UIParams = {
       href: this.shareUrl,
       method: 'share'
@@ -214,5 +216,40 @@ export class CourseDetailComponent implements OnInit {
     this.fb.ui(params)
       .then((res: UIResponse) => console.log(res))
       .catch((e: any) => console.error(e));
+  }
+
+  private getSummary(chaptersArray: any[]) {
+    this.downloadableCounter = 0;
+    this.chapterCounter = 0;
+
+    for(let item of chaptersArray){
+      const chapters = (item as any).chapters;
+      for(let chapter of chapters){
+        const ext = chapter.file.substring(chapter.file.length-3);
+        if(ext === 'mp4'){
+          this.chapterCounter++;
+        }
+        if(ext === 'pdf' || ext === 'zip'){
+          this.downloadableCounter++;
+        }
+      }
+    }
+  }
+
+  preview() {
+    const dialogRef = this.dialog.open(PlayerDialogComponent, {
+      width: '600px',
+      data: { chapters: this.chaptersArray[0].chapters, courseId: this.course._id },
+      autoFocus: false,
+      // panelClass: 'dialog-container-custom'
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter(val => !!val),
+        tap(() => {
+        })
+      )
+      .subscribe();
   }
 }

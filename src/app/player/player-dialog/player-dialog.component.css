@@ -1,0 +1,28 @@
+::ng-deep .mat-dialog-container {
+  background-color: #1E1E1C;
+}
+.mat-dialog-container {
+  background: #1E1E1C !important;
+}
+
+.mat-expansion-panel {
+  background-color: #1E1E1C;
+}
+
+.mat-expansion-panel-body {
+  background-color: #1E1E1C;
+  color: black;
+}
+
+.mat-list-item.active{
+  color: white;
+  background-color: #3C3B37;
+}
+
+.mat-list-item {
+  font-size: 0.9rem;
+  color: white;
+  background-color: #1E1E1C;
+}
+
+

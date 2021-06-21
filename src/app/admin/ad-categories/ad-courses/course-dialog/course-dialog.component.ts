@@ -35,6 +35,7 @@ export class CourseDialogComponent implements OnInit {
     this.isEdit = (this.data as any).isEdit;
     this.ngForm = new FormGroup({
       title: new FormControl('', {validators: [Validators.required, Validators.maxLength(64)]}),
+      instructor: new FormControl('', {validators: [Validators.required, Validators.maxLength(64)]}),
       objectives: new FormControl('', { validators: [Validators.required]}),
       description: new FormControl('', {validators: [Validators.required]}),
       bestseller: new FormControl(false),

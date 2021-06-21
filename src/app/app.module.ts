@@ -36,6 +36,7 @@ import {NgxPaginationModule} from "ngx-pagination";
 import { CourseOverviewComponent } from './courses/course-detail/course-overview/course-overview.component';
 import { HomeDialogComponent } from './home/home-dialog/home-dialog.component';
 import {FacebookModule} from "ngx-facebook";
+import { PlayerDialogComponent } from './player/player-dialog/player-dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {FacebookModule} from "ngx-facebook";
     AdminComponent,
     CourseOverviewComponent,
     HomeDialogComponent,
+    PlayerDialogComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

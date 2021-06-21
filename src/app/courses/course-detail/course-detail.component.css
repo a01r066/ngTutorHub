@@ -88,3 +88,21 @@ textarea {
   font-size: 0.9rem;
   color: black;
 }
+
+.container {
+  height: 190px;
+  position: relative;
+}
+
+.preview {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+/*.dialog-container-custom .mat-dialog-container {*/
+/*  background-color: #1E1E1C !important;*/
+/*}*/
