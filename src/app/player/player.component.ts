@@ -8,6 +8,9 @@ import {DataStore} from "../services/data.store";
 import {Constants} from "../helpers/constants";
 import {UiService} from "../services/ui.service";
 import {Course} from "../models/course.model";
+import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
+import {User} from "../models/user.model";
+import {AuthStore} from "../services/auth.store";
 
 @Component({
   selector: 'app-player',
@@ -25,15 +28,27 @@ export class PlayerComponent implements OnInit, OnDestroy {
   unSafeUrl!: string;
   videoUrl!: SafeResourceUrl;
   base_url = `${Constants.base_upload}/courses/`;
+  shareUrl: string = 'https://api.tutorhub.info:3000/share/';
 
-
+  isHidden: boolean = false;
+  user!: User;
 
   constructor(
               private dataStore: DataStore,
               private route: ActivatedRoute,
               private sanitizer: DomSanitizer,
               private uiService: UiService,
-              private router: Router) { }
+              private router: Router,
+              private fb: FacebookService,
+              private authStore: AuthStore) {
+    const initParams: InitParams = {
+      appId: '468210474239699',
+      xfbml: true,
+      version: 'v2.8'
+    };
+
+    fb.init(initParams).then();
+  }
 
   ngOnInit(): void {
     this.uiService.isPlayerSub.next(true);
@@ -42,6 +57,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.course = course;
       this.getChaptersArray(course);
     })
+
+    this.authStore.user$.subscribe(user => this.user = user);
   }
 
   private getChaptersArray(course: Course) {
@@ -89,13 +106,32 @@ export class PlayerComponent implements OnInit, OnDestroy {
     return filePath.substring(filePath.length-3, filePath.length);
   }
 
-  onClickChapter(chapter: any, index: number){
+  onClickChapter(chapter: any, lectureIndex: number, chapterIndex: number){
     this.chapter = chapter;
-    this.selected = index;
+    this.selected = chapterIndex;
 
     this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
     // this.getVideoDuration();
+
+    this.addTrackerToDB(chapter, lectureIndex, chapterIndex);
+  }
+
+  private addTrackerToDB(chapter: any, lectureIndex: number, chapterIndex: number) {
+    const formData = {
+      "user": this.user._id,
+      "course" : this.course._id,
+      "data": {
+        "lecture": chapter.lecture,
+        "chapter": chapter._id,
+        "lectureIndex" : lectureIndex,
+        "chapterIndex" : chapterIndex
+      }
+    }
+
+    this.dataStore.addTracker(formData).subscribe(() => {
+      console.log('Tracker added!');
+    })
   }
 
 //   getVideoDuration(){
@@ -122,5 +158,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
   home() {
     this.uiService.isPlayerSub.next(false);
     this.router.navigate(['home', 'my-courses', 'learning']);
+  }
+
+  toggle() {
+    this.isHidden = !this.isHidden;
+  }
+
+  share() {
+    this.shareUrl += this.course._id;
+    const params: UIParams = {
+      href: this.shareUrl,
+      method: 'share'
+    };
+
+    this.fb.ui(params)
+      .then((res: UIResponse) => console.log(res))
+      .catch((e: any) => console.error(e));
   }
 }

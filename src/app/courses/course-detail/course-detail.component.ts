@@ -160,7 +160,11 @@ export class CourseDetailComponent implements OnInit {
 
   getFileExt(chapter: Chapter) {
     const filePath = chapter.file;
-    return filePath.substring(filePath.length-3, filePath.length);
+    if(typeof filePath !== "undefined"){
+      return filePath.substring(filePath.length-3, filePath.length);
+    } else {
+      return '';
+    }
   }
 
   addToCart(course: any){
@@ -225,12 +229,14 @@ export class CourseDetailComponent implements OnInit {
     for(let item of chaptersArray){
       const chapters = (item as any).chapters;
       for(let chapter of chapters){
-        const ext = chapter.file.substring(chapter.file.length-3);
-        if(ext === 'mp4'){
-          this.chapterCounter++;
-        }
-        if(ext === 'pdf' || ext === 'zip'){
-          this.downloadableCounter++;
+        const filePath = chapter.file;
+        if(typeof filePath !== "undefined"){
+          const ext = filePath.substring(filePath.length - 3, filePath.length);
+          if(ext === 'mp4'){
+            this.chapterCounter++;
+          } else if(ext === 'pdf' || ext === 'zip'){
+            this.downloadableCounter++;
+          }
         }
       }
     }

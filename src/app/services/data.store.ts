@@ -397,4 +397,15 @@ export class DataStore {
       }
     }).pipe(shareReplay());
   }
+
+  // Trackers
+  addTracker(formData: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/trackers`;
+    return this.http.post(url, formData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
+  }
 }

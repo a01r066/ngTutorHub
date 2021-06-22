@@ -11,3 +11,23 @@
   font-size: 0.9rem;
   color: black;
 }
+
+.container {
+  height: 64px;
+  position: relative;
+}
+
+.center {
+  margin: 16px;
+  position: absolute;
+  top: 25%;
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+
+.show-button {
+  position: absolute;
+  top: 72px;
+  right: 16px;
+  z-index: 1000;
+}
