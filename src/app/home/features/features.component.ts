@@ -1,6 +1,6 @@
 import {
   Component,
-  HostListener,
+  HostListener, OnDestroy,
   OnInit
 } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
@@ -18,7 +18,7 @@ import {Observable} from "rxjs";
   templateUrl: './features.component.html',
   styleUrls: ['./features.component.css']
 })
-export class FeaturesComponent implements OnInit {
+export class FeaturesComponent implements OnInit, OnDestroy {
   // base_url = 'http://localhost:3000/uploads/courses/';
   base_url = `${Constants.base_upload}/courses/`;
 
@@ -32,6 +32,9 @@ export class FeaturesComponent implements OnInit {
 
   selectedIndex = 0;
   page: number = 1;
+
+  slider!: any;
+
 
   // config: PaginationInstance = {
   //   itemsPerPage: this.counter,
@@ -52,6 +55,19 @@ export class FeaturesComponent implements OnInit {
       this.categories = categories;
       this.getCourses();
     })
+
+    this.slider = setInterval(() => {
+      if(this.selectedIndex < this.categories.length - 1){
+        this.selectedIndex++;
+      } else {
+        this.selectedIndex = 0;
+      }
+      this.onClickTab(this.selectedIndex);
+    }, 4000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.slider);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -76,8 +92,8 @@ export class FeaturesComponent implements OnInit {
     }
   }
 
-  onClickTab(event: any) {
-    this.selectedIndex = event.index;
+  onClickTab(index: any) {
+    this.selectedIndex = index;
     this.getCourses();
   }
 

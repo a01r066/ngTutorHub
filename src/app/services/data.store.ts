@@ -132,6 +132,16 @@ export class DataStore {
         shareReplay());
   }
 
+  deleteCourse(courseId: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/courses/${courseId}`;
+    return this.http.delete(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
+  }
+
   getLecturesByCourseId(courseId: any): Observable<Lecture[]>{
     const url = `${Constants.base_url}/lectures/${courseId}`;
     return this.http.get<Lecture[]>(url)
@@ -166,6 +176,16 @@ export class DataStore {
     return this.http.get(url)
       .pipe(map(res => (res as any).data)
       ,shareReplay());
+  }
+
+  deleteLecture(lectureId: any): Observable<any>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/lectures/${lectureId}`;
+    return this.http.delete(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(shareReplay());
   }
 
   createChapter(formData: any): Observable<any>{

@@ -3,8 +3,8 @@
   <div fxFlex fxLayout="row">
     <div fxFlex="15"></div>
     <div fxFlex="70" fxLayoutAlign="center">
-      <mat-tab-group (selectedTabChange)="onClickTab($event)">
-        <mat-tab *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
+      <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
+        <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
       </mat-tab-group>
 <!--      <nav mat-tab-nav-bar>-->
 <!--        <a mat-tab-link *ngFor="let category of categories | slice:0:cateCounter; let i = index"-->

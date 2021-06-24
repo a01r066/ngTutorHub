@@ -86,10 +86,9 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
 
   delete(element: any) {
     // hide category instead of delete it
-    const ngForm = new FormGroup({
-      isHidden: new FormControl(true)
-    })
-    this.dataStore.updateLecture(element._id, ngForm.value).subscribe();
+    this.dataStore.deleteLecture(element._id).subscribe(() => {
+      this.dataChanged.next();
+    });
   }
 
   showData(row: any) {

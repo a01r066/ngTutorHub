@@ -1,7 +1,6 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {Observable} from "rxjs";
 import {Lecture} from "../models/lecture.model";
 import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
@@ -19,19 +18,28 @@ import {AuthStore} from "../services/auth.store";
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   course: any;
-
   lecture!: Lecture;
-  chapter!: Chapter;
+  // chapter!: Chapter;
   chaptersArray: any[] = [];
-  selected: number = -1;
-
-  unSafeUrl!: string;
-  videoUrl!: SafeResourceUrl;
+  // unSafeUrl!: string;
+  // videoUrl!: SafeResourceUrl;
   base_url = `${Constants.base_upload}/courses/`;
   shareUrl: string = 'https://api.tutorhub.info:3000/share/';
 
   isHidden: boolean = false;
   user!: User;
+
+  videoItems: any = [
+    // {
+    //   name: 'Video two',
+    //   src: 'http://static.videogular.com/assets/videos/big_buck_bunny_720p_h264.mov',
+    //   type: 'video/mp4'
+    // }
+  ];
+
+  activeIndex = 0;
+  currentVideo!: any;
+  data: any;
 
   constructor(
               private dataStore: DataStore,
@@ -61,6 +69,22 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.authStore.user$.subscribe(user => this.user = user);
   }
 
+  getVideoItems(index: number){
+    this.activeIndex = 0;
+    this.videoItems = [];
+
+    if(this.chaptersArray.length > 0){
+      const section = this.chaptersArray[index];
+      for(let chapter of section.chapters){
+        this.videoItems.push({
+          name: chapter.title,
+          src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+        })
+      }
+      this.currentVideo = this.videoItems[this.activeIndex];
+    }
+  }
+
   private getChaptersArray(course: Course) {
     this.dataStore.getLecturesByCourseId(course._id).subscribe(lectures => {
       lectures.forEach(lecture => {
@@ -79,11 +103,24 @@ export class PlayerComponent implements OnInit, OnDestroy {
           })
 
           // Set default lesson
-          this.chapter = this.chaptersArray[0].chapters[0]
-          this.getDefaultLesson(this.chapter);
+          // this.chapter = this.chaptersArray[0].chapters[0]
+          this.getDefaultLesson(this.chaptersArray[0].chapters);
         })
       })
     })
+  }
+
+  getDefaultLesson(chapters: Chapter[]){
+    this.activeIndex = 0;
+    this.videoItems =  [];
+
+    for(let chapter of chapters){
+      this.videoItems.push({
+        name: chapter.title,
+        src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+      })
+    }
+    this.currentVideo = this.videoItems[this.activeIndex];
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -96,26 +133,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.uiService.isPlayerSub.next(false);
   }
 
-  private getDefaultLesson(chapter: Chapter) {
-    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-  }
-
   getFileExt(chapter: Chapter) {
-    const filePath = chapter.file;
-    return filePath.substring(filePath.length-3, filePath.length);
+    let path = chapter.file;
+    return path.slice(path.length-3);
   }
 
-  onClickChapter(chapter: any, lectureIndex: number, chapterIndex: number){
-    this.chapter = chapter;
-    this.selected = chapterIndex;
-
-    this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-    // this.getVideoDuration();
-
-    this.addTrackerToDB(chapter, lectureIndex, chapterIndex);
-  }
+  // onClickChapter(chapter: any, lectureIndex: number, chapterIndex: number){
+  //   this.chapter = chapter;
+  //   this.selected = chapterIndex;
+  //
+  //   this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
+  //   this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
+  //   // this.getVideoDuration();
+  //
+  //   this.addTrackerToDB(chapter, lectureIndex, chapterIndex);
+  // }
 
   private addTrackerToDB(chapter: any, lectureIndex: number, chapterIndex: number) {
     const formData = {
@@ -130,30 +162,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
 
     this.dataStore.addTracker(formData).subscribe(() => {
-      console.log('Tracker added!');
+      // console.log('Tracker added!');
     })
   }
-
-//   getVideoDuration(){
-//     // Create a non-dom allocated Audio element
-//     const au = document.createElement('video');
-//
-// // Define the URL of the MP3 audio file
-//     au.src = this.unSafeUrl;
-//
-// // Once the metadata has been loaded, display the duration in the console
-//     au.addEventListener('loadedmetadata', () => {
-//       // Obtain the duration in seconds of the audio file (with milliseconds as well, a float value)
-//       const duration = au.duration;
-//       console.log('Duration: '+duration);
-//
-//       // example 12.3234 seconds
-//       // console.log("The duration of the song is of: " + durationStr + " seconds");
-//       // Alternatively, just display the integer value with
-//       // parseInt(duration)
-//       // 12 seconds
-//     });
-//   }
 
   home() {
     this.uiService.isPlayerSub.next(false);
@@ -174,5 +185,39 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.fb.ui(params)
       .then((res: UIResponse) => console.log(res))
       .catch((e: any) => console.error(e));
+  }
+
+  // Video player
+  videoPlayerInit(data: any) {
+    this.data = data;
+
+    this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
+    this.data.getDefaultMedia().subscriptions.ended.subscribe(this.nextVideo.bind(this));
+  }
+
+  nextVideo() {
+    this.activeIndex++;
+
+    if (this.activeIndex === this.videoItems.length) {
+      this.activeIndex = 0;
+    }
+
+    this.currentVideo = this.videoItems[this.activeIndex];
+  }
+
+  initVdo() {
+    this.data.play();
+  }
+
+  startPlaylistVdo(item: any, index: number) {
+    this.activeIndex = index;
+    // this.currentVideo = item
+    this.currentVideo = this.videoItems[this.activeIndex];
+    console.log(this.currentVideo.src);
+    // this.data.getDefaultMedia().currentTime = 0;
+  }
+
+  getSafeURL(src: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(src);
   }
 }

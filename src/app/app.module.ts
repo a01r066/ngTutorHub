@@ -37,6 +37,10 @@ import { CourseOverviewComponent } from './courses/course-detail/course-overview
 import { HomeDialogComponent } from './home/home-dialog/home-dialog.component';
 import {FacebookModule} from "ngx-facebook";
 import { PlayerDialogComponent } from './player/player-dialog/player-dialog.component';
+import {VgCoreModule} from "@videogular/ngx-videogular/core";
+import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
+import {VgControlsModule} from "@videogular/ngx-videogular/controls";
+import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 
 @NgModule({
   declarations: [
@@ -75,7 +79,11 @@ import { PlayerDialogComponent } from './player/player-dialog/player-dialog.comp
     MaterialModule,
     FlexLayoutModule,
     AdminModule,
-    FacebookModule.forRoot()
+    FacebookModule.forRoot(),
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   providers: [
     DecimalPipe,
