@@ -20,7 +20,7 @@ import {MatAccordion, MatExpansionPanelHeader} from "@angular/material/expansion
 export class PlayerComponent implements OnInit, OnDestroy {
   course: any;
   lecture!: Lecture;
-  // chapter!: Chapter;
+
   chaptersArray: any[] = [];
   // unSafeUrl!: string;
   // videoUrl!: SafeResourceUrl;
@@ -42,6 +42,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   activeIndex = 0;
   activeLectureIndex = 0;
+  chapter!: Chapter;
+
   currentVideo!: any;
   data: any;
 
@@ -78,15 +80,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
       // console.log(data.lecture);
       this.activeIndex = data.chapterIndex;
+      this.activeLectureIndex = data.lectureIndex;
       this.onPanelOpen(data.lectureIndex);
     })
   }
 
   onPanelOpen(i: any) {
     // console.log(`Panel ${i} opened.${this}`);
-    this.activeLectureIndex = i;
-    // console.log(this.videoItems.length);
     if(this.chaptersArray.length > 0){
+      this.chapter = this.chaptersArray[i].chapters[this.activeIndex];
+
       for(let chapter of this.chaptersArray[i].chapters){
         this.videoItems.push({
           name: chapter.title,
@@ -132,19 +135,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
         })
       })
     })
-  }
-
-  getDefaultLesson(chapters: Chapter[]){
-    this.activeIndex = 0;
-    this.videoItems =  [];
-
-    for(let chapter of chapters){
-      this.videoItems.push({
-        name: chapter.title,
-        src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
-      })
-    }
-    this.currentVideo = this.videoItems[this.activeIndex];
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -223,6 +213,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if(this.activeIndex < this.videoItems.length-1){
       this.activeIndex++;
       this.currentVideo = this.videoItems[this.activeIndex];
+
+      this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
     }
   }
 
@@ -233,10 +225,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   startPlaylistVdo(chapter: Chapter, chapterIndex: number, lectureIndex: number) {
+    this.chapter = chapter;
     this.activeIndex = chapterIndex;
-    // this.currentVideo = item
+    this.activeLectureIndex = lectureIndex;
     this.currentVideo = this.videoItems[this.activeIndex];
-    // this.data.getDefaultMedia().currentTime = 0;
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
 
