@@ -1,6 +1,6 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {DomSanitizer} from "@angular/platform-browser";
 import {Lecture} from "../models/lecture.model";
 import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
@@ -10,6 +10,7 @@ import {Course} from "../models/course.model";
 import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
 import {User} from "../models/user.model";
 import {AuthStore} from "../services/auth.store";
+import {MatAccordion, MatExpansionPanelHeader} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-player',
@@ -29,6 +30,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   isHidden: boolean = false;
   user!: User;
 
+  @ViewChild('Mat-Accordion') matAccordion!: MatAccordion;
+
   videoItems: any = [
     // {
     //   name: 'Video two',
@@ -38,6 +41,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   ];
 
   activeIndex = 0;
+  activeLectureIndex = 0;
   currentVideo!: any;
   data: any;
 
@@ -63,10 +67,34 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
+      this.getPlayedTrack(course);
       this.getChaptersArray(course);
     })
 
     this.authStore.user$.subscribe(user => this.user = user);
+  }
+
+  getPlayedTrack(course: Course){
+    this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
+      // console.log(data.lecture);
+      this.activeIndex = data.chapterIndex;
+      this.onPanelOpen(data.lectureIndex);
+    })
+  }
+
+  onPanelOpen(i: any) {
+    // console.log(`Panel ${i} opened.${this}`);
+    this.activeLectureIndex = i;
+    // console.log(this.videoItems.length);
+    if(this.chaptersArray.length > 0){
+      for(let chapter of this.chaptersArray[i].chapters){
+        this.videoItems.push({
+          name: chapter.title,
+          src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+        })
+      }
+    }
+    this.currentVideo = this.videoItems[this.activeIndex];
   }
 
   getVideoItems(index: number){
@@ -74,14 +102,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.videoItems = [];
 
     if(this.chaptersArray.length > 0){
-      const section = this.chaptersArray[index];
-      for(let chapter of section.chapters){
+      for(let chapter of this.chaptersArray[index].chapters){
         this.videoItems.push({
           name: chapter.title,
           src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
         })
       }
-      this.currentVideo = this.videoItems[this.activeIndex];
     }
   }
 
@@ -102,9 +128,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
             return c1.index - c2.index;
           })
 
-          // Set default lesson
-          // this.chapter = this.chaptersArray[0].chapters[0]
-          this.getDefaultLesson(this.chaptersArray[0].chapters);
+          // this.getDefaultLesson(this.chaptersArray[0].chapters);
         })
       })
     })
@@ -149,7 +173,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   //   this.addTrackerToDB(chapter, lectureIndex, chapterIndex);
   // }
 
-  private addTrackerToDB(chapter: any, lectureIndex: number, chapterIndex: number) {
+  private addTrackerToDB(chapter: any, chapterIndex: number, lectureIndex: number) {
     const formData = {
       "user": this.user._id,
       "course" : this.course._id,
@@ -162,7 +186,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
 
     this.dataStore.addTracker(formData).subscribe(() => {
-      // console.log('Tracker added!');
+      console.log('Tracker added!');
     })
   }
 
@@ -196,28 +220,31 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   nextVideo() {
-    this.activeIndex++;
-
-    if (this.activeIndex === this.videoItems.length) {
-      this.activeIndex = 0;
+    if(this.activeIndex < this.videoItems.length-1){
+      this.activeIndex++;
+      this.currentVideo = this.videoItems[this.activeIndex];
     }
-
-    this.currentVideo = this.videoItems[this.activeIndex];
   }
 
   initVdo() {
-    this.data.play();
+    // this.data.play();
+    this.data.getDefaultMedia().currentTime = 0;
+    this.data.pause();
   }
 
-  startPlaylistVdo(item: any, index: number) {
-    this.activeIndex = index;
+  startPlaylistVdo(chapter: Chapter, chapterIndex: number, lectureIndex: number) {
+    this.activeIndex = chapterIndex;
     // this.currentVideo = item
     this.currentVideo = this.videoItems[this.activeIndex];
-    console.log(this.currentVideo.src);
     // this.data.getDefaultMedia().currentTime = 0;
+    this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
 
   getSafeURL(src: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(src);
+  }
+
+  downloadFile(chapter: Chapter) {
+    window.location.href = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.zip}`;
   }
 }

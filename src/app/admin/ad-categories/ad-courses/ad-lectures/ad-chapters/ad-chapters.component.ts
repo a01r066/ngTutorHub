@@ -103,10 +103,10 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
     this.router.navigate(['admin', 'courses', row.course, 'chapters']);
   }
 
-  uploadFile(element: any) {
+  uploadFile(element: any, type: string) {
     const dialogRef = this.dialog.open(UploadFileDialogComponent, {
       width: '40vw',
-      data: { chapter: element, course: this.courseId, lecture: this.lectureId },
+      data: { chapter: element, course: this.courseId, lecture: this.lectureId, type: type },
       autoFocus: false
     });
 

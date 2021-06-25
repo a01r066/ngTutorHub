@@ -33,7 +33,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   selectedIndex = 0;
   page: number = 1;
 
-  slider!: any;
+  // slider!: any;
 
 
   // config: PaginationInstance = {
@@ -56,18 +56,18 @@ export class FeaturesComponent implements OnInit, OnDestroy {
       this.getCourses();
     })
 
-    this.slider = setInterval(() => {
-      if(this.selectedIndex < this.categories.length - 1){
-        this.selectedIndex++;
-      } else {
-        this.selectedIndex = 0;
-      }
-      this.onClickTab(this.selectedIndex);
-    }, 4000);
+    // this.slider = setInterval(() => {
+    //   if(this.selectedIndex < this.categories.length - 1){
+    //     this.selectedIndex++;
+    //   } else {
+    //     this.selectedIndex = 0;
+    //   }
+    //   this.onClickTab(this.selectedIndex);
+    // }, 4000);
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.slider);
+    // clearInterval(this.slider);
   }
 
   @HostListener('window:resize', ['$event'])

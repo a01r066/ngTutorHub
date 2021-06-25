@@ -49,7 +49,7 @@
                   <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of lecture.chapters; let idx = index" [class.active]="selected == idx">{{ chapter.title }}
                     <span style="float: right" *ngIf="chapter">
                   <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0" >{{ chapter.duration | number }} min</ng-container>
-                  <ng-container *ngIf="getFileExt(chapter) === 'zip'"><button mat-icon-button style="color: gray"><mat-icon>attach_file</mat-icon></button></ng-container>
+                  <ng-container *ngIf="chapter.zip.length > 0"><button mat-icon-button style="color: gray"><mat-icon>attach_file</mat-icon></button></ng-container>
                   <ng-container *ngIf="getFileExt(chapter) === 'tml' || getFileExt(chapter) === 'pdf'"><button mat-icon-button style="color:gray"><mat-icon>description</mat-icon></button></ng-container>
                 </span>
                   </mat-list-item>

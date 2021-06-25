@@ -35,8 +35,9 @@ export class UploadFileDialogComponent implements OnInit {
       const chapterId = (this.data as any).chapter._id;
       this.ngForm.value.courseId = (this.data as any).course;
       this.ngForm.value.lectureId = (this.data as any).lecture;
+      const type = (this.data as any).type;
 
-      this.dataStore.chapterFileUpload(chapterId, this.ngForm.value, this.fileData).subscribe(res => {
+      this.dataStore.chapterFileUpload(chapterId, this.ngForm.value, this.fileData, type).subscribe(res => {
         // Reload photo
         this.dialogRef.close();
         this.snackBar.open(`Chapter file uploaded!`, null!, {

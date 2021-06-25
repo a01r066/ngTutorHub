@@ -25,7 +25,8 @@ const routes: Routes = [
   { path: 'home/my-courses/learning', component: LearningComponent, canActivate: [AuthGuard]},
   { path: 'search', component: SearchComponent },
   { path: 'user/profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: 'admin', component: AdminComponent },
+  { path: 'admin', component: AdminComponent }
+  // { path: '**', redirectTo: '', pathMatch: 'full' }
 ]
 
 @NgModule({

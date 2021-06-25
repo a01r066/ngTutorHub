@@ -218,9 +218,9 @@ export class DataStore {
     }).pipe(shareReplay());
   }
 
-  chapterFileUpload(chapterId: any, formValue: any, file: any): Observable<any>{
+  chapterFileUpload(chapterId: any, formValue: any, file: any, type: string): Observable<any>{
     const token = localStorage.getItem('token');
-    const url = `${Constants.base_url}/chapters/${chapterId}/file`;
+    const url = `${Constants.base_url}/chapters/${chapterId}/${type}`;
 
     let frm = new FormData();
     frm.append('courseId', formValue.courseId);
@@ -427,5 +427,12 @@ export class DataStore {
         "Authorization": `Bearer ${token}`,
       }
     }).pipe(shareReplay());
+  }
+
+  getTracker(userId: any, courseId: any): Observable<any>{
+    const url = `${Constants.base_url}/trackers/${userId}/${courseId}`;
+    return this.http.get(url)
+      .pipe(map((res =>  (res as any).data))
+        ,shareReplay());
   }
 }
