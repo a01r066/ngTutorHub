@@ -1,40 +1,28 @@
 <div fxLayout="column">
   <!--Tabs-->
-  <div fxFlex fxLayout="row">
-    <div fxFlex="15"></div>
-    <div fxFlex="70" fxLayoutAlign="center">
-      <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
-        <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
-      </mat-tab-group>
-      <div fxFlex="15"></div>
-    </div>
+  <div class="center">
+    <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
+      <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
+    </mat-tab-group>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center center" style="height: 340px; margin-top: 16px">
-    <div fxFlex="5">
-<!--      <div fxLayoutAlign="center center"><button mat-icon-button color="primary" style="transform: scale(1.5); background-color: #F1F1EE" (click)="back()"><mat-icon>arrow_back_ios</mat-icon></button></div>-->
-    </div>
-    <div fxFlex="90">
-      <div>
-        <ng-container *ngIf="(courses$ | async) as courses">
-          <ul class="flex-container" fxLayoutAlign="center center">
-            <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
-              <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-              <div>
-                <div fxLayout="column" fxLayoutGap="8px">
-                  <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
-                  <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
-                  <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
-                    <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
-                </div>
+  <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
+    <div>
+      <ng-container *ngIf="(courses$ | async) as courses">
+        <ul class="flex-container" fxLayoutAlign="center center">
+          <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
+            <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
+            <div>
+              <div fxLayout="column" fxLayoutGap="8px">
+                <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
+                <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
+                <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
+                  <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
               </div>
-            </li>
-          </ul>
-          <div fxLayoutAlign="center center" *ngIf="courses.length > counter"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
-        </ng-container>
-      </div>
-    </div>
-    <div fxFlex="5" fxLayoutAlign="center center">
-<!--      <div><button mat-icon-button color="primary" style="transform: scale(1.5); background-color: #F1F1EE" (click)="next()"><mat-icon>arrow_forward_ios</mat-icon></button></div>-->
+            </div>
+          </li>
+        </ul>
+        <div class="center" *ngIf="courses.length > counter"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
+      </ng-container>
     </div>
   </div>
 </div>

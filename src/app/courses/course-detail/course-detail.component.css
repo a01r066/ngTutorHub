@@ -1,23 +1,28 @@
-.mat-toolbar-row {
-  height: 30vh;
-  background-color: #1E1E1C;
+.header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #505763;
+  /*background-image: linear-gradient(#505763 100%, #90f7ec 10%, #90f7ec 50%);*/
 }
 
-div {
-  margin: 0 0 12px 0;
+.header-content {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 16px;
 }
 
-div.course-summary {
-  height: 35vh;
-  background-color: transparent;
+.course-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.course-highlight {
-  margin: 16px 0 16px 0;
+.course-summary-item {
+  display: flex;
+  width: 80%;
+  margin-bottom: 8px;
 }
-
-* { margin: 0; padding: 0; }
-body { padding-top: 50px; }
 
 .mat-raised-button {
   width: 96px;
@@ -84,11 +89,6 @@ textarea {
   overflow: hidden;
 }
 
-.mat-list-item {
-  font-size: 0.9rem;
-  color: black;
-}
-
 .container {
   height: 190px;
   position: relative;
@@ -102,7 +102,3 @@ textarea {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-
-/*.dialog-container-custom .mat-dialog-container {*/
-/*  background-color: #1E1E1C !important;*/
-/*}*/

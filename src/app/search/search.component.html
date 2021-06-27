@@ -1,23 +1,22 @@
-<div>
-  <div class="mat-display-1" style="color: darkslategrey; font-weight: 500; margin-top: 32px">All Development Courses</div>
-  <div style="margin-top: -32px">
+<div style="margin-top: 32px">
+  <div class="mat-card-title" style="color: darkslategrey; font-weight: 500;">All Development Courses</div>
+  <div>
     <ng-container *ngIf="(courses$ | async) as courses">
-      <ul class="flex-container">
-        <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: 5, currentPage: page }" (click)="onClick(course)">
-          <div fxFlex="20" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
-          <div fxFlex="70" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
+      <ul class="course-flex-container">
+        <li class="course-flex-item" *ngFor="let course of courses | paginate: { itemsPerPage: 5, currentPage: page }" (click)="onClick(course)">
+          <div style="width: 20%"><img width="100%" height="100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
+          <div class="course-flex-item-content">
             <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
             <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
-            <div class="mat-card-subtitle">{{ course.instructor }}</div>
-<!--            <div style="font-style: italic; font-size: 0.9rem">? Sections * ? lectures</div>-->
+            <p style="margin-bottom: 0; padding-bottom: 0; font-size: 0.9rem">{{ course.instructor }}</p>
           </div>
-          <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
-            <div>${{ getSalePrice(course) | number: '1.0-2' }}</div>
-            <div style="text-decoration: line-through; color: red">${{ course.tuition | number: '1.0-2' }}</div>
+          <div class="course-flex-item-price">
+            <h3>${{ getSalePrice(course) | number: '1.0-2' }}</h3>
+            <p style="text-decoration: line-through; color: red">${{ course.tuition | number: '1.0-2' }}</p>
           </div>
         </li>
       </ul>
-      <div fxLayoutAlign="center center" *ngIf="courses.length > 5"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
+      <div class="center" *ngIf="courses.length > 5"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
     </ng-container>
   </div>
 </div>

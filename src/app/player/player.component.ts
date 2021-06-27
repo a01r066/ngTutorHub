@@ -10,7 +10,7 @@ import {Course} from "../models/course.model";
 import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
 import {User} from "../models/user.model";
 import {AuthStore} from "../services/auth.store";
-import {MatAccordion, MatExpansionPanelHeader} from "@angular/material/expansion";
+import {MatAccordion} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-player',
@@ -81,6 +81,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
       // console.log(data.lecture);
       this.activeIndex = data.chapterIndex;
       this.activeLectureIndex = data.lectureIndex;
+      console.log('load lectureIndex: '+data.lectureIndex);
       this.onPanelOpen(data.lectureIndex);
     })
   }
@@ -116,6 +117,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   private getChaptersArray(course: Course) {
     this.dataStore.getLecturesByCourseId(course._id).subscribe(lectures => {
+      lectures.sort((l1, l2) => {
+        return l1.index - l2.index
+      })
+
       lectures.forEach(lecture => {
         this.dataStore.getChaptersByLectureId(lecture._id).subscribe(chapters => {
           chapters.sort((c1, c2) => {
@@ -152,17 +157,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     return path.slice(path.length-3);
   }
 
-  // onClickChapter(chapter: any, lectureIndex: number, chapterIndex: number){
-  //   this.chapter = chapter;
-  //   this.selected = chapterIndex;
-  //
-  //   this.unSafeUrl = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`;
-  //   this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.unSafeUrl);
-  //   // this.getVideoDuration();
-  //
-  //   this.addTrackerToDB(chapter, lectureIndex, chapterIndex);
-  // }
-
   private addTrackerToDB(chapter: any, chapterIndex: number, lectureIndex: number) {
     const formData = {
       "user": this.user._id,
@@ -176,7 +170,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
 
     this.dataStore.addTracker(formData).subscribe(() => {
-      console.log('Tracker added!');
     })
   }
 
@@ -214,7 +207,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.activeIndex++;
       this.currentVideo = this.videoItems[this.activeIndex];
       console.log('Current lesson: '+ this.currentVideo.name);
-
       this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
     }
   }
