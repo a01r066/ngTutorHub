@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-toolbar style="background-color: #29303B; color: white">
+  <mat-toolbar style="background-color: #3F150C; color: white">
     <div fxFill fxLayout="row" fxLayoutAlign="left center">
       <span><button mat-icon-button (click)="home()" style="transform: scale(1.5)"><mat-icon>home</mat-icon></button></span>
 
@@ -16,10 +16,6 @@
   <div fxFlext fxLayout="row">
     <div fxFlex="{{ isHidden ? 100: 75 }}">
       <div fxLayout="column">
-<!--        <ng-container *ngIf="chapter">-->
-<!--          <iframe *ngIf="getFileExt(chapter) !== 'mp4'" [src]="videoUrl" width="100%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>-->
-<!--          <video *ngIf="getFileExt(chapter) === 'mp4'" [src]="videoUrl" width="100%" height="640px" style=" background-color: #1E1E1C" controls></video>-->
-<!--        </ng-container>-->
         <ng-container *ngIf="currentVideo">
           <div class="video-player-wrapper" *ngIf="currentVideo?.src.slice(currentVideo?.src.length - 3) === 'mp4'; else htmlPage">
             <vg-player  (onPlayerReady)="videoPlayerInit($event)">
@@ -79,9 +75,9 @@
         </div>
         <div>
           <mat-accordion>
-            <mat-expansion-panel *ngFor="let lecture of chaptersArray; let lectureIndex = index" [expanded]="lectureIndex === activeLectureIndex" (opened)="onPanelOpen(activeLectureIndex)">
+            <mat-expansion-panel *ngFor="let lecture of chaptersArray; let lectureIndex = index" [expanded]="lectureIndex === activeLectureIndex">
               <mat-expansion-panel-header>
-                <mat-panel-title style="font-weight: 500" (click)="getVideoItems(lectureIndex)">
+                <mat-panel-title style="font-weight: 500">
                   {{ lecture.title }}
                 </mat-panel-title>
               </mat-expansion-panel-header>

@@ -11,6 +11,7 @@ import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
 import {User} from "../models/user.model";
 import {AuthStore} from "../services/auth.store";
 import {MatAccordion} from "@angular/material/expansion";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-player',
@@ -22,6 +23,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   lecture!: Lecture;
 
   chaptersArray: any[] = [];
+  defaultSub = new Subject<any[]>();
   // unSafeUrl!: string;
   // videoUrl!: SafeResourceUrl;
   base_url = `${Constants.base_upload}/courses/`;
@@ -69,50 +71,27 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const slug = this.route.snapshot.params['id'];
     this.dataStore.getCourseBySlug(slug).subscribe(course => {
       this.course = course;
-      this.getPlayedTrack(course);
       this.getChaptersArray(course);
     })
 
     this.authStore.user$.subscribe(user => this.user = user);
-  }
-
-  getPlayedTrack(course: Course){
-    this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
-      // console.log(data.lecture);
-      this.activeIndex = data.chapterIndex;
-      this.activeLectureIndex = data.lectureIndex;
-      console.log('load lectureIndex: '+data.lectureIndex);
-      this.onPanelOpen(data.lectureIndex);
+    this.defaultSub.subscribe(defaultChaptersArray => {
+      this.getPlayedTrack(this.course, defaultChaptersArray);
     })
   }
 
-  onPanelOpen(i: any) {
-    // console.log(`Panel ${i} opened.${this}`);
-    if(this.chaptersArray.length > 0){
-      this.chapter = this.chaptersArray[i].chapters[this.activeIndex];
-
-      for(let chapter of this.chaptersArray[i].chapters){
+  getPlayedTrack(course: Course, defaultChaptersArray: any[]){
+    this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
+      this.activeIndex = data.chapterIndex;
+      this.activeLectureIndex = data.lectureIndex;
+      for(let chapter of defaultChaptersArray[data.lectureIndex].chapters){
         this.videoItems.push({
           name: chapter.title,
           src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
         })
       }
-    }
-    this.currentVideo = this.videoItems[this.activeIndex];
-  }
-
-  getVideoItems(index: number){
-    this.activeIndex = 0;
-    this.videoItems = [];
-
-    if(this.chaptersArray.length > 0){
-      for(let chapter of this.chaptersArray[index].chapters){
-        this.videoItems.push({
-          name: chapter.title,
-          src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
-        })
-      }
-    }
+      this.currentVideo = this.videoItems[data.chapterIndex];
+    })
   }
 
   private getChaptersArray(course: Course) {
@@ -136,7 +115,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
             return c1.index - c2.index;
           })
 
-          // this.getDefaultLesson(this.chaptersArray[0].chapters);
+          this.defaultSub.next(this.chaptersArray);
         })
       })
     })
@@ -206,7 +185,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if(this.activeIndex < this.videoItems.length-1){
       this.activeIndex++;
       this.currentVideo = this.videoItems[this.activeIndex];
-      console.log('Current lesson: '+ this.currentVideo.name);
       this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
     }
   }
@@ -217,12 +195,26 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.data.pause();
   }
 
+  getVideoItems(index: number){
+    this.videoItems = [];
+    if(this.chaptersArray.length > 0){
+      for(let chapter of this.chaptersArray[index].chapters){
+        this.videoItems.push({
+          name: chapter.title,
+          src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+        })
+      }
+    }
+  }
+
   startPlaylistVdo(chapter: Chapter, chapterIndex: number, lectureIndex: number) {
     this.chapter = chapter;
     this.activeIndex = chapterIndex;
     this.activeLectureIndex = lectureIndex;
-    this.currentVideo = this.videoItems[this.activeIndex];
-    console.log('Current lesson: '+ this.currentVideo.name);
+
+    this.getVideoItems(lectureIndex);
+
+    this.currentVideo = this.videoItems[chapterIndex];
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
 

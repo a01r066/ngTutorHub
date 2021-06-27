@@ -74,15 +74,15 @@
         <div class="preview"><mat-icon style="transform: scale(3); color: white">{{ play }}</mat-icon></div>
       </div>
       <div class="course-summary" *ngIf="course">
-        <div style="font-size: 1.5rem; font-weight: 500; margin: 16px 0 16px 0">${{ getSalePrice(course) | number: '1.0-2' }}
-          <span style="font-size: 1rem; text-decoration: line-through; margin-left: 12px">${{ course.tuition | number: '1.0-2'}}</span>
-          <span style="font-size: 1rem; margin-left: 12px">{{ course.coupon.discount | number }}% off</span>
+        <div style="font-size: 2rem; font-weight: 500; color: #673AB7; margin: 16px 0 0 0">${{ getSalePrice(course) | number: '1.0-2' }}
+          <span style="font-size: 1rem; text-decoration: line-through; margin-left: 12px; color: darkslategray">${{ course.tuition | number: '1.0-2'}}</span>
+          <span style="font-size: 1rem; margin-left: 12px; color: darkred">{{ course.coupon.discount | number }}% off</span>
         </div>
         <div class="course-summary-item"><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) > 0">Add to cart</button></div>
         <div class="course-summary-item"><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="buyNow(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) > 0">Buy now</button></div>
-        <div><button class="course-summary-item" mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="enrollNow(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) === 0">Enroll Now</button></div>
-        <label *ngIf="isPurchased$ | async" style="font-size: 0.9rem">You've already purchased this course!</label>
-        <button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="goToCourse(course)" *ngIf="isPurchased$ | async">Go to course</button>
+        <div class="course-summary-item"><button  mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="enrollNow(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) === 0">Enroll Now</button></div>
+        <div class="course-summary-item"><label *ngIf="isPurchased$ | async" style="font-size: 1rem">You've already purchased this course!</label></div>
+        <div class="course-summary-item"><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="goToCourse(course)" *ngIf="isPurchased$ | async">Go to course</button></div>
         <p style="font-size: 1.25rem; font-weight: 500">This course includes: </p>
         <mat-list>
           <mat-list-item>
