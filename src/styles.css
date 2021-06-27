@@ -6,11 +6,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.mat-tab-label .mat-tab-label-content {
-  color: black;
-}
-
 .mat-form-field {
   display: block;
-  background-color: transparent;
 }

@@ -35,7 +35,7 @@
             <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
             <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
             <div class="mat-card-subtitle">{{ course.instructor }}</div>
-            <div style="font-style: italic; font-size: 0.9rem">? Sections * ? lectures</div>
+<!--            <div style="font-style: italic; font-size: 0.9rem">? Sections * ? lectures</div>-->
           </div>
           <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
             <div>${{ getSalePrice(course) | number: '1.0-2' }}</div>

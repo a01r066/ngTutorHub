@@ -76,8 +76,9 @@
       </div>
       <div *ngIf="course">
         <div><span class="mat-display-1" style="font-weight: 600">${{ getSalePrice(course) | number: '1.0-2' }}</span><span style="text-decoration: line-through; margin-left: 12px">${{ course.tuition | number: '1.0-2'}}</span><span style="margin-left: 12px">{{ course.coupon.discount | number }}% off</span></div>
-        <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)" *ngIf="!(isPurchased$ | async)">Add to cart</button></div>
-        <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="buyNow(course)" *ngIf="!(isPurchased$ | async)">Buy now</button></div>
+        <div><button mat-raised-button color="warn" fxFlex style="height: 40px" (click)="addToCart(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) > 0">Add to cart</button></div>
+        <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="buyNow(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) > 0">Buy now</button></div>
+        <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="enrollNow(course)" *ngIf="!(isPurchased$ | async) && getSalePrice(course) === 0">Enroll Now</button></div>
         <div><label *ngIf="isPurchased$ | async" style="font-size: 0.9rem">You've already purchased this course!</label></div>
         <div><button mat-raised-button color="primary" fxFlex style="height: 40px;" (click)="goToCourse(course)" *ngIf="isPurchased$ | async">Go to course</button></div>
         <div><p style="font-weight: 500">This course includes: </p></div>
@@ -90,7 +91,7 @@
               <mat-icon>smart_display</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ chapterCounter | number }} Lessons</span>
             </mat-list-item>
             <mat-list-item role="listitem" style="color: black">
-              <mat-icon>code</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ downloadableCounter | number }} downloadable resources</span>
+              <mat-icon>code</mat-icon><span class="mat-card-subtitle" style="color: black; margin-left: 8px">{{ (downloadableCounter + zipCounter) | number }} downloadable resources</span>
             </mat-list-item>
           </mat-list>
         </div>

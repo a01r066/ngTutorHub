@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'user/profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'admin', component: AdminComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  // { path: '**', redirectTo: '', pathMatch: 'full' }
 ]
 
 @NgModule({

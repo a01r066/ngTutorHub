@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DialogData} from "../../../home/Feedback/feedback.component";
@@ -7,7 +7,8 @@ import {DataStore} from "../../../services/data.store";
 @Component({
   selector: 'app-category-dialog',
   templateUrl: './category-dialog.component.html',
-  styleUrls: ['./category-dialog.component.css']
+  styleUrls: ['./category-dialog.component.css'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class CategoryDialogComponent implements OnInit {
   ngForm!: FormGroup;

@@ -17,7 +17,7 @@ export interface DialogData {
   selector: 'app-feedback',
   templateUrl: './dialog-feedback.html',
   styleUrls: ['./feedback.component.css'],
-  providers: [LoadingService, MessagesService]
+  providers: [LoadingService, MessagesService],
 })
 export class FeedbackComponent implements OnInit{
   feedbackForm!: FormGroup;

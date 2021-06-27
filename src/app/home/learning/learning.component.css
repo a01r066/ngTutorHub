@@ -20,7 +20,7 @@
 
 .flex-item {
   width: 250px;
-  height: 264px;
+  height: 224px;
   border-radius: 4px;
   margin: 12px;
   border: 1px solid lightgray;
@@ -29,4 +29,56 @@
 .mat-card {
   background-color: white;
   margin: 8px;
+}
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.container {
+  height: 124px;
+  position: relative;
+  background-color: #505763;
+  border-radius: 4px;
+}
+
+.preview {
+  color: white;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.tabPreview {
+  color: white;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.mat-list {
+  display: flex;
+  flex-direction: row;
+  width: 224px;
+}
+
+.mat-list-item {
+  cursor: pointer;
+  color: lightgray;
+  font-weight: 300;
+}
+
+.highlight {
+  color: white;
+  font-weight: 400;
 }

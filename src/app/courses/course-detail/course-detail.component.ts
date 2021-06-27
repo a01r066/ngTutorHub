@@ -27,6 +27,7 @@ export class CourseDetailComponent implements OnInit {
   chapter!: Chapter;
   chapterCounter: number = 0;
   downloadableCounter: number = 0;
+  zipCounter = 0;
 
   chaptersArray: any[] = [];
   selected: number = -1;
@@ -224,11 +225,15 @@ export class CourseDetailComponent implements OnInit {
 
   private getSummary(chaptersArray: any[]) {
     this.downloadableCounter = 0;
+    this.zipCounter = 0;
     this.chapterCounter = 0;
 
     for(let item of chaptersArray){
       const chapters = (item as any).chapters;
       for(let chapter of chapters){
+        if(chapter.zip.length > 0){
+          this.zipCounter++;
+        }
         const filePath = chapter.file;
         if(typeof filePath !== "undefined"){
           const ext = filePath.substring(filePath.length - 3, filePath.length);
@@ -257,5 +262,25 @@ export class CourseDetailComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  enrollNow(course: any) {
+    if(!this.user){
+      this.router.navigate(['signup']);
+    } else {
+      const payment = {
+        "user": this.user._id,
+        "courses": [{"courseId": course._id}],
+        "totalPrice": 0
+      }
+      this.checkout(payment);
+    }
+  }
+
+  checkout(payment: any){
+    this.dataStore.checkout(payment).subscribe(res => {
+      this.authStore.initAuthListener();
+      this.goToCourse(this.course);
+    })
   }
 }

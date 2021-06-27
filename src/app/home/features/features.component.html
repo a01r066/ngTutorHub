@@ -6,11 +6,6 @@
       <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
         <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
       </mat-tab-group>
-<!--      <nav mat-tab-nav-bar>-->
-<!--        <a mat-tab-link *ngFor="let category of categories | slice:0:cateCounter; let i = index"-->
-<!--           (click)="onClickTab(i)">{{ category.title }}-->
-<!--        </a>-->
-<!--      </nav>-->
       <div fxFlex="15"></div>
     </div>
   </div>

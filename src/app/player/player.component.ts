@@ -213,6 +213,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if(this.activeIndex < this.videoItems.length-1){
       this.activeIndex++;
       this.currentVideo = this.videoItems[this.activeIndex];
+      console.log('Current lesson: '+ this.currentVideo.name);
 
       this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
     }
@@ -229,6 +230,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.activeIndex = chapterIndex;
     this.activeLectureIndex = lectureIndex;
     this.currentVideo = this.videoItems[this.activeIndex];
+    console.log('Current lesson: '+ this.currentVideo.name);
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
 
