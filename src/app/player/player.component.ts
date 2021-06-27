@@ -84,13 +84,28 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
       this.activeIndex = data.chapterIndex;
       this.activeLectureIndex = data.lectureIndex;
-      for(let chapter of defaultChaptersArray[data.lectureIndex].chapters){
-        this.videoItems.push({
-          name: chapter.title,
-          src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
-        })
+      if(typeof defaultChaptersArray[data.lectureIndex] !== "undefined"){
+        const chapters = defaultChaptersArray[data.lectureIndex].chapters;
+        for(let chapter of chapters){
+          this.videoItems.push({
+            name: chapter.title,
+            src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+          })
+        }
+        this.currentVideo = this.videoItems[data.chapterIndex];
+      } else {
+        // Load default lessons
+        // console.log('load default lessons');
+        for(let chapter of this.chaptersArray[0].chapters){
+          this.videoItems.push({
+            name: chapter.title,
+            src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+          })
+        }
+        this.activeIndex = 0;
+        this.activeLectureIndex = 0;
+        this.currentVideo = this.videoItems[0];
       }
-      this.currentVideo = this.videoItems[data.chapterIndex];
     })
   }
 
@@ -114,10 +129,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
           this.chaptersArray = this.chaptersArray.sort((c1, c2) => {
             return c1.index - c2.index;
           })
-
-          this.defaultSub.next(this.chaptersArray);
         })
       })
+      this.defaultSub.next(this.chaptersArray);
     })
   }
 

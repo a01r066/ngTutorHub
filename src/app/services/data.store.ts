@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, throwError} from "rxjs";
+import {BehaviorSubject, Observable, of, throwError} from "rxjs";
 import {Course} from "../models/course.model";
 import {catchError, map, shareReplay, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
@@ -432,7 +432,12 @@ export class DataStore {
   getTracker(userId: any, courseId: any): Observable<any>{
     const url = `${Constants.base_url}/trackers/${userId}/${courseId}`;
     return this.http.get(url)
-      .pipe(map((res =>  (res as any).data))
+      .pipe(
+        map((res =>  (res as any).data)),
+        catchError(err => {
+          // return throwError(err);
+          return of([]);
+        })
         ,shareReplay());
   }
 }
