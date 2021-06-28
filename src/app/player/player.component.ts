@@ -198,6 +198,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   nextVideo() {
     if(this.activeIndex < this.videoItems.length-1){
       this.activeIndex++;
+
+      this.chapter = this.chaptersArray[this.activeLectureIndex].chapters[this.activeIndex];
+
       this.currentVideo = this.videoItems[this.activeIndex];
       this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
     }

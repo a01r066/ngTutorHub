@@ -1,13 +1,14 @@
-<div style="margin: 16px">
-  <div style="color: darkslategrey; font-weight: 500; margin-top: 16px; font-size: 2rem" *ngIf="category">{{ category.title }}</div>
-  <div style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin-top: 16px">Courses to get you started</div>
-  <!--    Top course section-->
-  <div fxLayout="row" fxLayoutAlign="center center" style="height: 340px; margin-top: 16px">
-    <div>
+<div class="course-container">
+  <div class="left-bar"></div>
+  <div class="content">
+    <div class="title-heading">
+      <div *ngIf="category">Top {{ category.title }} Courses</div>
+    </div>
+    <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
       <div>
         <ng-container *ngIf="(topCourses$ | async) as courses">
-          <ul class="flex-container" fxLayoutAlign="center center">
-            <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { id: 'pagination1', itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
+          <ul class="course-flex-container" fxLayoutAlign="center center">
+            <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
               <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
               <div>
                 <div fxLayout="column" fxLayoutGap="8px">
@@ -19,30 +20,31 @@
               </div>
             </li>
           </ul>
-          <div class="center" *ngIf="courses.length > counter"><pagination-controls id="pagination1" (pageChange)="page = $event"></pagination-controls></div>
+          <div class="center" *ngIf="courses.length > counter"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
         </ng-container>
       </div>
     </div>
+    <!--    Course list section-->
+    <div class="title-heading">All Development Courses</div>
+    <div>
+      <ng-container *ngIf="(courses$ | async) as courses">
+        <ul class="course-flex-container">
+          <li class="course-flex-item" *ngFor="let course of courses | paginate: { id: 'pagination2', itemsPerPage: 5, currentPage: fPage }" (click)="onClick(course)">
+            <div style="width: 20%"><img width="100%" height="100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
+            <div class="course-flex-item-content">
+              <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
+              <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
+              <p style="margin-bottom: 0; padding-bottom: 0; font-size: 0.9rem">{{ course.instructor }}</p>
+            </div>
+            <div class="course-flex-item-price">
+              <h3>${{ getSalePrice(course) | number: '1.0-2' }}</h3>
+              <p style="text-decoration: line-through; color: red">${{ course.tuition | number: '1.0-2' }}</p>
+            </div>
+          </li>
+        </ul>
+        <div class="center" *ngIf="courses.length > 5"><pagination-controls id="pagination2" (pageChange)="fPage = $event"></pagination-controls></div>
+      </ng-container>
+    </div>
   </div>
-  <!--    Course list section-->
-  <div class="mat-card-title" style="color: darkslategrey; font-size: 1.5rem; font-weight: 500; margin-top: 32px">All Development Courses</div>
-  <div style="margin-top: 16px">
-    <ng-container *ngIf="(courses$ | async) as courses">
-      <ul class="course-flex-container">
-        <li class="course-flex-item" *ngFor="let course of courses | paginate: { id: 'pagination2', itemsPerPage: 5, currentPage: fPage }" (click)="onClick(course)">
-          <div style="width: 20%"><img width="100%" height="100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
-          <div class="course-flex-item-content">
-            <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
-            <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
-            <p style="margin-bottom: 0; padding-bottom: 0; font-size: 0.9rem">{{ course.instructor }}</p>
-          </div>
-          <div class="course-flex-item-price">
-            <h3>${{ getSalePrice(course) | number: '1.0-2' }}</h3>
-            <p style="text-decoration: line-through; color: red">${{ course.tuition | number: '1.0-2' }}</p>
-          </div>
-        </li>
-      </ul>
-      <div class="center" *ngIf="courses.length > 5"><pagination-controls id="pagination2" (pageChange)="fPage = $event"></pagination-controls></div>
-    </ng-container>
-  </div>
+  <div class="right-bar"></div>
 </div>

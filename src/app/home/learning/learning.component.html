@@ -1,15 +1,16 @@
-<div>
-  <div class="container">
-    <div class="preview mat-display-1" style="margin-top: -8px; font-weight: 500">My Learning</div>
-    <div class="tabPreview">
-      <mat-list>
-        <mat-list-item *ngFor="let item of items; let i = index" (click)="onClickTab(i)" [ngClass]="{highlight: i == activeIndex}">{{ item }}</mat-list-item>
-      </mat-list>
-    </div>
-  </div>
+<div class="div-container">
+  <div style="margin-top: -8px; font-size: 2rem; font-weight: 500; color: white">My Learning</div>
   <div>
+    <mat-list>
+      <mat-list-item *ngFor="let item of items; let i = index" (click)="onClickTab(i)" [ngClass]="{highlight: i == activeIndex}">{{ item }}</mat-list-item>
+    </mat-list>
+  </div>
+</div>
+<div class="learning-container">
+  <div class="left-bar"></div>
+  <div class="content">
     <ng-container *ngIf="activeIndex === 0; else wishlist">
-      <ul class="flex-container" fxLayoutAlign="center">
+      <ul class="flex-container">
         <li class="flex-item" style="cursor: pointer" *ngFor="let course of purchasedCourses; let i = index" (click)="onClick(course)">
           <img style="width: 100%" src="{{ base_url+course.courseId.photo }}" alt="{{ course.courseId.title }}">
           <div fxLayout="column" fxLayoutGap="8px" style="margin: 4px">
@@ -20,7 +21,8 @@
       </ul>
     </ng-container>
     <ng-template #wishlist>
-      <p>Empty</p>
+
     </ng-template>
   </div>
+  <div class="right-bar"></div>
 </div>

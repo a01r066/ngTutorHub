@@ -1,44 +1,38 @@
-<div class="container">
-  <div fxFlex="30"></div>
-  <div fxFlex="40" style="margin-top: 32px">
-    <div fxFlex fxLayout="column" fxLayoutAlign="top center">
-      <div>
-        <mat-label class="continue-label">Sign Up and Start Learning!</mat-label>
-      </div>
-      <div fxLayoutGap="12px" fxLayout="column" style="margin-top: 16px">
-        <div><button mat-raised-button color="primary" class="fb-button" (click)="onGmailFbRegister('fb')"><mat-icon>facebook</mat-icon>   SIGN UP WITH FACEBOOK</button></div>
-        <div><button mat-raised-button color="warn" class="fb-button" (click)="onGmailFbRegister('google')"><mat-icon style="font-weight: bold; font-family: Arial">G</mat-icon>  SIGN UP WITH GOOGLE</button></div>
-      </div>
-      <div style="margin-top: 16px">
-        <mat-label STYLE="font-size: 0.75rem">OR</mat-label>
-      </div>
-
-      <div style="font-size: 1.25rem; color: darkslategrey; font-weight: 400;margin-top: 16px;">Register TutorHub Account!</div>
-      <mat-divider style="background-color: lightgray; width: 160px; margin-top: 8px"></mat-divider>
-      <form [formGroup]="ngForm" (ngSubmit)="onRegister()" style="width: 320px" fxLayout="column">
-        <mat-form-field appearance="standard">
-          <mat-label>Full name</mat-label>
-          <input matInput placeholder="Full name" formControlName="displayName">
-          <mat-error>name must be at least 3 characters</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="standard">
-          <mat-label>Your email</mat-label>
-          <input matInput placeholder="Your email" formControlName="email" required>
-          <mat-error>Invalid or missing email.</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="standard">
-          <mat-label>Your password</mat-label>
-          <input matInput type="password" placeholder="Your password" autocomplete="on" formControlName="password" required>
-          <mat-error>Missing password.</mat-error>
-        </mat-form-field>
-        <div fxLayoutAlign="center center">
-          <button mat-raised-button color="primary" style="width: 96px; height: 40px; font-size: 1.1rem" [disabled]="ngForm.invalid" *ngIf="!(isLoading$ | async)">Sign up</button>
-          <mat-spinner style="transform: scale(0.5)" *ngIf="(isLoading$ | async)"></mat-spinner>
-        </div>
-      </form>
-      <mat-divider style="margin: 8px"></mat-divider>
-      <div>Already have an account? <span style="cursor: pointer; color: purple; font-weight: 500" routerLink="/login">Log In</span></div>
-    </div>
+<div class="div-container">
+  <div>
+    <mat-label class="continue-label">Sign Up and Start Learning!</mat-label>
   </div>
-  <div fxFlex="30"></div>
+  <div fxLayoutGap="12px" fxLayout="column" style="margin-top: 16px">
+    <div><button mat-raised-button color="primary" class="fb-button" (click)="onGmailFbRegister('fb')"><mat-icon>facebook</mat-icon>   SIGN UP WITH FACEBOOK</button></div>
+    <div><button mat-raised-button color="warn" class="fb-button" (click)="onGmailFbRegister('google')"><mat-icon style="font-weight: bold; font-family: Arial">G</mat-icon>  SIGN UP WITH GOOGLE</button></div>
+  </div>
+  <div style="margin-top: 16px">
+    <mat-label STYLE="font-size: 0.75rem">OR</mat-label>
+  </div>
+
+  <div style="font-size: 1.25rem; color: darkslategrey; font-weight: 400;margin-top: 16px;">Register TutorHub Account!</div>
+  <mat-divider style="background-color: lightgray; width: 160px; margin-top: 8px"></mat-divider>
+  <form [formGroup]="ngForm" (ngSubmit)="onRegister()" style="width: 320px" fxLayout="column">
+    <mat-form-field appearance="standard">
+      <mat-label>Full name</mat-label>
+      <input matInput placeholder="Full name" formControlName="displayName">
+      <mat-error>name must be at least 3 characters</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Your email</mat-label>
+      <input matInput placeholder="Your email" formControlName="email" required>
+      <mat-error>Invalid or missing email.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Your password</mat-label>
+      <input matInput type="password" placeholder="Your password" autocomplete="on" formControlName="password" required>
+      <mat-error>Missing password.</mat-error>
+    </mat-form-field>
+    <div fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" style="width: 96px; height: 40px; font-size: 1.1rem" [disabled]="ngForm.invalid" *ngIf="!(isLoading$ | async)">Sign up</button>
+      <mat-spinner style="transform: scale(0.5)" *ngIf="(isLoading$ | async)"></mat-spinner>
+    </div>
+  </form>
+  <mat-divider style="margin: 8px"></mat-divider>
+  <div>Already have an account? <span style="cursor: pointer; color: purple; font-weight: 500" routerLink="/login">Log In</span></div>
 </div>

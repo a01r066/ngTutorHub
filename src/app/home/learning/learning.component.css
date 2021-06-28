@@ -1,18 +1,12 @@
-.flex-container {
-  /* We first create a flex layout context */
+.learning-container {
   display: flex;
+  flex-direction: row;
+}
 
-  /* Then we define the flow direction
-     and if we allow the items to wrap
-   * Remember this is the same as:
-   * flex-direction: row;
-   * flex-wrap: wrap;
-   */
+.flex-container {
+  display: flex;
   flex-flow: row wrap;
-
-  /* Then we define how is distributed the remaining space */
-  justify-content: normal;
-
+  justify-content: center;
   padding: 0;
   margin: 0 12px 0 12px;
   list-style: none;
@@ -40,30 +34,18 @@
   overflow: hidden;
 }
 
-.container {
+.div-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 124px;
-  position: relative;
   background-color: #505763;
-  border-radius: 4px;
 }
 
-.preview {
+.div-center {
   color: white;
   margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.tabPreview {
-  color: white;
-  position: absolute;
-  top: 80%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 .mat-list {

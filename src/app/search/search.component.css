@@ -20,6 +20,7 @@
   flex-direction: column;
   justify-content: center;
   margin: 16px;
+  list-style: none;
 }
 
 .course-flex-item-price {

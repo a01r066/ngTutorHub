@@ -57,10 +57,23 @@ export class DataStore {
   }
 
   getCoursesByCategory(category: any): Observable<Course[]>{
-    return this.courses$
+    // return this.courses$
+    //   .pipe(
+    //     map(courses => courses
+    //       .filter(course => course.category === category)));
+
+    const url = `${Constants.base_url}/categories/${category}/courses`;
+    const loadingCourses$ = this.http.get<Course[]>(url)
       .pipe(
-        map(courses => courses
-          .filter(course => course.category === category)));
+        map(res => (res as any).data),
+        catchError(err => {
+          const message = 'Could not load data. Please check your internet connection or try again later!';
+          this.messageService.showErrors(message);
+          return throwError(err);
+        }),
+        // tap(courses => this.coursesSub.next(courses))
+      )
+    return this.loadingService.showLoaderUntilCompleted(loadingCourses$);
   }
 
   getBestsellerCoursesByCategory(category: any): Observable<Course[]>{

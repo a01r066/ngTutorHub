@@ -6,8 +6,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Course} from "../../../models/course.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CourseDialogComponent} from "./course-dialog/course-dialog.component";
-import {Subject} from "rxjs";
-import {FormControl, FormGroup} from "@angular/forms";
+import {Observable, Subject} from "rxjs";
 import {UploadPhotoDialogComponent} from "./upload-photo-dialog/upload-photo-dialog.component";
 
 @Component({
@@ -40,14 +39,16 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // this.dataSource = new MatTableDataSource<Course>(this.courses);
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   private getCourses() {
     this.categoryId = this.route.snapshot.params['id'];
-    this.dataStore.courses$.subscribe(courses => {
-      this.courses = courses.filter(course => course.category === this.categoryId);
+    this.dataStore.getCoursesByCategory(this.categoryId).subscribe(courses => {
+      this.courses = courses;
+      // this.courses = courses.filter(course => course.category === this.categoryId);
       this.dataSource = new MatTableDataSource<Course>(this.courses);
+      this.dataSource.paginator = this.paginator;
     })
   }
 

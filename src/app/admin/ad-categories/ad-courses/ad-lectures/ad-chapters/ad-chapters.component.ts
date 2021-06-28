@@ -8,7 +8,6 @@ import {filter, tap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Category} from "../../../../../models/category.model";
-import {FormControl, FormGroup} from "@angular/forms";
 import {ChapterDialogComponent} from "./chapter-dialog/chapter-dialog.component";
 import {UploadFileDialogComponent} from "./upload-file-dialog/upload-file-dialog.component";
 import {Lecture} from "../../../../../models/lecture.model";
@@ -48,7 +47,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // this.dataSource = new MatTableDataSource<Category>(this.categories);
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   private getData() {
@@ -57,6 +56,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
     this.dataStore.getChaptersByLectureId(this.lectureId).subscribe(chapters => {
       this.chapters = chapters;
       this.dataSource = new MatTableDataSource<Chapter>(this.chapters );
+      this.dataSource.paginator = this.paginator;
     })
   }
 

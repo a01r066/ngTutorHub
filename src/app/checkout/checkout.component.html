@@ -1,43 +1,51 @@
-<div class="container" style="margin: 16px">
-  <div style="color: darkslategray">
-    <div fxLayout="row">
-      <div fxFlex="70" fxLayout="column">
-        <div>
-          <div style="font-size: 2rem; font-weight: 500; color: darkslategray">Checkout</div>
-          <div class="mat-title" style="color: darkblue">Complete with your payment method</div>
-          <div #paypal style="justify-content: center"></div>
-        </div>
-        <div style="margin-top: 48px">
-          <div style="font-size: 1.25rem; font-weight: 500; color: darkslategray; margin-bottom: 16px">Order Details</div>
+<div class="cart-heading">
+  <h1 style="margin-left: 15vw; font-weight: 300">Checkout</h1>
+</div>
+<div class="checkout-container">
+  <div class="left-bar"></div>
+  <div class="content">
+    <div class="container" style="margin: 16px">
+      <div style="color: #505763">
+        <div fxLayout="row">
+          <div fxFlex="70" fxLayout="column">
+            <div>
+              <div class="mat-title" style="color: darkblue">Complete with your payment method</div>
+              <div #paypal style="justify-content: center"></div>
+            </div>
+            <div style="margin-top: 48px">
+              <div style="font-size: 1.25rem; font-weight: 500; color: darkslategray; margin-bottom: 16px">Order Details</div>
 
-          <div>
-            <ul class="flex-container">
-              <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of courses; let i = index">
-                <div fxFlex="15" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.courseId.photo }}" alt="{{ course.title }}"></div>
-                <div fxFlex="75" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
-                  <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.courseId.title }}</textarea>
-                  <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.courseId.description }}</textarea>
-                </div>
-                <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
-                  <div style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number: '1.0-2' }}</div>
-                </div>
-              </li>
-            </ul>
+              <div>
+                <ul class="flex-container">
+                  <li class="course-flex-item" style="cursor: pointer" *ngFor="let course of courses; let i = index">
+                    <div fxFlex="15" fxLayoutAlign="center left"><img width="100%" mat-card-image src="{{ base_url+course.courseId.photo }}" alt="{{ course.title }}"></div>
+                    <div fxFlex="75" fxLayout="column" fxLayoutAlign="center left" fxLayoutGap="8px" style="margin: 12px">
+                      <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.courseId.title }}</textarea>
+                      <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.courseId.description }}</textarea>
+                    </div>
+                    <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center">
+                      <div style="font-weight: bold; color: red">${{ getDiscountedPrice(course) | number: '1.0-2' }}</div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="30">
+            <div style="margin: 16px; background-color: white; padding: 16px; border: 1px solid lightgray; border-radius: 4px">
+              <div style="font-size: 1.5rem; font-weight: 500; color: black; margin: 16px 0 16px 0">Summary</div>
+              <div fxLayout="column" fxLayoutGap="8px">
+                <div>Original price <span style="float: right">$ {{  totalPrice | number: '1.0-2' }}</span></div>
+                <div>Discount <span style="float: right">$ -{{ priceDiscounted | number: '1.0-2' }}</span></div>
+                <mat-divider></mat-divider>
+                <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ salePrice | number: '1.0-2' }}</span></div>
+              </div>
+            </div>
+            <div *ngIf="user.role === 'admin'" (click)="addToAdmin()"><button mat-raised-button>Add to Admin</button></div>
           </div>
         </div>
-      </div>
-      <div fxFlex="30">
-        <div style="margin: 16px; background-color: white; padding: 16px; border: 1px solid lightgray; border-radius: 4px">
-          <div style="font-size: 1.5rem; font-weight: 500; color: black; margin: 16px 0 16px 0">Summary</div>
-          <div fxLayout="column" fxLayoutGap="8px">
-            <div>Original price <span style="float: right">$ {{  totalPrice | number: '1.0-2' }}</span></div>
-            <div>Discount <span style="float: right">$ -{{ priceDiscounted | number: '1.0-2' }}</span></div>
-            <mat-divider></mat-divider>
-            <div style="font-size: 1.25rem; font-weight: 500; color: black">Total <span style="float: right; font-weight: 500; color: black">$ {{ salePrice | number: '1.0-2' }}</span></div>
-          </div>
-        </div>
-        <div *ngIf="user.role === 'admin'" (click)="addToAdmin()"><button mat-raised-button>Add to Admin</button></div>
       </div>
     </div>
   </div>
+  <div class="right-bar"></div>
 </div>

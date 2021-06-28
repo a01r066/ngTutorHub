@@ -85,10 +85,6 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   private getCourses() {
     if (this.categories.length > 0) {
       this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);
-      // this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id || '', this.counter, this.page).subscribe(res => {
-      //   // console.log('res: ' + JSON.stringify(res));
-      //   this.courses = (res as any).data;
-      // });
     }
   }
 
@@ -99,10 +95,6 @@ export class FeaturesComponent implements OnInit, OnDestroy {
 
   onClick(course: any){
     this.router.navigate(['course', course.slug]);
-  }
-
-  getCoursePrice(course: any){
-    return (course.tuition * (1 - this.discount/100));
   }
 
   getCounter() {

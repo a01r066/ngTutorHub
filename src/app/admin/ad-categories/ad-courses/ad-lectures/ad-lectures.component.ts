@@ -7,7 +7,6 @@ import {DataStore} from "../../../../services/data.store";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {filter, tap} from "rxjs/operators";
-import {FormControl, FormGroup} from "@angular/forms";
 import {Lecture} from "../../../../models/lecture.model";
 import {LectureDialogComponent} from "./lecture-dialog/lecture-dialog.component";
 
@@ -41,7 +40,7 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // this.dataSource = new MatTableDataSource<Category>(this.categories);
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   private getData() {
@@ -49,6 +48,7 @@ export class AdLecturesComponent implements OnInit, AfterViewInit {
     this.dataStore.getLecturesByCourseId(this.courseId).subscribe(lectures => {
       this.lectures = lectures;
       this.dataSource = new MatTableDataSource<Lecture>(this.lectures );
+      this.dataSource.paginator = this.paginator;
     })
   }
 

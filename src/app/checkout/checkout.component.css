@@ -1,3 +1,18 @@
+.cart-heading {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 140px;
+  justify-content: center;
+  background-color: #505763;
+  color: white;
+}
+
+.checkout-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .mat-radio-group {
   display: flex;
   flex-direction: column;

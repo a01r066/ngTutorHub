@@ -3,16 +3,7 @@
   <app-message></app-message>
   <app-loading></app-loading>
   <div fxFlex fxLayout="column">
-    <!--  Content-->
-    <ng-container>
-      <div fxFlex fxLayout="row">
-        <div class="sidebar" fxFlex="10" *ngIf="!isPlayer" fxLayoutAlign="center" style="background-color: transparent"></div>
-        <div fxFlex="{{ !isPlayer ? 80 : 100 }}">
-          <router-outlet></router-outlet>
-        </div>
-        <div class="sidebar" fxFlex="10" *ngIf="!isPlayer" style="background-color: transparent"></div>
-      </div>
-    </ng-container>
+    <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </div>

@@ -1,8 +1,13 @@
+.banner-container {
+  display: flex;
+  background-color: #505763;
+}
+
 .header-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background-color: #505763;
+  /*justify-content: center;*/
+  /*background-color: #505763;*/
   /*background-image: linear-gradient(#505763 100%, #90f7ec 10%, #90f7ec 50%);*/
 }
 
@@ -12,16 +17,22 @@
   margin: 16px;
 }
 
+.left-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .course-summary {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .course-summary-item {
   display: flex;
   width: 80%;
-  margin-bottom: 8px;
+  margin: 8px 0 8px 0;
 }
 
 .mat-raised-button {

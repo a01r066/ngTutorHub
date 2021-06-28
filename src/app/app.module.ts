@@ -66,7 +66,7 @@ import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
     AdminComponent,
     CourseOverviewComponent,
     HomeDialogComponent,
-    PlayerDialogComponent,
+    PlayerDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
