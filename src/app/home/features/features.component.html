@@ -1,31 +1,30 @@
 <div class="feature-container">
-  <!--Tabs-->
-  <div class="center">
-    <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
-      <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
-    </mat-tab-group>
-  </div>
-  <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
+  <div class="left-bar"></div>
+  <div class="content">
     <div>
-      <ng-container *ngIf="(courses$ | async) as courses">
-        <ul class="flex-container" fxLayoutAlign="center center">
-          <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
-            <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-            <div>
-              <div fxLayout="column" fxLayoutGap="8px">
-                <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
-                <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
-                <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
-                  <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <div class="center" *ngIf="courses.length > counter"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
-      </ng-container>
+      <!--Tabs-->
+      <div class="center">
+        <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
+          <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
+        </mat-tab-group>
+      </div>
+      <h2 class="title-heading">Top paid {{ categories[selectedIndex]?.title }} courses</h2>
+      <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
+        <ng-container *ngIf="(courses$ | async) as courses">
+          <app-feature-section [courses]="courses" [counter]="counter"></app-feature-section>
+        </ng-container>
+      </div>
+      <h2 class="title-heading">Top rated free courses</h2>
+      <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
+        <ng-container *ngIf="(freeCourses$ | async) as courses">
+          <app-feature-section [courses]="courses" [counter]="counter"></app-feature-section>
+        </ng-container>
+      </div>
     </div>
   </div>
+  <div class="right-bar"></div>
 </div>
+
 
 <!--<pagination-template #p="paginationApi"-->
 <!--                     (pageChange)="config.currentPage = $event">-->

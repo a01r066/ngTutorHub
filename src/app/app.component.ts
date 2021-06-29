@@ -6,7 +6,6 @@ import {UiService} from "./services/ui.service";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {MatDialog} from "@angular/material/dialog";
 import {HomeDialogComponent} from "./home/home-dialog/home-dialog.component";
-import {filter, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-root',

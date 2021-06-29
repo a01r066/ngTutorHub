@@ -1,10 +1,9 @@
 import {
   Component,
-  HostListener, OnDestroy,
+  HostListener,
   OnInit
 } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
 import {Course} from "../../models/course.model";
 import {UiService} from "../../services/ui.service";
 import {DataStore} from "../../services/data.store";
@@ -18,23 +17,19 @@ import {Observable} from "rxjs";
   templateUrl: './features.component.html',
   styleUrls: ['./features.component.css']
 })
-export class FeaturesComponent implements OnInit, OnDestroy {
-  // base_url = 'http://localhost:3000/uploads/courses/';
+export class FeaturesComponent implements OnInit {
   base_url = `${Constants.base_upload}/courses/`;
 
   courses$!: Observable<Course[]>;
+  freeCourses$!: Observable<Course[]>;
 
-  discount = 90;
   counter!: number;
   cateCounter!: number;
-
+  //
   categories: Category[] = [];
-
+  //
   selectedIndex = 0;
   page: number = 1;
-
-  // slider!: any;
-
 
   // config: PaginationInstance = {
   //   itemsPerPage: this.counter,
@@ -42,7 +37,6 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   // };
 
   constructor(private http: HttpClient,
-              private router: Router,
               private authStore: AuthStore,
               private uiService: UiService,
               private dataStore: DataStore) {}
@@ -56,6 +50,8 @@ export class FeaturesComponent implements OnInit, OnDestroy {
       this.getCourses();
     })
 
+    this.freeCourses$ = this.dataStore.getFreeCourses();
+
     // this.slider = setInterval(() => {
     //   if(this.selectedIndex < this.categories.length - 1){
     //     this.selectedIndex++;
@@ -66,20 +62,10 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     // }, 4000);
   }
 
-  ngOnDestroy(): void {
-    // clearInterval(this.slider);
-  }
-
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.getCounter();
     this.getCateCounter();
-  }
-
-  getSalePrice(course: any) {
-    const tuition = course.tuition;
-    const discount = course.coupon.discount;
-    return (tuition * (1 - discount/100));
   }
 
   private getCourses() {
@@ -88,13 +74,11 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
   onClickTab(index: any) {
     this.selectedIndex = index;
     this.getCourses();
-  }
-
-  onClick(course: any){
-    this.router.navigate(['course', course.slug]);
   }
 
   getCounter() {

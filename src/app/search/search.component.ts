@@ -14,7 +14,6 @@ import {Constants} from "../helpers/constants";
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  // base_url = 'http://18.117.94.38:3000/uploads/courses/';
   base_url = `${Constants.base_upload}/courses/`;
   courses$!: Observable<Course[]>;
   searchText!: string;

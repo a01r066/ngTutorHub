@@ -52,7 +52,12 @@ export class DataStore {
           this.messageService.showErrors(message);
           return throwError(err);
         }),
-        tap(courses => this.coursesSub.next(courses)))
+        tap(courses => {
+          console.log('all courses: '+courses.length);
+          this.coursesSub.next(courses);
+        }),
+        shareReplay()
+      )
     this.loadingService.showLoaderUntilCompleted(loadingCourses$).subscribe();
   }
 
@@ -72,6 +77,7 @@ export class DataStore {
           return throwError(err);
         }),
         // tap(courses => this.coursesSub.next(courses))
+        shareReplay()
       )
     return this.loadingService.showLoaderUntilCompleted(loadingCourses$);
   }
@@ -80,7 +86,18 @@ export class DataStore {
     return this.getCoursesByCategory(category)
       .pipe(
         map(courses => courses
-          .filter(course => course.bestseller)));
+          .filter(course => course.bestseller)),
+        shareReplay()
+      );
+  }
+
+  getFreeCourses(): Observable<Course[]>{
+    return this.courses$
+      .pipe(
+        map(courses => courses
+          .filter(course => course.isFree)),
+        shareReplay()
+      );
   }
 
   // getBestsellerCoursesByCategory(categoryId: string, counter: number, page: number): Observable<any>{

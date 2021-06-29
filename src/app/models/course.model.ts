@@ -12,6 +12,7 @@ export interface Course {
   bestseller: boolean;
   weeks: string;
   tuition: number;
+  isFree: boolean;
   minimumSkill: string;
   scholarshipAvailable: boolean;
   createdAt: any;

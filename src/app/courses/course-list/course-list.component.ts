@@ -13,7 +13,6 @@ import {Constants} from "../../helpers/constants";
   styleUrls: ['./course-list.component.css']
 })
 export class CourseListComponent implements OnInit {
-  // base_url = 'http://localhost:3000/uploads/courses/';
   base_url = `${Constants.base_upload}/courses/`;
 
   category!: Category;

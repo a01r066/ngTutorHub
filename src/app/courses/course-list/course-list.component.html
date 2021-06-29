@@ -7,7 +7,7 @@
     <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
       <div>
         <ng-container *ngIf="(topCourses$ | async) as courses">
-          <ul class="course-flex-container" fxLayoutAlign="center center">
+          <ul class="item-container">
             <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
               <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
               <div>
