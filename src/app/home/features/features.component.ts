@@ -61,6 +61,9 @@ export class FeaturesComponent implements OnInit {
     //   this.onClickTab(this.selectedIndex);
     // }, 4000);
   }
+ // shuffle(items: any) {
+ //   return items.sort(() => Math.random() - 0.5);
+ //  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -73,8 +76,6 @@ export class FeaturesComponent implements OnInit {
       this.courses$ = this.dataStore.getBestsellerCoursesByCategory(this.categories[this.selectedIndex]._id);
     }
   }
-
-
 
   onClickTab(index: any) {
     this.selectedIndex = index;

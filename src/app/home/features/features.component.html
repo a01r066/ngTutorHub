@@ -1,47 +1,20 @@
-<div class="feature-container">
-  <div class="left-bar"></div>
-  <div class="content">
-    <div>
-      <!--Tabs-->
-      <div class="center">
-        <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
-          <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
-        </mat-tab-group>
-      </div>
-      <h2 class="title-heading">Top paid {{ categories[selectedIndex]?.title }} courses</h2>
-      <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
-        <ng-container *ngIf="(courses$ | async) as courses">
-          <app-feature-section [courses]="courses" [counter]="counter"></app-feature-section>
-        </ng-container>
-      </div>
-      <h2 class="title-heading">Top rated free courses</h2>
-      <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
-        <ng-container *ngIf="(freeCourses$ | async) as courses">
-          <app-feature-section [courses]="courses" [counter]="counter"></app-feature-section>
-        </ng-container>
-      </div>
-    </div>
+<header class="container">
+  <!--Tabs-->
+  <div class="center">
+    <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
+      <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
+    </mat-tab-group>
   </div>
-  <div class="right-bar"></div>
-</div>
-
-
-<!--<pagination-template #p="paginationApi"-->
-<!--                     (pageChange)="config.currentPage = $event">-->
-<!--  <div class="custom-pagination" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">-->
-<!--    <div class="pagination-previous" [class.disabled]="p.isFirstPage()">-->
-<!--      <a *ngIf="!p.isFirstPage()" (click)="p.previous()" style="cursor: pointer"> Prev </a>-->
-<!--    </div>-->
-<!--    <div *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">-->
-<!--      <a (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value" style="cursor: pointer">-->
-<!--        <span>{{ page.label }}</span>-->
-<!--      </a>-->
-<!--      <div *ngIf="p.getCurrent() === page.value">-->
-<!--        <span>{{ page.label }}</span>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="pagination-next" [class.disabled]="p.isLastPage()">-->
-<!--      <a *ngIf="!p.isLastPage()" (click)="p.next()" style="cursor: pointer"> Next </a>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</pagination-template>-->
+  <h2 class="title-heading">Top paid {{ categories[selectedIndex]?.title }} courses</h2>
+  <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
+    <ng-container *ngIf="(courses$ | async) as courses">
+      <app-feature-section [courses]="courses" [counter]="counter" [paginationId]="'paid'"></app-feature-section>
+    </ng-container>
+  </div>
+  <h2 class="title-heading">Top rated free courses</h2>
+  <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
+    <ng-container *ngIf="(freeCourses$ | async) as courses">
+      <app-feature-section [courses]="courses" [counter]="counter" [paginationId]="'free'"></app-feature-section>
+    </ng-container>
+  </div>
+</header>

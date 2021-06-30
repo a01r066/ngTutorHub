@@ -43,6 +43,10 @@ export class CourseListComponent implements OnInit {
     })
   }
 
+  // shuffle(items: any) {
+  //   return items.sort(() => Math.random() - 0.5);
+  // }
+
   getSalePrice(course: any) {
     const tuition = course.tuition;
     const discount = course.coupon.discount;

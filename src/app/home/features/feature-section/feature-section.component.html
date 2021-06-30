@@ -1,24 +1,20 @@
-<div class="flex-container">
-  <div class="left-bar"></div>
-  <div class="content">
-    <ul class="item-container">
-      <li style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }"
-          (click)="onClick(course)">
-        <div class="flex-item">
-          <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
-          <div>
-            <div fxLayout="column" fxLayoutGap="8px">
-              <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
-              <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
-              <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
-                <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
-            </div>
+<header class="container">
+  <ul class="item-container">
+    <li style="cursor: pointer" *ngFor="let course of courses | paginate: {id: paginationId, itemsPerPage: counter, currentPage: paginationId === 'paid' ? page : freePage }"
+        (click)="onClick(course)">
+      <div class="flex-item">
+        <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
+        <div>
+          <div fxLayout="column" fxLayoutGap="8px">
+            <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
+            <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
+            <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
+              <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
           </div>
         </div>
-      </li>
-    </ul>
-    <div class="center" *ngIf="courses.length > counter"><pagination-controls (pageChange)="page = $event"></pagination-controls></div>
-  </div>
-  <div class="right-bar"></div>
-</div>
+      </div>
+    </li>
+  </ul>
+  <div class="center" *ngIf="courses.length > counter"><pagination-controls id="{{paginationId}}" (pageChange)="paginationId === 'paid' ? page = $event : freePage = $event"></pagination-controls></div>
+</header>
 

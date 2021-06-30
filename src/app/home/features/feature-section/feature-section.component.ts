@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Course} from "../../../models/course.model";
-import {Category} from "../../../models/category.model";
 import {Constants} from "../../../helpers/constants";
 import {Router} from "@angular/router";
 
@@ -13,7 +12,9 @@ export class FeatureSectionComponent implements OnInit {
   @Input() courses: Course[] = [];
   @Input() counter!: number;
   page: number = 1;
+  freePage: number = 1;
   base_url = `${Constants.base_upload}/courses/`;
+  @Input() paginationId!: string;
 
   constructor(
     private router: Router

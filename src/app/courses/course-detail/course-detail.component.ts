@@ -11,7 +11,6 @@ import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
 import {MatDialog} from "@angular/material/dialog";
 import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
-import {CategoryDialogComponent} from "../../admin/ad-categories/category-dialog/category-dialog.component";
 import {PlayerDialogComponent} from "../../player/player-dialog/player-dialog.component";
 import {filter, tap} from "rxjs/operators";
 

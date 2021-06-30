@@ -3,18 +3,11 @@
   background-color: #505763;
 }
 
-.header-container {
+.banner-content {
   display: flex;
   flex-direction: column;
-  /*justify-content: center;*/
-  /*background-color: #505763;*/
-  /*background-image: linear-gradient(#505763 100%, #90f7ec 10%, #90f7ec 50%);*/
-}
-
-.header-content {
-  display: flex;
-  flex-flow: column nowrap;
-  margin: 16px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .left-content {

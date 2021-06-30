@@ -6,6 +6,11 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
 .mat-form-field {
   display: block;
 }
@@ -21,27 +26,6 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.course-container {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.left-bar {
-  display: flex;
-  width: 15vw;
-}
-
-.content {
-  display: flex;
-  width: 70vw;
-  flex-flow: column nowrap;
-}
-
-.right-bar {
-  display: flex;
-  width: 15vw;
 }
 
 .title-heading {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Constants} from "../../helpers/constants";
 import {Router} from "@angular/router";
 import {AuthStore} from "../../services/auth.store";
@@ -27,6 +27,7 @@ export class LearningComponent implements OnInit {
       user.purchased_courses.forEach(course => {
         this.purchasedCourses.push(course);
       })
+      this.purchasedCourses.reverse();
     })
   }
 
