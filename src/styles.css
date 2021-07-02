@@ -1,14 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
 
 html, body { height: 100%; }
 body {
-  margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .container {
   width: 80%;
   margin: 0 auto;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+/* Logo */
+.logo {
+  cursor: pointer;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
 }
 
 .mat-form-field {

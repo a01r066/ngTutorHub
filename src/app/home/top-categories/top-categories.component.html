@@ -2,9 +2,9 @@
 <header class="container">
   <h1 class="title-heading">Top categories</h1>
   <ul class="categories-container">
-    <li class="flex-item" style="cursor: pointer" *ngFor="let category of (categories$ | async); let i = index" (click)="onClick(category)">
+    <li class="flex-item" *ngFor="let category of (categories$ | async); let i = index" (click)="onClick(category)">
       <img style="width: 100%" src="{{ base_url+category.photo }}" alt="{{ category.title }}">
-      <div style="margin: -8px 8px 0 8px">
+      <div style="margin: 8px">
         <div><p class="mat-card-title" style="font-size: 1.1rem; font-weight: 500; color: #1E1E1C">{{ category.title.substring(0, 28) }}</p></div>
       </div>
     </li>

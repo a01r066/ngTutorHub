@@ -3,18 +3,17 @@
     <li style="cursor: pointer" *ngFor="let course of courses | paginate: {id: paginationId, itemsPerPage: counter, currentPage: paginationId === 'paid' ? page : freePage }"
         (click)="onClick(course)">
       <div class="flex-item">
-        <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
+        <img src="{{ base_url+course.photo }}" alt="{{ course.title }}">
         <div>
-          <div fxLayout="column" fxLayoutGap="8px">
-            <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
-            <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
-            <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
-              <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
-          </div>
+          <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray; margin-top: 8px" readonly disabled>{{ course.title }}</textarea>
+          <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
+          <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
+            <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
         </div>
       </div>
     </li>
   </ul>
+<!--  section*3.section.section-$>img+div.content>p{Nov 20, 2021}+h3{Some Headline}+p{Some Content}-->
   <div class="center" *ngIf="courses.length > counter"><pagination-controls id="{{paginationId}}" (pageChange)="paginationId === 'paid' ? page = $event : freePage = $event"></pagination-controls></div>
 </header>
 
