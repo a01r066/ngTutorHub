@@ -470,4 +470,13 @@ export class DataStore {
         })
         ,shareReplay());
   }
+
+  updateDuration(chapterId: any, duration: number): Observable<any>{
+    const data = {
+      "duration": duration
+    }
+    const url = `${Constants.base_url}/chapter/${chapterId}`;
+    return this.http.put(url, data)
+      .pipe(shareReplay());
+  }
 }

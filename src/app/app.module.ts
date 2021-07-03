@@ -42,6 +42,7 @@ import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import { FeatureSectionComponent } from './home/features/feature-section/feature-section.component';
+import {VgStreamingModule} from "@videogular/ngx-videogular/streaming";
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { FeatureSectionComponent } from './home/features/feature-section/feature
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule
+    VgBufferingModule,
+    VgStreamingModule
   ],
   providers: [
     DecimalPipe,

@@ -16,44 +16,52 @@
   <div fxFlext fxLayout="row">
     <div fxFlex="{{ isHidden ? 100: 75 }}">
       <div fxLayout="column">
-        <ng-container *ngIf="currentVideo">
-          <div class="video-player-wrapper" *ngIf="currentVideo?.src.slice(currentVideo?.src.length - 3) === 'mp4'; else htmlPage">
-            <vg-player  (onPlayerReady)="videoPlayerInit($event)">
-              <vg-overlay-play></vg-overlay-play>
-              <vg-buffering></vg-buffering>
-
-              <vg-scrub-bar>
-                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-              </vg-scrub-bar>
-
-              <vg-controls>
-                <vg-play-pause></vg-play-pause>
-                <vg-playback-button></vg-playback-button>
-
-                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-
-                <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-
-                <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
-                <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-
-                <vg-mute></vg-mute>
-                <vg-volume></vg-volume>
-
-                <vg-fullscreen></vg-fullscreen>
-              </vg-controls>
-              <video #media [vgMedia]="media" [src]="currentVideo?.src" id="singleVideo" preload="auto" crossorigin></video>
-            </vg-player>
-
-            <!--          <ul class="player-list">-->
-            <!--            <li *ngFor="let vdo of videoItems; let $index = index"-->
-            <!--                (click)="startPlaylistVdo(vdo, $index)" [class.selected]="vdo === currentVideo">-->
-            <!--              {{ vdo.name }}-->
-            <!--            </li>-->
-            <!--          </ul>-->
-          </div>
+        <ng-container>
+          <vg-player>
+            <video #myMedia
+                   [vgHls]="streamPath"
+                   type="video/mp4"
+                   controls>
+            </video>
+          </vg-player>
         </ng-container>
+<!--        <ng-container *ngIf="currentVideo">-->
+<!--          <div class="video-player-wrapper" *ngIf="currentVideo?.src.slice(currentVideo?.src.length - 3) === 'mp4'; else htmlPage">-->
+<!--            <vg-player (onPlayerReady)="videoPlayerInit($event)">-->
+<!--              <vg-overlay-play></vg-overlay-play>-->
+<!--              <vg-buffering></vg-buffering>-->
+
+<!--              <vg-scrub-bar>-->
+<!--                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>-->
+<!--                <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>-->
+<!--              </vg-scrub-bar>-->
+
+<!--              <vg-controls>-->
+<!--                <vg-play-pause></vg-play-pause>-->
+<!--                <vg-playback-button></vg-playback-button>-->
+
+<!--                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>-->
+
+<!--                <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>-->
+
+<!--                <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>-->
+<!--                <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>-->
+
+<!--                <vg-mute></vg-mute>-->
+<!--                <vg-volume></vg-volume>-->
+
+<!--                <vg-fullscreen></vg-fullscreen>-->
+<!--              </vg-controls>-->
+<!--              <video #media [vgMedia]="media" [src]="currentVideo?.src" id="singleVideo" preload="auto" crossorigin></video>-->
+<!--            </vg-player>-->
+<!--            &lt;!&ndash;          <ul class="player-list">&ndash;&gt;-->
+<!--            &lt;!&ndash;            <li *ngFor="let vdo of videoItems; let $index = index"&ndash;&gt;-->
+<!--            &lt;!&ndash;                (click)="startPlaylistVdo(vdo, $index)" [class.selected]="vdo === currentVideo">&ndash;&gt;-->
+<!--            &lt;!&ndash;              {{ vdo.name }}&ndash;&gt;-->
+<!--            &lt;!&ndash;            </li>&ndash;&gt;-->
+<!--            &lt;!&ndash;          </ul>&ndash;&gt;-->
+<!--          </div>-->
+<!--        </ng-container>-->
         <ng-template #htmlPage>
           <iframe [src]="getSafeURL(currentVideo?.src)" width="98%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
         </ng-template>
@@ -84,9 +92,10 @@
               <mat-nav-list>
                 <ng-container *ngFor="let chapter of lecture.chapters; let chapterIndex = index">
                   <mat-list-item [routerLinkActive]="['active']" (click)="startPlaylistVdo(chapter, chapterIndex, lectureIndex)"
-                                 [class.selected]="chapter === currentVideo" [class.selected]="chapter === currentVideo" [class.active]="activeIndex == chapterIndex">{{chapter.title }}
-                    <span style="float: right" *ngIf="chapter">
-                  <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0" >{{ chapter.duration | number }} min</ng-container>
+                                 [class.selected]="chapter === currentVideo" [class.selected]="chapter === currentVideo" [class.active]="activeIndex == chapterIndex">
+                    <span style="width: 85%; font-size: 0.9rem">{{chapter.title }}</span>
+                    <span *ngIf="chapter">
+                  <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0"><span style="font-size: 0.9rem">{{ formatTime(chapter.duration) }} min</span></ng-container>
                   <ng-container *ngIf="chapter.zip.length > 0"><button mat-icon-button style="color: gray; z-index: 1000; transform: scale(1.25)" matTooltip="Download attach file" (click)="downloadFile(chapter)"><mat-icon>attach_file</mat-icon></button></ng-container>
                   <ng-container *ngIf="getFileExt(chapter) === 'tml' || getFileExt(chapter) === 'pdf'"><button mat-icon-button style="color:gray"><mat-icon>description</mat-icon></button></ng-container>
                 </span>

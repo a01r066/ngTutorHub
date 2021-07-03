@@ -1,29 +1,37 @@
 <div class="container">
   <div class="mat-card-title" style="margin: 24px">{{ lecture?.title }}
-    <span style="float: right;"><button mat-flat-button color="primary" (click)="create()"><mat-icon>add</mat-icon> CREATE CHAPTER</button></span></div>
+    <span style="float: right;"><button mat-flat-button color="primary" (click)="create()"><mat-icon>add</mat-icon> CREATE CHAPTER</button></span>
+    <span style="float: right; margin-right: 16px"><button mat-flat-button color="warn" (click)="updateDuration()"><mat-icon>timelapse</mat-icon> UPDATE DURATION</button></span>
+  </div>
   <div class="mat-elevation-z8" style="margin: 24px">
     <table mat-table [dataSource]="dataSource">
 
       <!-- Position Column -->
-      <ng-container matColumnDef="position">
+      <ng-container matColumnDef="No.">
         <th mat-header-cell *matHeaderCellDef> No. </th>
         <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
       </ng-container>
 
       <!-- Name Column -->
-      <ng-container matColumnDef="_id">
+      <ng-container matColumnDef="_Id">
         <th mat-header-cell *matHeaderCellDef> _ID </th>
         <td mat-cell *matCellDef="let element"> {{element._id}} </td>
       </ng-container>
 
       <!-- Weight Column -->
-      <ng-container matColumnDef="title">
+      <ng-container matColumnDef="Title">
         <th mat-header-cell *matHeaderCellDef> Title </th>
-        <td mat-cell *matCellDef="let element" style="cursor: pointer" (click)="showData(element)"> {{element.title}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+      </ng-container>
+
+      <!-- Duration Column -->
+      <ng-container matColumnDef="Duration">
+        <th mat-header-cell *matHeaderCellDef> Duration </th>
+        <td mat-cell *matCellDef="let element"> {{ formatTime(element.duration) }} </td>
       </ng-container>
 
       <!-- Symbol Column -->
-      <ng-container matColumnDef="options">
+      <ng-container matColumnDef="Options">
         <th mat-header-cell *matHeaderCellDef> Options </th>
         <td mat-cell *matCellDef="let element">
           <span><button mat-icon-button color="primary" matTooltip="Edit" (click)="edit(element)"><mat-icon>edit</mat-icon></button></span>

@@ -1,24 +1,28 @@
 <div class="div-container">
   <div style="margin-top: -8px; font-size: 2rem; font-weight: 500; color: white">My Learning</div>
-  <div>
-    <mat-list>
-      <mat-list-item *ngFor="let item of items; let i = index" (click)="onClickTab(i)" [ngClass]="{highlight: i == activeIndex}">{{ item }}</mat-list-item>
-    </mat-list>
-  </div>
+  <mat-list>
+    <mat-list-item *ngFor="let item of items; let i = index" (click)="onClickTab(i)" [ngClass]="{highlight: i == activeIndex}">{{ item }}</mat-list-item>
+  </mat-list>
 </div>
 <header class="container">
-  <ng-container *ngIf="activeIndex === 0; else wishlist">
+  <ul class="flex-container" *ngIf="activeIndex === 0; else wishlist">
+    <li class="flex-item" style="cursor: pointer" *ngFor="let course of purchasedCourses; let i = index" (click)="onClick(course)">
+      <img src="{{ base_url+course.photo }}" alt="{{ course.title }}">
+      <div fxLayout="column" fxLayoutGap="8px" style="margin: 4px">
+        <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
+        <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
+      </div>
+    </li>
+  </ul>
+  <ng-template #wishlist>
     <ul class="flex-container">
-      <li class="flex-item" style="cursor: pointer" *ngFor="let course of purchasedCourses; let i = index" (click)="onClick(course)">
-        <img src="{{ base_url+course.courseId.photo }}" alt="{{ course.courseId.title }}">
+      <li class="flex-item" style="cursor: pointer" *ngFor="let course of wishlistCourses; let i = index" (click)="onClickWishlistCourse(course)">
+        <img src="{{ base_url+course.photo }}" alt="{{ course.title }}">
         <div fxLayout="column" fxLayoutGap="8px" style="margin: 4px">
-          <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.courseId.title }}</textarea>
-          <mat-label style="color: gray; font-size: 0.9rem">{{ course.courseId.instructor }}</mat-label>
+          <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
+          <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
         </div>
       </li>
     </ul>
-  </ng-container>
-  <ng-template #wishlist>
-
   </ng-template>
 </header>

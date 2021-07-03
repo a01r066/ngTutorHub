@@ -10,6 +10,6 @@ export interface User {
   role: string;
   token: string;
   cart: any;
-  wishlist: any;
+  wishlist: [any];
   purchased_courses: [any];
 }

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Lecture} from "../models/lecture.model";
@@ -12,6 +12,8 @@ import {User} from "../models/user.model";
 import {AuthStore} from "../services/auth.store";
 import {MatAccordion} from "@angular/material/expansion";
 import {Subject} from "rxjs";
+import {SlugifyPipe} from "../helpers/slugify.pipe";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-player',
@@ -27,12 +29,15 @@ export class PlayerComponent implements OnInit, OnDestroy {
   // unSafeUrl!: string;
   // videoUrl!: SafeResourceUrl;
   base_url = `${Constants.base_upload}/courses/`;
+  streamPath = this.base_url;
   shareUrl: string = 'https://api.tutorhub.info:3000/share/';
 
   isHidden: boolean = false;
   user!: User;
+  isVideo: boolean = true;
 
   @ViewChild('Mat-Accordion') matAccordion!: MatAccordion;
+  @ViewChild('examplevideo') examplevideo!: ElementRef;
 
   videoItems: any = [
     // {
@@ -56,7 +61,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
               private uiService: UiService,
               private router: Router,
               private fb: FacebookService,
-              private authStore: AuthStore) {
+              private authStore: AuthStore,
+              private slugifyPipe: SlugifyPipe) {
     const initParams: InitParams = {
       appId: '468210474239699',
       xfbml: true,
@@ -92,7 +98,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
             src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
           })
         }
-        this.currentVideo = this.videoItems[data.chapterIndex];
+        const ct = this.videoItems[data.chapterIndex].name;
+        const title = ct.replaceAll(' ', '_');
+        this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
+        this.chapter = defaultChaptersArray[data.lectureIndex].chapters[data.chapterIndex];
       } else {
         // Load default lessons
         // console.log('load default lessons');
@@ -104,7 +113,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
         }
         this.activeIndex = 0;
         this.activeLectureIndex = 0;
-        this.currentVideo = this.videoItems[0];
+
+        const ct = this.videoItems[0].name;
+        const title = ct.replaceAll(' ', '_');
+        this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
+        // this.currentVideo = this.videoItems[0];
+        this.chapter = this.chaptersArray[0].chapters[0];
       }
     })
   }
@@ -201,7 +215,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
       this.chapter = this.chaptersArray[this.activeLectureIndex].chapters[this.activeIndex];
 
-      this.currentVideo = this.videoItems[this.activeIndex];
+      // this.currentVideo = this.videoItems[this.activeIndex];
+      const ct = this.videoItems[this.activeIndex].name;
+      const title = ct.replaceAll(' ', '_');
+      this.streamPath += `${this.course._id}/${this.chapter.lecture}/${title}/index.m3u8`;
+
       this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
     }
   }
@@ -225,13 +243,19 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   startPlaylistVdo(chapter: Chapter, chapterIndex: number, lectureIndex: number) {
+    this.streamPath = this.base_url;
+
     this.chapter = chapter;
     this.activeIndex = chapterIndex;
     this.activeLectureIndex = lectureIndex;
 
     this.getVideoItems(lectureIndex);
 
-    this.currentVideo = this.videoItems[chapterIndex];
+    // this.currentVideo = this.videoItems[chapterIndex];
+    const ct = this.videoItems[chapterIndex].name;
+    const title = ct.replaceAll(' ', '_');
+    this.streamPath += `${this.course._id}/${chapter.lecture}/${title}/index.m3u8`;
+
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
 
@@ -241,5 +265,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   downloadFile(chapter: Chapter) {
     window.location.href = `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.zip}`;
+  }
+
+  formatTime(time: number) {
+    const format: string = 'mm';
+    const momentTime = time * 1000;
+    return moment.utc(momentTime).format(format);
   }
 }

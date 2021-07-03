@@ -13,6 +13,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
 import {PlayerDialogComponent} from "../../player/player-dialog/player-dialog.component";
 import {filter, tap} from "rxjs/operators";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-course-detail',
@@ -281,5 +282,11 @@ export class CourseDetailComponent implements OnInit {
       this.authStore.initAuthListener();
       this.goToCourse(this.course);
     })
+  }
+
+  formatTime(time: number) {
+    const format: string = 'mm:ss';
+    const momentTime = time * 1000;
+    return moment.utc(momentTime).format(format);
   }
 }

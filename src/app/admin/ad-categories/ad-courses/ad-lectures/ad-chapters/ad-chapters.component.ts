@@ -11,6 +11,8 @@ import {Category} from "../../../../../models/category.model";
 import {ChapterDialogComponent} from "./chapter-dialog/chapter-dialog.component";
 import {UploadFileDialogComponent} from "./upload-file-dialog/upload-file-dialog.component";
 import {Lecture} from "../../../../../models/lecture.model";
+import * as moment from 'moment';
+import {Constants} from "../../../../../helpers/constants";
 
 @Component({
   selector: 'app-ad-chapters',
@@ -18,7 +20,7 @@ import {Lecture} from "../../../../../models/lecture.model";
   styleUrls: ['./ad-chapters.component.css']
 })
 export class AdChaptersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', '_id', 'title', 'options'];
+  displayedColumns: string[] = ['No.', '_Id', 'Title', 'Duration', 'Options'];
   chapters: Chapter[] = [];
   dataSource = new MatTableDataSource<Chapter>(this.chapters );
 
@@ -26,6 +28,7 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
   lectureId = '';
   courseId = '';
   lecture!: Lecture;
+  base_url = `${Constants.base_upload}/courses/`;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -119,5 +122,44 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
       .subscribe((res) => {
         // console.log("Response: "+ res);
       });
+  }
+
+  updateDuration(){
+    this.chapters.forEach(chapter => {
+      if(chapter.file.slice(chapter.file.length - 3) === 'mp4'){
+        this.getDuration(chapter);
+      }
+    });
+  }
+
+  getDuration(chapter: Chapter){
+    // Create a non-dom allocated Audio element
+    const au = document.createElement('audio');
+
+// Define the URL of the MP3 audio file
+    au.src = `${this.base_url}/${this.courseId}/${chapter.lecture}/${chapter.file}`;
+    console.log('au.src: '+au.src);
+
+// Once the metadata has been loaded, display the duration in the console
+    au.addEventListener('loadedmetadata', () => {
+      // Obtain the duration in seconds of the audio file (with milliseconds as well, a float value)
+      const duration = au.duration
+      console.log('Durations: '+duration);
+      this.dataStore.updateDuration(chapter._id, duration).subscribe();
+      // const durationStr = this.formatTime(duration);
+      // this.musicService.updateDuration(track, durationStr);
+
+      // example 12.3234 seconds
+      // console.log("The duration of the song is of: " + durationStr + " seconds");
+      // Alternatively, just display the integer value with
+      // parseInt(duration)
+      // 12 seconds
+    });
+  }
+
+  formatTime(time: number) {
+    const format: string = 'mm:ss';
+    const momentTime = time * 1000;
+    return moment.utc(momentTime).format(format);
   }
 }
