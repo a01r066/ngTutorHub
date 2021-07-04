@@ -16,7 +16,7 @@
   <div fxFlext fxLayout="row">
     <div fxFlex="{{ isHidden ? 100: 75 }}">
       <div fxLayout="column">
-        <ng-container>
+        <ng-container *ngIf="isVideo; else htmlPage">
           <vg-player>
             <video #myMedia
                    [vgHls]="streamPath"
@@ -63,7 +63,7 @@
 <!--          </div>-->
 <!--        </ng-container>-->
         <ng-template #htmlPage>
-          <iframe [src]="getSafeURL(currentVideo?.src)" width="98%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
+          <iframe [src]="getSafeURL(currentUrl)" width="98%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
         </ng-template>
         <div>
           <mat-tab-group>
@@ -92,7 +92,7 @@
               <mat-nav-list>
                 <ng-container *ngFor="let chapter of lecture.chapters; let chapterIndex = index">
                   <mat-list-item [routerLinkActive]="['active']" (click)="startPlaylistVdo(chapter, chapterIndex, lectureIndex)"
-                                 [class.selected]="chapter === currentVideo" [class.selected]="chapter === currentVideo" [class.active]="activeIndex == chapterIndex">
+                                 [class.selected]="chapter === selectedChapter" [class.selected]="chapter === selectedChapter" [class.active]="activeIndex == chapterIndex">
                     <span style="width: 85%; font-size: 0.9rem">{{chapter.title }}</span>
                     <span *ngIf="chapter">
                   <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0"><span style="font-size: 0.9rem">{{ formatTime(chapter.duration) }} min</span></ng-container>

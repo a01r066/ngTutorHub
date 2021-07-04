@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Chapter} from "../../../../../models/chapter.model";
 import {MatTableDataSource} from "@angular/material/table";
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {MatPaginator} from "@angular/material/paginator";
 import {DataStore} from "../../../../../services/data.store";
 import {filter, tap} from "rxjs/operators";
@@ -124,7 +124,9 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
       });
   }
 
+  index = 1;
   updateDuration(){
+    this.index = 1;
     this.chapters.forEach(chapter => {
       if(chapter.file.slice(chapter.file.length - 3) === 'mp4'){
         this.getDuration(chapter);
@@ -138,14 +140,14 @@ export class AdChaptersComponent implements OnInit, AfterViewInit {
 
 // Define the URL of the MP3 audio file
     au.src = `${this.base_url}/${this.courseId}/${chapter.lecture}/${chapter.file}`;
-    console.log('au.src: '+au.src);
 
 // Once the metadata has been loaded, display the duration in the console
     au.addEventListener('loadedmetadata', () => {
       // Obtain the duration in seconds of the audio file (with milliseconds as well, a float value)
       const duration = au.duration
-      console.log('Durations: '+duration);
       this.dataStore.updateDuration(chapter._id, duration).subscribe();
+      console.log('Updated: '+this.index);
+      this.index++;
       // const durationStr = this.formatTime(duration);
       // this.musicService.updateDuration(track, durationStr);
 

@@ -12,8 +12,8 @@ import {User} from "../models/user.model";
 import {AuthStore} from "../services/auth.store";
 import {MatAccordion} from "@angular/material/expansion";
 import {Subject} from "rxjs";
-import {SlugifyPipe} from "../helpers/slugify.pipe";
 import * as moment from "moment";
+import slugify from "slugify";
 
 @Component({
   selector: 'app-player',
@@ -49,9 +49,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   activeIndex = 0;
   activeLectureIndex = 0;
-  chapter!: Chapter;
+  selectedChapter!: Chapter;
 
-  currentVideo!: any;
+  // currentVideo!: any;
+  currentUrl!: any;
   data: any;
 
   constructor(
@@ -61,8 +62,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
               private uiService: UiService,
               private router: Router,
               private fb: FacebookService,
-              private authStore: AuthStore,
-              private slugifyPipe: SlugifyPipe) {
+              private authStore: AuthStore) {
     const initParams: InitParams = {
       appId: '468210474239699',
       xfbml: true,
@@ -90,6 +90,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
       this.activeIndex = data.chapterIndex;
       this.activeLectureIndex = data.lectureIndex;
+
       if(typeof defaultChaptersArray[data.lectureIndex] !== "undefined"){
         const chapters = defaultChaptersArray[data.lectureIndex].chapters;
         for(let chapter of chapters){
@@ -98,10 +99,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
             src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
           })
         }
-        const ct = this.videoItems[data.chapterIndex].name;
-        const title = ct.replaceAll(' ', '_');
-        this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
-        this.chapter = defaultChaptersArray[data.lectureIndex].chapters[data.chapterIndex];
+        this.selectedChapter = defaultChaptersArray[data.lectureIndex].chapters[data.chapterIndex];
       } else {
         // Load default lessons
         // console.log('load default lessons');
@@ -114,12 +112,19 @@ export class PlayerComponent implements OnInit, OnDestroy {
         this.activeIndex = 0;
         this.activeLectureIndex = 0;
 
-        const ct = this.videoItems[0].name;
-        const title = ct.replaceAll(' ', '_');
-        this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
-        // this.currentVideo = this.videoItems[0];
-        this.chapter = this.chaptersArray[0].chapters[0];
+        this.selectedChapter = this.chaptersArray[0].chapters[0];
       }
+
+      if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
+        this.isVideo = true;
+        const ct = this.videoItems[data.chapterIndex].name;
+        const title = slugify(ct, { replacement: '_' });
+        this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
+      } else {
+        this.isVideo = false;
+        this.currentUrl = this.videoItems[data.chapterIndex].src;
+      }
+      // this.currentVideo = this.videoItems[0];
     })
   }
 
@@ -213,14 +218,19 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if(this.activeIndex < this.videoItems.length-1){
       this.activeIndex++;
 
-      this.chapter = this.chaptersArray[this.activeLectureIndex].chapters[this.activeIndex];
+      this.selectedChapter = this.chaptersArray[this.activeLectureIndex].chapters[this.activeIndex];
+      if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
+        this.isVideo = true;
+        // this.currentVideo = this.videoItems[this.activeIndex];
+        const ct = this.videoItems[this.activeIndex].name;
+        const title = slugify(ct, { replacement: '_' });
+        this.streamPath += `${this.course._id}/${this.selectedChapter.lecture}/${title}/index.m3u8`;
+      } else {
+        this.isVideo = false;
+        this.currentUrl = this.videoItems[this.activeIndex].src;
+      }
 
-      // this.currentVideo = this.videoItems[this.activeIndex];
-      const ct = this.videoItems[this.activeIndex].name;
-      const title = ct.replaceAll(' ', '_');
-      this.streamPath += `${this.course._id}/${this.chapter.lecture}/${title}/index.m3u8`;
-
-      this.addTrackerToDB(this.chapter, this.activeIndex, this.activeLectureIndex);
+      this.addTrackerToDB(this.selectedChapter, this.activeIndex, this.activeLectureIndex);
     }
   }
 
@@ -243,19 +253,24 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   startPlaylistVdo(chapter: Chapter, chapterIndex: number, lectureIndex: number) {
-    this.streamPath = this.base_url;
-
-    this.chapter = chapter;
-    this.activeIndex = chapterIndex;
-    this.activeLectureIndex = lectureIndex;
-
     this.getVideoItems(lectureIndex);
 
-    // this.currentVideo = this.videoItems[chapterIndex];
-    const ct = this.videoItems[chapterIndex].name;
-    const title = ct.replaceAll(' ', '_');
-    this.streamPath += `${this.course._id}/${chapter.lecture}/${title}/index.m3u8`;
+    if(chapter.file.slice(chapter.file.length-3) === 'mp4'){
+      this.isVideo = true;
+      this.streamPath = this.base_url;
 
+      this.selectedChapter = chapter;
+      this.activeIndex = chapterIndex;
+      this.activeLectureIndex = lectureIndex;
+
+      // this.currentVideo = this.videoItems[chapterIndex];
+      const ct = this.videoItems[chapterIndex].name;
+      const title = slugify(ct, { replacement: '_' });
+      this.streamPath += `${this.course._id}/${chapter.lecture}/${title}/index.m3u8`;
+    } else {
+      this.isVideo = false;
+      this.currentUrl = this.videoItems[chapterIndex].src;
+    }
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
 

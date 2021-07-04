@@ -3,13 +3,13 @@ import {Router} from "@angular/router";
 import {User} from "../../models/user.model";
 import {Category} from "../../models/category.model";
 import {UiService} from "../../services/ui.service";
-import {SlugifyPipe} from "../../helpers/slugify.pipe";
 import {Observable} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {FeedbackComponent} from "../../home/Feedback/feedback.component";
 import {DataStore} from "../../services/data.store";
 import {AuthStore} from "../../services/auth.store";
 import {Constants} from "../../helpers/constants";
+import slugify from "slugify";
 
 @Component({
   selector: 'app-header',
@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
     private dataStore: DataStore,
     public authStore: AuthStore,
     private uiService: UiService,
-    private slugifyPipe: SlugifyPipe,
     public dialog: MatDialog
   ) { }
 
@@ -89,7 +88,8 @@ export class HeaderComponent implements OnInit {
     this.uiService.searchTextSub.next(searchText);
     this.searchTextRef.nativeElement.blur();
     let link = `search?${searchText}`.split('?')[0];
-    const slugifyText = this.slugifyPipe.transform(searchText);
+    const slugifyText = slugify(searchText);
+    console.log('slugify: '+slugifyText);
     this.router.navigate([link], { queryParams: { q: slugifyText }});
   }
 
