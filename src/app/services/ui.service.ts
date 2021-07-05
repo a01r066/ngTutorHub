@@ -10,5 +10,4 @@ export class UiService {
   categorySub = new Subject<Category>();
   searchTextSub = new Subject<string>();
   isPlayerSub = new Subject<boolean>();
-  isSideBarSub = new Subject<boolean>();
 }

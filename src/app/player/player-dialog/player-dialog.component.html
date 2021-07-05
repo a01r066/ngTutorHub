@@ -15,9 +15,10 @@
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
           <mat-nav-list>
-            <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of chapters; let idx = index" (click)="onClickChapter(chapter, idx)" [class.active]="selected == idx">{{ chapter.title }}
+            <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of chapters; let idx = index" (click)="onClickChapter(chapter, idx)" [class.active]="selected == idx">
+              <span style="width: 90%">{{ chapter.title }}</span>
               <span style="float: right" *ngIf="chapter">
-                  <ng-container *ngIf="chapter.duration > 0" >{{ chapter.duration | number }} min</ng-container>
+                  <ng-container *ngIf="chapter.duration > 0" >{{ formatTime(chapter.duration) }} min</ng-container>
                 </span>
             </mat-list-item>
           </mat-nav-list>

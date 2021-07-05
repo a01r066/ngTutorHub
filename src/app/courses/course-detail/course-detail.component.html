@@ -1,6 +1,6 @@
 <div class="banner-container">
   <div class="banner-content">
-    <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500; margin-top: 16px">{{ course?.title }}</textarea>
+    <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500; margin-top: 16px; color: white">{{ course?.title }}</textarea>
     <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: lightgray;">{{ course?.description }}</textarea>
     <mat-label style="color: lightgray; font-size: 0.9rem; margin-top: 16px; font-style: italic;">Instructor: <span style="color: white">{{ course?.instructor }}</span></mat-label>
     <div *ngIf="width === 0" style="margin-top: 16px">
@@ -42,13 +42,15 @@
             <mat-expansion-panel *ngFor="let lecture of chaptersArray; let i = index">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-weight: 500">
-                  {{ lecture.title }}
+                  <textarea class="titleTextArea" rows="2" readonly disabled style="color: black; font-weight: 500; font-size: 0.9rem">{{ lecture.title }}</textarea>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <ng-template matExpansionPanelContent *ngIf="lecture.chapters">
                 <mat-nav-list>
                   <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of lecture.chapters; let idx = index" [class.active]="selected == idx">
-                    <span style="width: 90%; font-size: 0.9rem">{{ chapter.title }}</span>
+                    <span style="width: 90%; font-size: 0.9rem">
+                      <textarea class="titleTextArea" readonly disabled rows="2" style="color: black; font-size: 0.9rem">{{ chapter.title }}</textarea>
+                    </span>
                     <span *ngIf="chapter">
                       <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0"><span style="font-size: 0.9rem">{{ formatTime(chapter.duration ) }} min</span></ng-container>
                       <ng-container *ngIf="chapter.zip.length > 0"><button mat-icon-button style="color: gray"><mat-icon>attach_file</mat-icon></button></ng-container>

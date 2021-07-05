@@ -63,3 +63,14 @@
 li.selected {
   background: #03A9F4 !important;
 }
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 0.9rem;
+  color: black;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}

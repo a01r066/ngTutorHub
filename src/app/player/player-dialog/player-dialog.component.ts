@@ -4,6 +4,7 @@ import {DialogData} from "../../home/Feedback/feedback.component";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Constants} from "../../helpers/constants";
 import {Chapter} from "../../models/chapter.model";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-player-dialog',
@@ -45,5 +46,11 @@ export class PlayerDialogComponent implements OnInit {
   getFileExt(chapter: Chapter) {
     const filePath = chapter.file;
     return filePath.substring(filePath.length-3, filePath.length);
+  }
+
+  formatTime(time: number) {
+    const format: string = 'mm';
+    const momentTime = time * 1000;
+    return moment.utc(momentTime).format(format);
   }
 }

@@ -1,4 +1,10 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Lecture} from "../models/lecture.model";
@@ -11,7 +17,6 @@ import {FacebookService, InitParams, UIParams, UIResponse} from "ngx-facebook";
 import {User} from "../models/user.model";
 import {AuthStore} from "../services/auth.store";
 import {MatAccordion} from "@angular/material/expansion";
-import {Subject} from "rxjs";
 import * as moment from "moment";
 import slugify from "slugify";
 
@@ -20,12 +25,11 @@ import slugify from "slugify";
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit, OnDestroy {
+export class PlayerComponent implements OnInit, OnDestroy{
   course: any;
   lecture!: Lecture;
 
   chaptersArray: any[] = [];
-  defaultSub = new Subject<any[]>();
   // unSafeUrl!: string;
   // videoUrl!: SafeResourceUrl;
   base_url = `${Constants.base_upload}/courses/`;
@@ -35,9 +39,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   isHidden: boolean = false;
   user!: User;
   isVideo: boolean = true;
+  size!: any;
 
   @ViewChild('Mat-Accordion') matAccordion!: MatAccordion;
-  @ViewChild('examplevideo') examplevideo!: ElementRef;
 
   videoItems: any = [
     // {
@@ -52,7 +56,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   selectedChapter!: Chapter;
 
   // currentVideo!: any;
-  currentUrl!: any;
+  currentUrl: any = '';
   data: any;
 
   constructor(
@@ -79,51 +83,39 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.course = course;
       this.getChaptersArray(course);
     })
-
     this.authStore.user$.subscribe(user => this.user = user);
-    this.defaultSub.subscribe(defaultChaptersArray => {
-      this.getPlayedTrack(this.course, defaultChaptersArray);
-    })
+    this.getSize();
   }
 
-  getPlayedTrack(course: Course, defaultChaptersArray: any[]){
+  getPlayedTrack(course: Course){
     this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
       this.activeIndex = data.chapterIndex;
       this.activeLectureIndex = data.lectureIndex;
-
-      if(typeof defaultChaptersArray[data.lectureIndex] !== "undefined"){
-        const chapters = defaultChaptersArray[data.lectureIndex].chapters;
-        for(let chapter of chapters){
-          this.videoItems.push({
-            name: chapter.title,
-            src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+      this.dataStore.getLectureById(data.lecture).subscribe(lecture => {
+        this.dataStore.getChaptersByLectureId(data.lecture).subscribe(chapters => {
+          chapters.sort((c1, c2) => {
+            return c1.index - c2.index;
           })
-        }
-        this.selectedChapter = defaultChaptersArray[data.lectureIndex].chapters[data.chapterIndex];
-      } else {
-        // Load default lessons
-        // console.log('load default lessons');
-        for(let chapter of this.chaptersArray[0].chapters){
-          this.videoItems.push({
-            name: chapter.title,
-            src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
-          })
-        }
-        this.activeIndex = 0;
-        this.activeLectureIndex = 0;
 
-        this.selectedChapter = this.chaptersArray[0].chapters[0];
-      }
-
-      if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
-        this.isVideo = true;
-        const ct = this.videoItems[data.chapterIndex].name;
-        const title = slugify(ct, { replacement: '_' });
-        this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
-      } else {
-        this.isVideo = false;
-        this.currentUrl = this.videoItems[data.chapterIndex].src;
-      }
+          this.videoItems = [];
+          for(let chapter of chapters){
+            this.videoItems.push({
+              name: chapter.title,
+              src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+            })
+          }
+          this.selectedChapter = chapters[this.activeIndex];
+          if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
+            this.isVideo = true;
+            const ct = this.videoItems[this.activeIndex].name;
+            const title = slugify(ct, { replacement: '_' });
+            this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
+          } else {
+            this.isVideo = false;
+            this.currentUrl = this.videoItems[data.chapterIndex].src;
+          }
+        })
+      })
       // this.currentVideo = this.videoItems[0];
     })
   }
@@ -150,14 +142,20 @@ export class PlayerComponent implements OnInit, OnDestroy {
           })
         })
       })
-      this.defaultSub.next(this.chaptersArray);
     })
+
+    this.getPlayedTrack(this.course);
   }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
     // console.log('Back button pressed');
     this.uiService.isPlayerSub.next(false);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.getSize();
   }
 
   ngOnDestroy(): void {
@@ -209,13 +207,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
   // Video player
   videoPlayerInit(data: any) {
     this.data = data;
-
     this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
     this.data.getDefaultMedia().subscriptions.ended.subscribe(this.nextVideo.bind(this));
   }
 
   nextVideo() {
     if(this.activeIndex < this.videoItems.length-1){
+      this.streamPath = this.base_url;
       this.activeIndex++;
 
       this.selectedChapter = this.chaptersArray[this.activeLectureIndex].chapters[this.activeIndex];
@@ -235,9 +233,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   initVdo() {
-    // this.data.play();
     this.data.getDefaultMedia().currentTime = 0;
-    this.data.pause();
+    this.data.play();
+    // this.data.pause();
   }
 
   getVideoItems(index: number){
@@ -270,6 +268,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     } else {
       this.isVideo = false;
       this.currentUrl = this.videoItems[chapterIndex].src;
+      console.log('currentUrl: '+this.currentUrl);
     }
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }
@@ -286,5 +285,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const format: string = 'mm';
     const momentTime = time * 1000;
     return moment.utc(momentTime).format(format);
+  }
+
+  private getSize() {
+    this.size = window.innerWidth;
+    this.size > 990 ? this.isHidden = false : this.isHidden = true;
   }
 }

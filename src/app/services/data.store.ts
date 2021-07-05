@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {BehaviorSubject, Observable, of, Subject, throwError} from "rxjs";
 import {Course} from "../models/course.model";
-import {catchError, map, shareReplay, tap} from "rxjs/operators";
+import {catchError, last, map, shareReplay, takeLast, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {LoadingService} from "./loading.service";
 import {MessagesService} from "./messages.service";
@@ -53,7 +53,6 @@ export class DataStore {
           return throwError(err);
         }),
         tap(courses => {
-          console.log('all courses: '+courses.length);
           this.coursesSub.next(courses);
         }),
         shareReplay()
@@ -176,7 +175,8 @@ export class DataStore {
     const url = `${Constants.base_url}/lectures/${courseId}`;
     return this.http.get<Lecture[]>(url)
       .pipe(
-        map(res => (res as any).data), shareReplay());
+        map(res => (res as any).data),
+        shareReplay());
   }
 
   createLecture(formData: any): Observable<any>{
