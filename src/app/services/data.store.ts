@@ -25,6 +25,7 @@ export class DataStore {
 // Category section
   private categoriesSub = new BehaviorSubject<Category[]>([]);
   categories$: Observable<Category[]> = this.categoriesSub.asObservable();
+  isTracker = new Subject();
 
   constructor(private http: HttpClient,
               private loadingService: LoadingService,
@@ -198,7 +199,13 @@ export class DataStore {
     const url = `${Constants.base_url}/lectures/${lectureId}/chapters`;
     return this.http.get<Chapter[]>(url)
       .pipe(
-        map(res => (res as any).data), shareReplay());
+        map(res => (res as any).data),
+        catchError(err => {
+          // return throwError(err);
+          this.isTracker.next(true);
+          return of([]);
+        }),
+        shareReplay());
   }
 
   getLectureById(lectureId: any): Observable<Lecture>{
@@ -466,6 +473,7 @@ export class DataStore {
         map((res =>  (res as any).data)),
         catchError(err => {
           // return throwError(err);
+          this.isTracker.next(true);
           return of([]);
         })
         ,shareReplay());

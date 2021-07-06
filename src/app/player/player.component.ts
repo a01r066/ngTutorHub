@@ -85,36 +85,54 @@ export class PlayerComponent implements OnInit, OnDestroy{
     })
     this.authStore.user$.subscribe(user => this.user = user);
     this.getSize();
+
+    this.dataStore.isTracker.subscribe(() => {
+      this.activeIndex = 0;
+      this.activeLectureIndex = 0;
+
+      if(typeof this.chaptersArray[0] !== "undefined"){
+        const chapters = this.chaptersArray[0].chapters;
+
+        for(let chapter of chapters){
+          this.videoItems.push({
+            name: chapter.title,
+            src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+          })
+        }
+
+        this.selectedChapter = chapters[0];
+        this.startPlaylistVdo(this.selectedChapter, this.activeIndex, this.activeLectureIndex);
+      }
+    })
   }
 
   getPlayedTrack(course: Course){
     this.dataStore.getTracker(this.user._id, course._id).subscribe(data => {
       this.activeIndex = data.chapterIndex;
       this.activeLectureIndex = data.lectureIndex;
-      this.dataStore.getLectureById(data.lecture).subscribe(lecture => {
-        this.dataStore.getChaptersByLectureId(data.lecture).subscribe(chapters => {
-          chapters.sort((c1, c2) => {
-            return c1.index - c2.index;
-          })
 
-          this.videoItems = [];
-          for(let chapter of chapters){
-            this.videoItems.push({
-              name: chapter.title,
-              src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
-            })
-          }
-          this.selectedChapter = chapters[this.activeIndex];
-          if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
-            this.isVideo = true;
-            const ct = this.videoItems[this.activeIndex].name;
-            const title = slugify(ct, { replacement: '_' });
-            this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
-          } else {
-            this.isVideo = false;
-            this.currentUrl = this.videoItems[data.chapterIndex].src;
-          }
+      this.dataStore.getChaptersByLectureId(data.lecture).subscribe(chapters => {
+        chapters.sort((c1, c2) => {
+          return c1.index - c2.index;
         })
+
+        this.videoItems = [];
+        for(let chapter of chapters){
+          this.videoItems.push({
+            name: chapter.title,
+            src: `${this.base_url}/${this.course._id}/${chapter.lecture}/${chapter.file}`
+          })
+        }
+        this.selectedChapter = chapters[this.activeIndex];
+        if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
+          this.isVideo = true;
+          const ct = this.videoItems[this.activeIndex].name;
+          const title = slugify(ct, { replacement: '_' });
+          this.streamPath += `${this.course._id}/${data.lecture}/${title}/index.m3u8`;
+        } else {
+          this.isVideo = false;
+          this.currentUrl = this.videoItems[data.chapterIndex].src;
+        }
       })
       // this.currentVideo = this.videoItems[0];
     })
@@ -143,7 +161,6 @@ export class PlayerComponent implements OnInit, OnDestroy{
         })
       })
     })
-
     this.getPlayedTrack(this.course);
   }
 
@@ -268,7 +285,6 @@ export class PlayerComponent implements OnInit, OnDestroy{
     } else {
       this.isVideo = false;
       this.currentUrl = this.videoItems[chapterIndex].src;
-      console.log('currentUrl: '+this.currentUrl);
     }
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }

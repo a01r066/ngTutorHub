@@ -34,6 +34,7 @@ export class LearningComponent implements OnInit {
       }
 
       if(user.wishlist){
+        this.wishlistCourses = [];
         user.wishlist.forEach(item => {
           this.wishlistCourses.push(item.courseId);
         })
