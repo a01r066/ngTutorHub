@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogData} from "../../../../../../home/Feedback/feedback.component";
 import {DataStore} from "../../../../../../services/data.store";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Chapter} from "../../../../../../models/chapter.model";
 
 @Component({
   selector: 'app-upload-file-dialog',
@@ -35,6 +36,10 @@ export class UploadFileDialogComponent implements OnInit {
       const chapterId = (this.data as any).chapter._id;
       this.ngForm.value.courseId = (this.data as any).course;
       this.ngForm.value.lectureId = (this.data as any).lecture;
+      const title = (this.data as any).chapter.title;
+      this.ngForm.value.title = title;
+      console.log('title: '+title);
+
       const type = (this.data as any).type;
 
       this.dataStore.chapterFileUpload(chapterId, this.ngForm.value, this.fileData, type).subscribe(res => {

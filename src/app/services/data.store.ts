@@ -86,7 +86,7 @@ export class DataStore {
     return this.getCoursesByCategory(category)
       .pipe(
         map(courses => courses
-          .filter(course => course.bestseller)),
+          .filter(course => course.bestseller && course.isPublished)),
         shareReplay()
       );
   }
@@ -112,7 +112,7 @@ export class DataStore {
     return this.courses$
       .pipe(
         map(courses => courses
-          .filter(course => course.title.toLowerCase().includes(searchText.toLowerCase()))),
+          .filter(course => course.title.toLowerCase().includes(searchText.toLowerCase()) && course.isPublished)),
         shareReplay());
   }
 
@@ -262,6 +262,7 @@ export class DataStore {
     let frm = new FormData();
     frm.append('courseId', formValue.courseId);
     frm.append('lectureId', formValue.lectureId);
+    frm.append('title', formValue.title);
     frm.append('file', file);
     return this.http.put(url, frm, {
       headers: {

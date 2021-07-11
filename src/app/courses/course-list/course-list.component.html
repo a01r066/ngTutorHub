@@ -25,7 +25,7 @@
   <!--    Course list section-->
   <div class="title-heading">All Development Courses</div>
   <div>
-    <ng-container *ngIf="(courses$ | async) as courses">
+    <ng-container>
       <ul class="course-flex-container">
         <li class="course-flex-item" *ngFor="let course of courses | paginate: { id: 'pagination2', itemsPerPage: 5, currentPage: fPage }" (click)="onClick(course)">
           <div style="width: 20%"><img height="100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>

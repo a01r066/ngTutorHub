@@ -28,6 +28,12 @@
         <td mat-cell *matCellDef="let element" style="cursor: pointer" (click)="showLectures(element)"> {{element.title}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="isPublished">
+        <th mat-header-cell *matHeaderCellDef> isPublished </th>
+        <td mat-cell *matCellDef="let element; let idx = index" style="cursor: pointer">
+          <mat-slide-toggle color="primary" [checked]="element.isPublished" (change)="onToggle($event, idx)"></mat-slide-toggle>
+        </td>
+      </ng-container>
       <!-- Options Column -->
       <ng-container matColumnDef="options">
         <th mat-header-cell *matHeaderCellDef> Options </th>

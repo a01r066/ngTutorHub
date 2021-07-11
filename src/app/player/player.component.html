@@ -28,18 +28,6 @@
                    crossorigin>
             </video>
           </vg-player>
-<!--          <vg-player (onPlayerReady)="videoPlayerInit($event)">-->
-<!--            <vg-buffering vgFor="my-video"></vg-buffering>-->
-<!--            <video #media-->
-<!--                   id="my-video"-->
-<!--                   #vgHls="vgHls"-->
-<!--                   [vgMedia]="media"-->
-<!--                   [vgDash]="streamPath"-->
-<!--                   [vgHls]="streamPath"-->
-<!--                   crossorigin>-->
-<!--            </video>-->
-<!--          </vg-player>-->
-
         </ng-container>
         <!--        <ng-container *ngIf="currentVideo">-->
 <!--          <div class="video-player-wrapper" *ngIf="currentVideo?.src.slice(currentVideo?.src.length - 3) === 'mp4'; else htmlPage">-->
@@ -78,7 +66,7 @@
 <!--          </div>-->
 <!--        </ng-container>-->
         <ng-template #htmlPage>
-          <iframe [src]="getSafeURL(currentUrl)" width="98%" height="640px" frameborder="0" allowfullscreen style="padding: 16px"></iframe>
+          <iframe [src]="getSafeURL(currentUrl)" width="98%" height="640px" frameborder="0" allowfullscreen style="padding: 16px; background-color: white"></iframe>
         </ng-template>
         <div>
           <mat-tab-group>

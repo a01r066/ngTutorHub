@@ -1,9 +1,21 @@
 <div style="overflow: hidden;">
   <div>
-    <ng-container *ngIf="chapter">
-      <iframe *ngIf="getFileExt(chapter) !== 'mp4'" [src]="videoUrl" width="100%" height="400px" frameborder="0" allowfullscreen style="padding: 16px; background-color: white"></iframe>
-      <video *ngIf="getFileExt(chapter) === 'mp4'" [src]="videoUrl" width="100%" height="400px" style=" background-color: #1E1E1C" controls></video>
+    <ng-container *ngIf="isVideo; else htmlPage">
+      <vg-player (onPlayerReady)="videoPlayerInit($event)" style="width:100%; height: 400px">
+        <video #media
+               id="my-video"
+               #vgHls="vgHls"
+               [vgMedia]="media"
+               [vgDash]="streamPath"
+               [vgHls]="streamPath"
+               controls
+               crossorigin>
+        </video>
+      </vg-player>
     </ng-container>
+    <ng-template #htmlPage>
+      <iframe [src]="getSafeURL(currentUrl)" width="100%" height="400px" frameborder="0" allowfullscreen style="padding: 16px; background-color: white"></iframe>
+    </ng-template>
   </div>
   <div>
     <mat-accordion>
@@ -15,7 +27,7 @@
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
           <mat-nav-list>
-            <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of chapters; let idx = index" (click)="onClickChapter(chapter, idx)" [class.active]="selected == idx">
+            <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of chapters; let chapterIndex = index" (click)="startPlaylistVdo(chapter, chapterIndex)" [class.active]="activeIndex == chapterIndex">
               <span style="width: 90%">{{ chapter.title }}</span>
               <span style="float: right" *ngIf="chapter">
                   <ng-container *ngIf="chapter.duration > 0" >{{ formatTime(chapter.duration) }} min</ng-container>

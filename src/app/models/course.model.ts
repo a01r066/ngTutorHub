@@ -17,4 +17,5 @@ export interface Course {
   scholarshipAvailable: boolean;
   createdAt: any;
   user: string;
+  isPublished: boolean;
 }

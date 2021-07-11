@@ -17,7 +17,8 @@ export class CourseListComponent implements OnInit {
 
   category!: Category;
   topCourses$!: Observable<Course[]>;
-  courses$!: Observable<Course[]>;
+  courses: Course[] = [];
+  // courses$!: Observable<Course[]>;
   page: number = 1;
   fPage: number = 1;
   discount = 90;
@@ -39,7 +40,9 @@ export class CourseListComponent implements OnInit {
       this.category = category;
       // Get courses
       this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
-      this.courses$ = this.dataStore.getCoursesByCategory(category._id);
+      this.dataStore.getCoursesByCategory(category._id).subscribe(courses => {
+        this.courses = courses.filter(course => course.isPublished);
+      });
     })
   }
 
@@ -59,7 +62,9 @@ export class CourseListComponent implements OnInit {
       this.category = category;
       // Get courses
       this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
-      this.courses$ = this.dataStore.getCoursesByCategory(category._id);
+      this.dataStore.getCoursesByCategory(category._id).subscribe(courses => {
+        this.courses = courses.filter(course => course.isPublished);
+      });
     })
   }
 

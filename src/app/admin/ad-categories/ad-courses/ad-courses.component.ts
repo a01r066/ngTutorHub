@@ -15,10 +15,11 @@ import {UploadPhotoDialogComponent} from "./upload-photo-dialog/upload-photo-dia
   styleUrls: ['./ad-courses.component.css']
 })
 export class AdCoursesComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', '_id', 'category_id', 'title', 'options'];
+  displayedColumns: string[] = ['position', '_id', 'category_id', 'title', 'isPublished', 'options'];
   courses: Course[] = [];
   dataSource = new MatTableDataSource<Course>(this.courses);
   categoryId!: any;
+  isPublished: Boolean = false;
 
   dataChanged = new Subject();
 
@@ -97,6 +98,12 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed');
       // this.dataChanged.next();
+    });
+  }
+
+  onToggle($event: any, idx: number) {
+    this.dataStore.updateCourse(this.courses[idx]._id, { isPublished: $event.checked}).subscribe(() => {
+      console.log('Course is updated!');
     });
   }
 }

@@ -8,7 +8,6 @@ import {LoadingService} from "../../../../services/loading.service";
 import {DataStore} from "../../../../services/data.store";
 import {AuthStore} from "../../../../services/auth.store";
 import {User} from "../../../../models/user.model";
-import {Observable} from "rxjs";
 import {Coupon} from "../../../../models/coupon.model";
 
 @Component({
