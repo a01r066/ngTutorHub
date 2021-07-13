@@ -16,16 +16,24 @@
         <td mat-cell *matCellDef="let element"> {{element._id}} </td>
       </ng-container>
 
-      <!-- Category Column -->
-      <ng-container matColumnDef="category_id">
-        <th mat-header-cell *matHeaderCellDef> Category_ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
-      </ng-container>
-
       <!-- Title Column -->
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef> Title </th>
         <td mat-cell *matCellDef="let element" style="cursor: pointer" (click)="showLectures(element)"> {{element.title}} </td>
+      </ng-container>
+
+      <!-- Category Column -->
+      <ng-container matColumnDef="instructor">
+        <th mat-header-cell *matHeaderCellDef> Instructor <span style="margin-left: 2rem"><button mat-icon-button (click)="addInstructor()"><mat-icon>person_add</mat-icon></button></span> </th>
+        <td mat-cell *matCellDef="let element">
+          <form [formGroup]="ngForm" *ngIf="(instructors$ | async) as instructors">
+            <mat-form-field>
+              <mat-select formControlName="instructor" (selectionChange)="onSelectChange($event, element)">
+                <mat-option *ngFor="let instructor of instructors" [value]="instructor._id">{{ instructor.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="isPublished">

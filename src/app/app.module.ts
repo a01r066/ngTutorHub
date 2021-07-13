@@ -43,6 +43,7 @@ import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import { FeatureSectionComponent } from './home/features/feature-section/feature-section.component';
 import {VgStreamingModule} from "@videogular/ngx-videogular/streaming";
+import { InstructorComponent } from './home/instructor/instructor.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import {VgStreamingModule} from "@videogular/ngx-videogular/streaming";
     CourseOverviewComponent,
     HomeDialogComponent,
     PlayerDialogComponent,
-    FeatureSectionComponent
+    FeatureSectionComponent,
+    InstructorComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

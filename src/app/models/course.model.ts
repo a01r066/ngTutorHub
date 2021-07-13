@@ -2,7 +2,7 @@ export interface Course {
   _id?: string;
   title: string;
   slogan: string;
-  instructor: string;
+  instructor: any;
   coupon: any;
   description: string;
   objectives: string;

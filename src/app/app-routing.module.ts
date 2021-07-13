@@ -12,6 +12,7 @@ import {SearchComponent} from "./search/search.component";
 import {ProfileComponent} from "./home/profile/profile.component";
 import {AdminComponent} from "./admin/admin.component";
 import {PlayerComponent} from "./player/player.component";
+import {InstructorComponent} from "./home/instructor/instructor.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'home/my-courses/learning', component: LearningComponent, canActivate: [AuthGuard]},
   { path: 'search', component: SearchComponent },
   { path: 'user/profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'user/:instructorId', component: InstructorComponent },
   { path: 'admin', component: AdminComponent },
   // { path: '**', redirectTo: '', pathMatch: 'full' }
 ]

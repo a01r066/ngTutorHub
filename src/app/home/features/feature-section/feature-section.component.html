@@ -6,7 +6,7 @@
         <img src="{{ base_url+course.photo }}" alt="{{ course.title }}">
         <div>
           <textarea class="titleTextArea" rows="2" readonly disabled>{{ course.title }}</textarea>
-          <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
+          <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor?.name }}</mat-label>
           <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
             <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
         </div>

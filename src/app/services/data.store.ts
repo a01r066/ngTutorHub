@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable, of, Subject, throwError} from "rxjs";
 import {Course} from "../models/course.model";
-import {catchError, last, map, shareReplay, takeLast, tap} from "rxjs/operators";
+import {catchError, last, map, share, shareReplay, takeLast, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {LoadingService} from "./loading.service";
 import {MessagesService} from "./messages.service";
@@ -12,6 +12,7 @@ import {Chapter} from "../models/chapter.model";
 import {User} from "../models/user.model";
 import {Coupon} from "../models/coupon.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Instructor} from "../models/instructor.model";
 
 @Injectable({
   providedIn: "root"
@@ -327,6 +328,18 @@ export class DataStore {
         }), shareReplay());
   }
 
+  updateInstructor(instructorId: string, changes: Partial<Instructor>): Observable<any>{
+    const url = `${Constants.base_url}/instructors/${instructorId}`;
+    return this.http.put(url, changes).pipe(shareReplay());
+  }
+
+  getInstructor(instructorId: string): Observable<Instructor>{
+    const url = `${Constants.base_url}/instructors/${instructorId}`;
+    return this.http.get(url)
+      .pipe(map(res => (res as any).data),
+      shareReplay());
+  }
+
   uploadPhoto(objName: string, objId: string, file: any): Observable<any>{
     const token = localStorage.getItem('token');
     const url = `${Constants.base_url}/${objName}/${objId}/photo`;
@@ -487,5 +500,31 @@ export class DataStore {
     const url = `${Constants.base_url}/chapter/${chapterId}`;
     return this.http.put(url, data)
       .pipe(shareReplay());
+  }
+
+  getInstructorsByCategoryId(categoryId: any): Observable<Instructor[]>{
+    const url = `${Constants.base_url}/categories/${categoryId}/instructors`;
+    return this.http.get(url)
+      .pipe(map(res => (res as any).data), shareReplay());
+  }
+
+  getAllInstructors(): Observable<Instructor[]>{
+    const url = `${Constants.base_url}/instructors`;
+    return this.http.get(url)
+      .pipe(map(res => (res as any).data), shareReplay());
+  }
+
+  createInstructor(formData: any): Observable<any>{
+    const url = `${Constants.base_url}/instructors`;
+    return this.http.post(url, formData).pipe(shareReplay());
+  }
+
+  addToInstructorCourses(instructorId: any, courseId: any):Observable<any>{
+    const data = {
+      "instructorId": instructorId,
+      "courseId": courseId
+    }
+    const url = `${Constants.base_url}/instructors/addToCourses`;
+    return this.http.put(url, data).pipe(shareReplay());
   }
 }

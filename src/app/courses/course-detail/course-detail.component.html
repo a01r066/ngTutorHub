@@ -2,7 +2,7 @@
   <div class="banner-content">
     <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500; margin-top: 16px; color: white">{{ course?.title }}</textarea>
     <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: lightgray;">{{ course?.description }}</textarea>
-    <mat-label style="color: lightgray; font-size: 0.9rem; margin-top: 16px; font-style: italic;">Instructor: <span style="color: white">{{ course?.instructor }}</span></mat-label>
+    <mat-label style="color: lightgray; font-size: 0.9rem; margin-top: 16px; font-style: italic;">Instructor: <span style="color: white">{{ course?.instructor?.name }}</span></mat-label>
     <div *ngIf="width === 0" style="margin-top: 16px">
       <div><span style="font-size: 1.5rem; font-weight: 500; color: white">${{ getSalePrice(course) | number: '1.0-2' }}</span><span style="text-decoration: line-through; margin-left: 12px; color: lightgray">${{ course.tuition | number: '1.0-2'}}</span><span style="margin-left: 12px; font-weight: 500; color: lightgray">{{ course.coupon.discount | number }}% off</span>
         <span *ngIf="!(isPurchased$ | async) && !course.isFree" style="float: right; margin-right: 16px"><button mat-raised-button (click)="addToCart(course)" color="accent" style="width: 128px"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button></span>
@@ -19,10 +19,10 @@
     </div>
   </div>
 </div>
-<header class="container">
+<div class="container">
   <div fxLayout="row">
     <div class="left-content">
-      <div class="title-heading">What you will learn:</div>
+      <h1>What you will learn</h1>
       <mat-grid-list cols="2" rowHeight="52px">
         <mat-grid-tile *ngFor="let item of objectives">
           <mat-icon>done</mat-icon><textarea class="objTextArea" rows="2" readonly disabled>{{ item }}</textarea>
@@ -63,7 +63,7 @@
           </mat-accordion>
         </div>
       </div>
-      <h3 class="title-heading">Description</h3>
+      <h1>Description</h1>
       <ng-container *ngIf="!seeMore; else seeLess">
         <textarea readonly disabled rows="6" style="padding-top: 16px" class="objTextArea">{{ course?.description }}</textarea>
         <button mat-flat-button style="font-weight: lighter; background-color: #FBFBF8; color: purple" (click)="toggle()"><mat-icon>expand_more</mat-icon> See more</button>
@@ -103,4 +103,4 @@
       </div>
     </div>
   </div>
-</header>
+</div>

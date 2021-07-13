@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DataStore} from "../../../services/data.store";
 import {MatDialog} from "@angular/material/dialog";
 import {MatTableDataSource} from "@angular/material/table";
@@ -8,22 +8,27 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CourseDialogComponent} from "./course-dialog/course-dialog.component";
 import {Observable, Subject} from "rxjs";
 import {UploadPhotoDialogComponent} from "./upload-photo-dialog/upload-photo-dialog.component";
+import {Instructor} from "../../../models/instructor.model";
+import {FormControl, FormGroup} from "@angular/forms";
+import {InstructorDialogComponent} from "../../ad-instructors/instructor-dialog/instructor-dialog.component";
 
 @Component({
   selector: 'app-ad-courses',
   templateUrl: './ad-courses.component.html',
   styleUrls: ['./ad-courses.component.css']
 })
-export class AdCoursesComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', '_id', 'category_id', 'title', 'isPublished', 'options'];
+export class AdCoursesComponent implements OnInit {
+  displayedColumns: string[] = ['position', '_id', 'title', 'instructor', 'isPublished', 'options'];
   courses: Course[] = [];
   dataSource = new MatTableDataSource<Course>(this.courses);
   categoryId!: any;
   isPublished: Boolean = false;
+  instructors$!: Observable<Instructor[]>;
 
   dataChanged = new Subject();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  ngForm!: FormGroup;
 
   constructor(private dataStore: DataStore,
               public dialog: MatDialog,
@@ -32,15 +37,15 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getCourses();
+    this.instructors$ = this.dataStore.getAllInstructors();
 
     this.dataChanged.subscribe(() => {
       this.getCourses();
     })
-  }
 
-  ngAfterViewInit() {
-    // this.dataSource = new MatTableDataSource<Course>(this.courses);
-    // this.dataSource.paginator = this.paginator;
+    this.ngForm = new FormGroup({
+      instructor: new FormControl()
+    })
   }
 
   private getCourses() {
@@ -104,6 +109,24 @@ export class AdCoursesComponent implements OnInit, AfterViewInit {
   onToggle($event: any, idx: number) {
     this.dataStore.updateCourse(this.courses[idx]._id, { isPublished: $event.checked}).subscribe(() => {
       console.log('Course is updated!');
+    });
+  }
+
+  onSelectChange($event: any, element: Course) {
+    this.dataStore.updateCourse(element._id, this.ngForm.value).subscribe();
+    this.dataStore.addToInstructorCourses($event.value, element._id).subscribe();
+  }
+
+  addInstructor() {
+    const dialogRef = this.dialog.open(InstructorDialogComponent, {
+      width: '40vw',
+      data: { isEdit: false },
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+      this.dataChanged.next();
     });
   }
 }

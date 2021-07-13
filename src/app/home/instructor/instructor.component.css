@@ -1,0 +1,44 @@
+.instructor-container {
+  width: 70%;
+  margin: 32px auto;
+}
+
+div.instructor-header {
+  display: flex;
+}
+
+div.instructor-left {
+  width: 80%;
+}
+
+div.instructor-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+img.img-thumbnail-big {
+  width: 148px;
+  height: 148px;
+  border-radius: 74px;
+}
+
+div.course-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1E1E1C;
+  margin-top: 8px;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}

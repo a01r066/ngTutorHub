@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="title-heading">Search results</div>
+  <h1>Search results</h1>
   <div>
     <ng-container *ngIf="(courses$ | async) as courses">
       <ul class="course-flex-container">
@@ -8,7 +8,7 @@
           <div class="course-flex-item-content">
             <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
             <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
-            <p style="margin-bottom: 0; padding-bottom: 0; font-size: 0.9rem">{{ course.instructor }}</p>
+            <p style="margin-bottom: 0; padding-bottom: 0; font-size: 0.9rem">{{ course.instructor?.name }}</p>
           </div>
           <div class="course-flex-item-price">
             <h3>${{ getSalePrice(course) | number: '1.0-2' }}</h3>

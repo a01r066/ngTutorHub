@@ -1,0 +1,51 @@
+<!--<app-loading></app-loading>-->
+<h3>Object Form</h3>
+<!--<app-message></app-message>-->
+<form [formGroup]="ngForm">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput
+             placeholder="name"
+             formControlName="name" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="profession"
+             formControlName="profession">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="highlight"
+                formControlName="highlight">
+        </textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="rating"
+             formControlName="rating">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="reviews"
+             formControlName="reviews">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="students"
+             formControlName="students">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="categoryId"
+             formControlName="categoryId">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+    <button mat-raised-button
+            (click)="onNoClick()">
+      Back
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

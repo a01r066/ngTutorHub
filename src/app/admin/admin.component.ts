@@ -7,8 +7,8 @@ import {Router} from "@angular/router";
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  links = ['Categories', 'Coupons']
-  icons = ['menu', 'redeem'];
+  links = ['Categories', 'Coupons', 'Instructors']
+  icons = ['menu', 'redeem', 'school'];
   constructor(private router: Router) { }
 
   ngOnInit(): void {

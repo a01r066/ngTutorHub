@@ -1,0 +1,48 @@
+<div class="instructor-container">
+  <section>
+    <ng-container *ngIf="(instructor$ | async) as instructor">
+      <div class="instructor-header" >
+        <div class="instructor-left">
+          <h4>INSTRUCTOR</h4>
+          <h1>{{ instructor.name }}</h1>
+          <div class="instructor-info">
+            <div>
+              <p>Total students</p>
+              <h3>{{ instructor.students | number }}</h3>
+            </div>
+            <div>
+              <p>Reviews</p>
+              <h3>{{ instructor.reviews | number }}</h3>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img class="img-thumbnail-big" src="{{ path+instructor.photoURL}}" alt="{{ instructor.name }}">
+        </div>
+      </div>
+      <h1>Introduction</h1>
+      <p>{{ instructor.highlight }}</p>
+      <h1>My courses</h1>
+      <div class="course-container">
+        <div>
+          <img src="https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg" alt="">
+          <textarea class="titleTextArea" rows="2" readonly disabled>100 Days of Code - The Complete Python Pro Bootcamp for 2021</textarea>
+          <p>Dr. Angela Yu</p>
+          <p>$12.99 <span style="text-decoration: line-through">$94.99</span></p>
+        </div>
+        <div>
+          <img src="https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg" alt="">
+          <textarea class="titleTextArea" rows="2" readonly disabled>100 Days of Code - The Complete Python Pro Bootcamp for 2021</textarea>
+          <p>Dr. Angela Yu</p>
+          <p>$12.99 <span style="text-decoration: line-through">$94.99</span></p>
+        </div>
+        <div>
+          <img src="https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg" alt="">
+          <textarea class="titleTextArea" rows="2" readonly disabled>100 Days of Code - The Complete Python Pro Bootcamp for 2021</textarea>
+          <p>Dr. Angela Yu</p>
+          <p>$12.99 <span style="text-decoration: line-through">$94.99</span></p>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+</div>

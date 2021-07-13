@@ -6,6 +6,7 @@ import {Course} from "../../models/course.model";
 import {Observable} from "rxjs";
 import {DataStore} from "../../services/data.store";
 import {Constants} from "../../helpers/constants";
+import {Instructor} from "../../models/instructor.model";
 
 @Component({
   selector: 'app-course-list',
@@ -14,16 +15,17 @@ import {Constants} from "../../helpers/constants";
 })
 export class CourseListComponent implements OnInit {
   base_url = `${Constants.base_upload}/courses/`;
+  path = `${Constants.base_upload}/instructors/`;
 
   category!: Category;
   topCourses$!: Observable<Course[]>;
   courses: Course[] = [];
-  // courses$!: Observable<Course[]>;
   page: number = 1;
   fPage: number = 1;
   discount = 90;
   size: any;
   counter: any;
+  instructors$!: Observable<Instructor[]>;
 
   constructor(
     private dataStore: DataStore,
@@ -43,6 +45,8 @@ export class CourseListComponent implements OnInit {
       this.dataStore.getCoursesByCategory(category._id).subscribe(courses => {
         this.courses = courses.filter(course => course.isPublished);
       });
+
+      this.instructors$ = this.dataStore.getInstructorsByCategoryId(category._id);
     })
   }
 
@@ -65,6 +69,8 @@ export class CourseListComponent implements OnInit {
       this.dataStore.getCoursesByCategory(category._id).subscribe(courses => {
         this.courses = courses.filter(course => course.isPublished);
       });
+
+      this.instructors$ = this.dataStore.getInstructorsByCategoryId(category._id);
     })
   }
 
@@ -91,5 +97,9 @@ export class CourseListComponent implements OnInit {
 
   onClick(course: any){
     this.router.navigate(['/course', course.slug]);
+  }
+
+  onClickInstructor(instructor: any) {
+    this.router.navigate(['/user', instructor._id]);
   }
 }

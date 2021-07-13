@@ -1,6 +1,6 @@
 <!--Top categories-->
 <header class="container">
-  <h1 class="title-heading">Top categories</h1>
+  <h1>Top categories</h1>
   <ul class="categories-container">
     <li class="flex-item" *ngFor="let category of (categories$ | async); let i = index" (click)="onClick(category)">
       <img style="width: 100%" src="{{ base_url+category.photo }}" alt="{{ category.title }}">

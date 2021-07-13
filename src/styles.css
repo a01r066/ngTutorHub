@@ -3,16 +3,59 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+/* ----------------Utility Components------------------ */
+:root {
+  font-size: 100%;
 }
 
 html, body { height: 100%; }
 body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /*font-family: Roboto, "Helvetica Neue", sans-serif;*/
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Paragraphs */
+p {
+  font-size: 0.9rem;
+  margin: 0.125rem 0;
+  text-align: justify;
+}
+
+/* Icons */
+i {
+  font-size: 5rem;
+}
+
+mat-icon {
+  transform: scale(1.1);
+}
+
+/* Suprescript elements */
+sup {
+  font-size: 0.8rem;
 }
 
 .container {
   width: 80%;
-  margin: 0 auto;
+  margin: 16px auto;
+}
+
+::selection {
+  color: white;
+  background-color: #1877F2;
+}
+
+/* ---------------------Main Styling---------------------- */
+/* Main Heading */
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  /*letter-spacing: 0.4rem;*/
+  color: darkslategrey;
+  margin: 16px 0;
 }
 
 /* Links */
@@ -49,11 +92,4 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.title-heading {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: darkslategrey;
-  margin: 16px;
 }

@@ -41,7 +41,16 @@ export class UploadPhotoDialogComponent implements OnInit {
             duration: 3000
           })
         });
-      } else {
+      } else if(src === 'instructor'){
+        this.dataStore.uploadPhoto('instructors', element._id, this.fileData).subscribe(res => {
+          // Reload photo
+          this.dialogRef.close();
+          this.snackBar.open(`Instructor photo uploaded!`, null!, {
+            duration: 3000
+          })
+        });
+      }
+      else {
         this.dataStore.uploadPhoto('courses', element._id, this.fileData).subscribe(res => {
           // Reload photo
           this.dialogRef.close();

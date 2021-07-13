@@ -1,20 +1,20 @@
-<header class="container">
+<section class="container">
   <!--Tabs-->
   <div class="center">
     <mat-tab-group (selectedTabChange)="onClickTab($event.index)" [(selectedIndex)]="selectedIndex">
       <mat-tab id="tab" *ngFor="let category of categories | slice:0:cateCounter" label="{{ category.title }}"></mat-tab>
     </mat-tab-group>
   </div>
-  <h2 class="title-heading">Top paid {{ categories[selectedIndex]?.title }} courses</h2>
+  <h1>Top paid {{ categories[selectedIndex]?.title }} courses</h1>
   <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
     <ng-container *ngIf="(courses$ | async) as courses">
       <app-feature-section [courses]="courses" [counter]="counter" [paginationId]="'paid'"></app-feature-section>
     </ng-container>
   </div>
-  <h2 class="title-heading">Top rated free courses</h2>
+  <h1>Top rated free courses</h1>
   <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
     <ng-container *ngIf="(freeCourses$ | async) as courses">
       <app-feature-section [courses]="courses" [counter]="counter" [paginationId]="'free'"></app-feature-section>
     </ng-container>
   </div>
-</header>
+</section>

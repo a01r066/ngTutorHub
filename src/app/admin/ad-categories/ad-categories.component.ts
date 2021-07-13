@@ -38,13 +38,14 @@ export class AdCategoriesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // this.dataSource = new MatTableDataSource<Category>(this.categories);
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   private getCategories() {
     this.dataStore.categories$.subscribe(categories => {
       this.categories = categories;
-      this.dataSource = new MatTableDataSource<Category>(this.categories );
+      this.dataSource = new MatTableDataSource<Category>(this.categories);
+      this.dataSource.paginator = this.paginator;
     })
   }
 
