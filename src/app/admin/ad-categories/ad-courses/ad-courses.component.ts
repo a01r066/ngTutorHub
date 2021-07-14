@@ -108,7 +108,6 @@ export class AdCoursesComponent implements OnInit {
 
   onToggle($event: any, idx: number) {
     this.dataStore.updateCourse(this.courses[idx]._id, { isPublished: $event.checked}).subscribe(() => {
-      console.log('Course is updated!');
     });
   }
 

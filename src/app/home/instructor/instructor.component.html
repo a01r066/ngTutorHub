@@ -23,24 +23,12 @@
       <h1>Introduction</h1>
       <p>{{ instructor.highlight }}</p>
       <h1>My courses</h1>
-      <div class="course-container">
-        <div>
-          <img src="https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg" alt="">
-          <textarea class="titleTextArea" rows="2" readonly disabled>100 Days of Code - The Complete Python Pro Bootcamp for 2021</textarea>
-          <p>Dr. Angela Yu</p>
-          <p>$12.99 <span style="text-decoration: line-through">$94.99</span></p>
-        </div>
-        <div>
-          <img src="https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg" alt="">
-          <textarea class="titleTextArea" rows="2" readonly disabled>100 Days of Code - The Complete Python Pro Bootcamp for 2021</textarea>
-          <p>Dr. Angela Yu</p>
-          <p>$12.99 <span style="text-decoration: line-through">$94.99</span></p>
-        </div>
-        <div>
-          <img src="https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg" alt="">
-          <textarea class="titleTextArea" rows="2" readonly disabled>100 Days of Code - The Complete Python Pro Bootcamp for 2021</textarea>
-          <p>Dr. Angela Yu</p>
-          <p>$12.99 <span style="text-decoration: line-through">$94.99</span></p>
+      <div class="course-container" *ngIf="courses.length > 0">
+        <div class="item-container" *ngFor="let course of courses" (click)="onClick(course)">
+          <img style="border-radius: 4px" [src]="base_url+course.courseId.photo" alt="">
+          <textarea class="titleTextArea" rows="2" readonly disabled>{{ course.courseId.title }}</textarea>
+<!--          <p>{{ instructor.name }}</p>-->
+          <p><span style="font-size: 1.1rem; font-weight: 500">${{ getSalePrice(course) | number: '1.0-2' }}</span><span style="text-decoration: line-through; float: right; font-size: 1.1rem">${{ course.courseId.tuition | number }}</span></p>
         </div>
       </div>
     </ng-container>

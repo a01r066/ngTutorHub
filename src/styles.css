@@ -24,6 +24,10 @@ p {
   text-align: justify;
 }
 
+textarea {
+  line-height: 1.35;
+}
+
 /* Icons */
 i {
   font-size: 5rem;

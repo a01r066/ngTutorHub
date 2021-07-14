@@ -25,9 +25,14 @@ img.img-thumbnail-big {
 
 div.course-container {
   display: flex;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
+}
+
+div.item-container {
+  width: 320px;
 }
 
 .titleTextArea {

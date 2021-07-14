@@ -31,7 +31,7 @@
           <p style="font-weight: 500; color: #8C1BAB">{{ instructor.name }}</p>
           <p style="font-size: 0.8rem; color: #F05F57"><span style="font-weight: 500;">{{instructor.rating}} *</span>  Instructor Rating</p>
           <p><span style="font-weight: 500;">{{ instructor.students | number }}</span> students</p>
-          <p><span style="font-weight: 500">{{ 1 }}</span> courses</p>
+          <p><span style="font-weight: 500">{{ instructor.courses?.length }}</span> courses</p>
         </div>
       </div>
     </div>
