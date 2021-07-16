@@ -55,8 +55,8 @@ sup {
 /* ---------------------Main Styling---------------------- */
 /* Main Heading */
 h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: calc(12px + 0.85vw);
+  font-weight: 600;
   /*letter-spacing: 0.4rem;*/
   color: darkslategrey;
   margin: 16px 0;
@@ -81,6 +81,33 @@ img {
   object-fit: cover;
 }
 
+table {
+  width: 100%;
+}
+
+.titleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: darkslategray;
+  font-size: calc(12px + 0.4vw);
+  font-weight: 500;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.subTitleTextArea {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 0.9rem;
+  color: darkslategray;
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}
+
 .mat-form-field {
   display: block;
 }
@@ -96,4 +123,15 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.instructor {
+  color: darkslategray;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.instructor:hover {
+  color: #8C1BAB;
+  font-weight: 500;
 }

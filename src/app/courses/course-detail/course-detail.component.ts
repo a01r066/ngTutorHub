@@ -289,4 +289,8 @@ export class CourseDetailComponent implements OnInit {
     const momentTime = time * 1000;
     return moment.utc(momentTime).format(format);
   }
+
+  onClickInstructor(instructorId: any) {
+    this.router.navigate(['/user', instructorId]);
+  }
 }

@@ -20,7 +20,7 @@
         <img src="{{ base_url+course.photo }}" alt="{{ course.title }}">
         <div fxLayout="column" fxLayoutGap="8px" style="margin: 4px">
           <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
-          <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor }}</mat-label>
+          <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor?.name }}</mat-label>
         </div>
       </li>
     </ul>

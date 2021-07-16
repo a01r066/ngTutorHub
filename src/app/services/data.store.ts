@@ -502,7 +502,7 @@ export class DataStore {
       .pipe(shareReplay());
   }
 
-  getInstructorsByCategoryId(categoryId: any): Observable<Instructor[]>{
+  getInstructors(categoryId: any): Observable<Instructor[]>{
     const url = `${Constants.base_url}/categories/${categoryId}/instructors`;
     return this.http.get(url)
       .pipe(map(res => (res as any).data), shareReplay());
@@ -526,5 +526,16 @@ export class DataStore {
     }
     const url = `${Constants.base_url}/instructors/addToCourses`;
     return this.http.put(url, data).pipe(shareReplay());
+  }
+
+  getUsers(): Observable<User[]>{
+    const token = localStorage.getItem('token');
+    const url = `${Constants.base_url}/auth`;
+
+    return this.http.get(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    }).pipe(map(res => (res as any).data), shareReplay());
   }
 }

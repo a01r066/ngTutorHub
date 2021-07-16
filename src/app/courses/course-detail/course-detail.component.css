@@ -67,15 +67,6 @@ textarea {
   overflow: hidden;
 }
 
-.titleTextArea {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  width: 100%;
-  resize: none;
-  border: none;
-  background-color: transparent;
-  overflow: hidden;
-}
-
 .objTextArea {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: black;

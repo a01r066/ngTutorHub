@@ -21,6 +21,7 @@ export class FeatureSectionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.courses = this.courses.reverse();
   }
 
   getSalePrice(course: any) {
@@ -31,5 +32,9 @@ export class FeatureSectionComponent implements OnInit {
 
   onClick(course: any){
     this.router.navigate(['course', course.slug]);
+  }
+
+  onClickInstructor(instructorId: any) {
+    this.router.navigate(['/user', instructorId]);
   }
 }

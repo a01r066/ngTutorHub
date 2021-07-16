@@ -97,7 +97,7 @@
                   <mat-list-item [routerLinkActive]="['active']" (click)="startPlaylistVdo(chapter, chapterIndex, lectureIndex)"
                                  [class.selected]="chapter === selectedChapter" [class.selected]="chapter === selectedChapter" [class.active]="activeIndex == chapterIndex">
                     <span style="width: 85%; font-size: 0.9rem">
-                      <textarea class="titleTextArea" readonly disabled rows="2">{{chapter.title }}</textarea>
+                      <textarea class="subTitleTextArea" readonly disabled rows="2">{{chapter.title }}</textarea>
                     </span>
                     <span *ngIf="chapter">
                   <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0"><span style="font-size: 0.9rem">{{ formatTime(chapter.duration) }} min</span></ng-container>

@@ -1,0 +1,31 @@
+<!--<app-loading></app-loading>-->
+<h3>Object Form</h3>
+<!--<app-message></app-message>-->
+<form [formGroup]="ngForm">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput
+             placeholder="displayName"
+             formControlName="displayName" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="purchased_courses"
+             formControlName="purchased_courses">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             placeholder="role"
+             formControlName="role">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+    <button mat-raised-button
+            (click)="onNoClick()">
+      Back
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="ngForm.invalid">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

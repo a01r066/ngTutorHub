@@ -47,16 +47,3 @@
   color: #1E1E1C;
   font-weight: 500;
 }
-
-.titleTextArea {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  color: darkslategray;
-  margin-top: 8px;
-  width: 100%;
-  resize: none;
-  border: none;
-  background-color: transparent;
-  overflow: hidden;
-}

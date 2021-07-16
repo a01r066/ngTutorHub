@@ -48,4 +48,8 @@ export class SearchComponent implements OnInit {
   onClick(course: any){
     this.router.navigate(['/course', course.slug]);
   }
+
+  onClickInstructor(instructorId: any) {
+    this.router.navigate(['/user', instructorId]);
+  }
 }

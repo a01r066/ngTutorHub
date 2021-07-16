@@ -16,6 +16,8 @@ import { CouponsComponent } from './coupons/coupons.component';
 import { CouponDialogComponent } from './coupons/coupon-dialog/coupon-dialog.component';
 import { AdInstructorsComponent } from './ad-instructors/ad-instructors.component';
 import { InstructorDialogComponent } from './ad-instructors/instructor-dialog/instructor-dialog.component';
+import { AdUsersComponent } from './ad-users/ad-users.component';
+import { UserDialogComponent } from './ad-users/user-dialog/user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { InstructorDialogComponent } from './ad-instructors/instructor-dialog/in
         CouponsComponent,
         CouponDialogComponent,
         AdInstructorsComponent,
-        InstructorDialogComponent
+        InstructorDialogComponent,
+        AdUsersComponent,
+        UserDialogComponent
   ],
   imports: [
     ShareModule,

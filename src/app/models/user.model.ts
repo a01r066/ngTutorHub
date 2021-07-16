@@ -12,4 +12,5 @@ export interface User {
   cart: any;
   wishlist: [any];
   purchased_courses: [any];
+  createdAt: any;
 }

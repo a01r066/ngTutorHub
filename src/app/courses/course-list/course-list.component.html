@@ -4,14 +4,14 @@
   </div>
   <div fxLayout="row" class="center" style="height: 340px; margin-top: 16px">
     <div>
-      <ng-container *ngIf="(topCourses$ | async) as courses">
+      <ng-container>
         <ul class="item-container">
-          <li class="flex-item" style="cursor: pointer" *ngFor="let course of courses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
+          <li class="flex-item" style="cursor: pointer" *ngFor="let course of topCourses | paginate: { itemsPerPage: counter, currentPage: page }" (click)="onClick(course)">
             <img style="width: 100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}">
             <div>
               <div fxLayout="column" fxLayoutGap="8px">
-                <textarea class="titleTextArea" rows="2" style="font-size: 1rem; font-weight: 500; color: darkslategray" readonly disabled>{{ course.title }}</textarea>
-                <mat-label style="color: gray; font-size: 0.9rem">{{ course.instructor?.name }}</mat-label>
+                <textarea class="titleTextArea" rows="2" readonly disabled>{{ course.title }}</textarea>
+                <mat-label class="instructor" (click)="onClickInstructor(course.instructor._id)">{{ course.instructor?.name }}</mat-label>
                 <div style="font-size: 1rem; font-weight: 500; color: #1E1E1C">${{ getSalePrice(course) | number: '1.0-2' }}
                   <span style="text-decoration: line-through; color: darkslategray; float: right; font-weight: 400">${{ course.tuition | number: '1.0-2' }}</span></div>
               </div>
@@ -25,7 +25,7 @@
   <div>
     <h1>Popular Instructors</h1>
     <div class="instructor-container" *ngIf="(instructors$ | async) as instructors">
-      <div class="instructor-item" *ngFor="let instructor of instructors | slice:0:counter" (click)="onClickInstructor(instructor)">
+      <div class="instructor-item" *ngFor="let instructor of instructors | slice:0:counter" (click)="onClickInstructor(instructor._id)">
         <div><img class="img-thumbnail-small" src="{{ path+instructor.photoURL }}" alt=""></div>
         <div>
           <p style="font-weight: 500; color: #8C1BAB">{{ instructor.name }}</p>
@@ -45,13 +45,13 @@
           <li class="course-flex-item" *ngFor="let course of courses | paginate: { id: 'pagination2', itemsPerPage: 5, currentPage: fPage }" (click)="onClick(course)">
             <div style="width: 20%"><img height="100%" src="{{ base_url+course.photo }}" alt="{{ course.title }}"></div>
             <div class="course-flex-item-content">
-              <textarea class="titleTextArea" readonly disabled rows="1" style="font-size: 1.25rem; font-weight: 500; color: darkslategray">{{ course.title }}</textarea>
-              <textarea class="titleTextArea" readonly disabled rows="2" style="font-size: 0.9rem;">{{ course.description }}</textarea>
-              <p style="margin-bottom: 0; padding-bottom: 0; font-size: 0.9rem">{{ course.instructor?.name }}</p>
+              <textarea class="titleTextArea" readonly disabled rows="1">{{ course.title }}</textarea>
+              <textarea class="subTitleTextArea" readonly disabled rows="2">{{ course.description }}</textarea>
+              <p class="instructor" (click)="onClickInstructor(course.instructor._id)">{{ course.instructor?.name }}</p>
             </div>
             <div class="course-flex-item-price">
               <h3>${{ getSalePrice(course) | number: '1.0-2' }}</h3>
-              <p style="text-decoration: line-through; color: red">${{ course.tuition | number: '1.0-2' }}</p>
+              <p style="text-decoration: line-through; color: red">${{ course?.tuition | number: '1.0-2' }}</p>
             </div>
           </li>
         </ul>

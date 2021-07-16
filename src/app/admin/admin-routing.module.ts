@@ -8,6 +8,7 @@ import {AdLecturesComponent} from "./ad-categories/ad-courses/ad-lectures/ad-lec
 import {AdChaptersComponent} from "./ad-categories/ad-courses/ad-lectures/ad-chapters/ad-chapters.component";
 import {CouponsComponent} from "./coupons/coupons.component";
 import {AdInstructorsComponent} from "./ad-instructors/ad-instructors.component";
+import {AdUsersComponent} from "./ad-users/ad-users.component";
 
 const routes: Routes = [
   { path: 'admin', component: AdminComponent, children: [
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: 'courses/:id', component: AdLecturesComponent },
       { path: 'courses/:courseId/:lectureId/chapters', component: AdChaptersComponent },
       { path: 'coupons', component: CouponsComponent },
-      { path: 'instructors', component: AdInstructorsComponent }
+      { path: 'instructors', component: AdInstructorsComponent },
+      { path: 'users', component: AdUsersComponent }
     ] }
 ]
 

@@ -1,8 +1,8 @@
 <div class="banner-container">
   <div class="banner-content">
-    <textarea class="titleTextArea" rows="2" readonly disabled style="font-size: 2rem; font-weight: 500; margin-top: 16px; color: white">{{ course?.title }}</textarea>
-    <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: lightgray;">{{ course?.description }}</textarea>
-    <mat-label style="color: lightgray; font-size: 0.9rem; margin-top: 16px; font-style: italic;">Instructor: <span style="color: white">{{ course?.instructor?.name }}</span></mat-label>
+    <h1 style="margin-top: 16px; color: white">{{ course?.title }}</h1>
+    <textarea class="titleTextArea" rows="3" readonly disabled style="font-size: 0.9rem; color: cornsilk;font-weight: 300">{{ course?.description }}</textarea>
+    <mat-label style="color: lightgray; font-size: 0.9rem; margin-top: 16px; font-style: italic;">Instructor: <span style="color: white; cursor: pointer" (click)="onClickInstructor(course.instructor._id)">{{ course?.instructor?.name }}</span></mat-label>
     <div *ngIf="width === 0" style="margin-top: 16px">
       <div><span style="font-size: 1.5rem; font-weight: 500; color: white">${{ getSalePrice(course) | number: '1.0-2' }}</span><span style="text-decoration: line-through; margin-left: 12px; color: lightgray">${{ course.tuition | number: '1.0-2'}}</span><span style="margin-left: 12px; font-weight: 500; color: lightgray">{{ course.coupon.discount | number }}% off</span>
         <span *ngIf="!(isPurchased$ | async) && !course.isFree" style="float: right; margin-right: 16px"><button mat-raised-button (click)="addToCart(course)" color="accent" style="width: 128px"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button></span>
@@ -49,7 +49,7 @@
                 <mat-nav-list>
                   <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of lecture.chapters; let idx = index" [class.active]="selected == idx">
                     <span style="width: 90%; font-size: 0.9rem">
-                      <textarea class="titleTextArea" readonly disabled rows="2" style="color: black; font-size: 0.9rem">{{ chapter.title }}</textarea>
+                      <textarea class="subTitleTextArea" readonly disabled rows="2" style="color: black; font-size: 0.9rem">{{ chapter.title }}</textarea>
                     </span>
                     <span *ngIf="chapter">
                       <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0"><span style="font-size: 0.9rem">{{ formatTime(chapter.duration ) }} min</span></ng-container>

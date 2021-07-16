@@ -18,7 +18,7 @@ export class CourseListComponent implements OnInit {
   path = `${Constants.base_upload}/instructors/`;
 
   category!: Category;
-  topCourses$!: Observable<Course[]>;
+  topCourses: Course[] = [];
   courses: Course[] = [];
   page: number = 1;
   fPage: number = 1;
@@ -41,12 +41,14 @@ export class CourseListComponent implements OnInit {
     this.uiService.categorySub.subscribe(category => {
       this.category = category;
       // Get courses
-      this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
+      this.dataStore.getBestsellerCoursesByCategory(category._id).subscribe(courses => {
+        this.topCourses = courses.reverse();
+      });
       this.dataStore.getCoursesByCategory(category._id).subscribe(courses => {
-        this.courses = courses.filter(course => course.isPublished);
+        this.courses = courses.filter(course => course.isPublished).reverse();
       });
 
-      this.instructors$ = this.dataStore.getInstructorsByCategoryId(category._id);
+      this.instructors$ = this.dataStore.getInstructors(category._id);
     })
   }
 
@@ -65,12 +67,14 @@ export class CourseListComponent implements OnInit {
     this.dataStore.getCategoryBySlug(slug).subscribe(category => {
       this.category = category;
       // Get courses
-      this.topCourses$ = this.dataStore.getBestsellerCoursesByCategory(category._id);
+      this.dataStore.getBestsellerCoursesByCategory(category._id).subscribe(courses => {
+        this.topCourses = courses.reverse();
+      });
       this.dataStore.getCoursesByCategory(category._id).subscribe(courses => {
-        this.courses = courses.filter(course => course.isPublished);
+        this.courses = courses.filter(course => course.isPublished).reverse();
       });
 
-      this.instructors$ = this.dataStore.getInstructorsByCategoryId(category._id);
+      this.instructors$ = this.dataStore.getInstructors(category._id);
     })
   }
 
@@ -99,7 +103,7 @@ export class CourseListComponent implements OnInit {
     this.router.navigate(['/course', course.slug]);
   }
 
-  onClickInstructor(instructor: any) {
-    this.router.navigate(['/user', instructor._id]);
+  onClickInstructor(instructorId: any) {
+    this.router.navigate(['/user', instructorId]);
   }
 }

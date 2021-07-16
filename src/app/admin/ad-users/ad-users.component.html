@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="mat-card-title" style="margin: 24px">USERS
+    <span style="float: right;"><button mat-flat-button color="primary" (click)="create()"><mat-icon>add</mat-icon> ADD USER</button></span></div>
+  <div class="mat-elevation-z8" style="margin: 24px">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="displayName">
+        <th mat-header-cell *matHeaderCellDef> Display Name </th>
+        <td mat-cell *matCellDef="let element"> {{ element.displayName }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="courses">
+        <th mat-header-cell *matHeaderCellDef> Courses </th>
+        <td mat-cell *matCellDef="let element" style="cursor: pointer">
+          <ul *ngFor="let course of element.purchased_courses">
+            <li>{{ course.courseId.title }}</li>
+          </ul>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef> Created At </th>
+        <td mat-cell *matCellDef="let element" style="cursor: pointer"> {{ element.createdAt | date }} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef> Options </th>
+        <td mat-cell *matCellDef="let element">
+          <span><button mat-icon-button color="primary" matTooltip="Edit" (click)="edit(element)"><mat-icon>edit</mat-icon></button></span>
+          <span><button mat-icon-button color="warn" matTooltip="Delete" (click)="delete(element)"><mat-icon>delete</mat-icon></button></span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <!--      <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="cursor: pointer" (click)="showCourses(row)"></tr>-->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[15, 30, 50]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
