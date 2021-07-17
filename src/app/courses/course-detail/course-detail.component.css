@@ -56,17 +56,6 @@
   display: block;
 }
 
-textarea {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  /*height: 100px;*/
-  width: 100%;
-  /*resize: vertical;*/
-  resize: none;
-  border: none;
-  font-size: 1rem;
-  overflow: hidden;
-}
-
 .objTextArea {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: black;

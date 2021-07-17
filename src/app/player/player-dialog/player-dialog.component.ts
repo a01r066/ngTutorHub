@@ -21,6 +21,7 @@ export class PlayerDialogComponent implements OnInit {
   streamPath = this.base_url;
   currentUrl: any = '';
   playerData: any;
+  safeUrl!: SafeResourceUrl;
   videoItems: any = [
     // {
     //   name: 'Video two',
@@ -88,6 +89,7 @@ export class PlayerDialogComponent implements OnInit {
     } else {
       this.isVideo = false;
       this.currentUrl = this.videoItems[chapterIndex].src;
+      this.safeUrl = this.getSafeURL(this.currentUrl);
     }
   }
 }

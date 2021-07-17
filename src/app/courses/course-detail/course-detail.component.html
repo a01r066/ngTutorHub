@@ -32,7 +32,7 @@
         <div>
           <mat-accordion multi>
             <mat-expansion-panel disabled>
-              <mat-expansion-panel-header style="background-color: transparent">
+              <mat-expansion-panel-header>
                 <mat-panel-title>
                   <p class="mat-card-title" style="color: darkslategray">Course content</p>
                 </mat-panel-title>
@@ -41,15 +41,15 @@
             </mat-expansion-panel>
             <mat-expansion-panel *ngFor="let lecture of chaptersArray; let i = index">
               <mat-expansion-panel-header>
-                <mat-panel-title style="font-weight: 500">
-                  <textarea class="titleTextArea" rows="2" readonly disabled style="color: black; font-weight: 500; font-size: 0.9rem">{{ lecture.title }}</textarea>
+                <mat-panel-title>
+                  <textarea class="titleTextArea" rows="2" readonly disabled>{{ lecture.title }}</textarea>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <ng-template matExpansionPanelContent *ngIf="lecture.chapters">
                 <mat-nav-list>
                   <mat-list-item [routerLinkActive]="['active']" *ngFor="let chapter of lecture.chapters; let idx = index" [class.active]="selected == idx">
-                    <span style="width: 90%; font-size: 0.9rem">
-                      <textarea class="subTitleTextArea" readonly disabled rows="2" style="color: black; font-size: 0.9rem">{{ chapter.title }}</textarea>
+                    <span style="width: 85%;">
+                      <textarea class="subTitleTextArea" readonly disabled rows="2">{{ chapter.title }}</textarea>
                     </span>
                     <span *ngIf="chapter">
                       <ng-container *ngIf="getFileExt(chapter) === 'mp4' && chapter.duration > 0"><span style="font-size: 0.9rem">{{ formatTime(chapter.duration ) }} min</span></ng-container>

@@ -66,8 +66,9 @@ li.selected {
 
 .titleTextArea {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 0.9rem;
-  color: black;
+  color: darkslategray;
+  font-size: calc(12px + 0.2vw);
+  font-weight: 500;
   width: 100%;
   resize: none;
   border: none;

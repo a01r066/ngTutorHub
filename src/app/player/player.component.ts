@@ -6,7 +6,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Lecture} from "../models/lecture.model";
 import {Chapter} from "../models/chapter.model";
 import {DataStore} from "../services/data.store";
@@ -25,13 +25,14 @@ import slugify from "slugify";
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
+
 export class PlayerComponent implements OnInit, OnDestroy{
   course: any;
   lecture!: Lecture;
 
   chaptersArray: any[] = [];
   // unSafeUrl!: string;
-  // videoUrl!: SafeResourceUrl;
+  safeUrl!: SafeResourceUrl;
   base_url = `${Constants.base_upload}/courses/`;
   streamPath = this.base_url;
   shareUrl: string = 'https://api.tutorhub.info:3000/share/';
@@ -55,7 +56,6 @@ export class PlayerComponent implements OnInit, OnDestroy{
   activeLectureIndex = 0;
   selectedChapter!: Chapter;
 
-  // currentVideo!: any;
   currentUrl: any = '';
   data: any;
 
@@ -132,9 +132,9 @@ export class PlayerComponent implements OnInit, OnDestroy{
         } else {
           this.isVideo = false;
           this.currentUrl = this.videoItems[data.chapterIndex].src;
+          this.safeUrl = this.getSafeURL(this.currentUrl);
         }
       })
-      // this.currentVideo = this.videoItems[0];
     })
   }
 
@@ -236,13 +236,13 @@ export class PlayerComponent implements OnInit, OnDestroy{
       this.selectedChapter = this.chaptersArray[this.activeLectureIndex].chapters[this.activeIndex];
       if(this.selectedChapter.file.slice(this.selectedChapter.file.length-3) === 'mp4'){
         this.isVideo = true;
-        // this.currentVideo = this.videoItems[this.activeIndex];
         const ct = this.videoItems[this.activeIndex].name;
         const title = slugify(ct, { replacement: '_' });
         this.streamPath += `${this.course._id}/${this.selectedChapter.lecture}/${title}/index.m3u8`;
       } else {
         this.isVideo = false;
         this.currentUrl = this.videoItems[this.activeIndex].src;
+        this.safeUrl = this.getSafeURL(this.currentUrl);
       }
 
       this.addTrackerToDB(this.selectedChapter, this.activeIndex, this.activeLectureIndex);
@@ -270,21 +270,21 @@ export class PlayerComponent implements OnInit, OnDestroy{
   startPlaylistVdo(chapter: Chapter, chapterIndex: number, lectureIndex: number) {
     this.getVideoItems(lectureIndex);
 
+    this.selectedChapter = chapter;
+    this.activeIndex = chapterIndex;
+    this.activeLectureIndex = lectureIndex;
+
     if(chapter.file.slice(chapter.file.length-3) === 'mp4'){
       this.isVideo = true;
       this.streamPath = this.base_url;
 
-      this.selectedChapter = chapter;
-      this.activeIndex = chapterIndex;
-      this.activeLectureIndex = lectureIndex;
-
-      // this.currentVideo = this.videoItems[chapterIndex];
       const ct = this.videoItems[chapterIndex].name;
       const title = slugify(ct, { replacement: '_' });
       this.streamPath += `${this.course._id}/${chapter.lecture}/${title}/index.m3u8`;
     } else {
       this.isVideo = false;
       this.currentUrl = this.videoItems[chapterIndex].src;
+      this.safeUrl = this.getSafeURL(this.currentUrl);
     }
     this.addTrackerToDB(chapter, chapterIndex, lectureIndex);
   }

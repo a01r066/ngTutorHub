@@ -88,7 +88,7 @@ table {
 .titleTextArea {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: darkslategray;
-  font-size: calc(12px + 0.4vw);
+  font-size: calc(12px + 0.25vw);
   font-weight: 500;
   width: 100%;
   resize: none;
